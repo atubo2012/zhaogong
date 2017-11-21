@@ -1,0 +1,195 @@
+@import "style/weui.wxss";
+
+/**WEUI-WXSS的样式**/
+page{
+  background-color: #F8F8F8;
+  font-size: 16px;
+  font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif;
+}
+.page__hd {
+  padding: 30px;
+}
+.page__bd {
+  padding-bottom: 40px;
+}
+.page__bd_spacing {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.page__ft{
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.page__title {
+  text-align: left;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.page__desc {
+  margin-top: 5px;
+  color: #888888;
+  text-align: left;
+  font-size: 14px;
+}
+
+
+
+
+
+/**以下是先前学习css时练习使用的样式**/
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+/*form中的输入项列表container*/
+.list{
+  display: flex;
+  flex-direction: column;
+  background-color: #ffeeff;
+}
+
+/*form中的输入项item*/
+.list-item{
+  display: flex;
+  flex-direction: row;
+  margin-top: 10rpx;
+}
+
+/*input输入框*/
+.input-a{
+  background-color: #8E8E93;
+}
+
+.checkbox-a{
+  display: flex;
+  flex-direction: column;
+  margin-top: 10rpx;
+}
+
+/**广告轮播区**/
+.slide swiper{
+  height: 500rpx ;
+}
+
+/**广告轮播去的图片**/
+.slide-image{
+  width: 100%;
+  height: 100%;
+}
+
+/**主菜单**/
+.main-menu{
+  display: flex;
+  flex-direction: column;
+}
+/**菜单项**/
+.menu-item{
+  display:flex;
+  flex:1;
+  border:1rpx solid #007AFF;
+  margin-top: 10rpx;
+  padding:20rpx;
+  cursor:pointer;
+  background-color: #ffff00;
+}
+/**菜单项中的图片对象**/
+.menu-item image{
+  width:40rpx;
+  height:40rpx;
+  padding:10rpx;
+}
+/**菜单项中的text文本**/
+.menu-item text{
+  flex: 1;
+}
+
+/
+/**小程序demo中的样式表**/
+.line {
+  padding-top: 30rpx;     /**每行的上内边距**/
+}
+.line text {                /**line class内的 text元素，用来显示描述**/
+  color: #6D6D72;
+  font-size: 28rpx;
+  margin-left: 40rpx;     /**左外边距**/
+}
+.line-control {           /**每一行内的控件**/
+  background-color: #fff;
+  border-bottom: #d9d9d9 1px solid;
+  border-top: #d9d9d9 1px solid;
+  margin-top: 10rpx;
+}
+.line-control .item {  /**用两个.号定义子class的样式**/
+  box-sizing: border-box;
+  text-align: left;
+  color: #007AFF;
+  font-size: 32rpx;
+  padding-left: 40rpx;
+  position: relative
+}
+.line-control .item:active { /**被点中后处于活动状态的控件的背景变色发生变化**/
+  background: #d9d9d9;
+}
+.line-control .item.flag {
+  color: #333;
+}
+.line-control .item.flag:active { /**开关类控件处于活动状态的控件的背景变色发生变化**/
+  background: #fff;
+}
+.line-control .item-inner {
+  border-bottom: #d9d9d9 1px solid;  /**只显示下边框，以实线(solid)风格显示**/
+  height: 90rpx;
+  line-height: 90rpx;
+}
+.line-control .item:last-child .item-inner {
+  border:none;
+}
+.line-control .switch {
+  vertical-align: middle;
+  line-height: normal;
+}
+.line-control text {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10rpx;
+  color: #8E8E93;
+  margin-left: 0;
+}
+.line-control .switch-status {
+  color: #999;
+  position: absolute;
+  right: 40rpx;
+  top: 0;
+}
+.line-control .item.disabled {
+  color: #999
+}
+.line-control .item.disabled:active {
+  background: none;
+}
+.line .demo {
+  height: 90rpx;
+  line-height: 90rpx;
+  box-sizing: border-box;
+  text-align: left;
+  color: #333;
+  background-color: #fff;
+  position: relative;
+  font-size: 32rpx;
+  padding-left: 40rpx;
+}
+.line .demo .link {
+  position: absolute;
+  right: 40rpx;
+  top: 0rpx;
+  color: #8E8E93;
+}
+.hide {
+  display: none
+}

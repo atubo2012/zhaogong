@@ -1,0 +1,20 @@
+<view class="page">
+    <include src="../tplt/pagehead.wxml"/>
+    <view class="page__bd page__bd_spacing"><!--框架头与页面内容空3行-->
+
+
+        <view class="weui-cells__title">带说明、跳转的列表项</view>
+        <view class="weui-cells weui-cells_after-title">
+            <navigator bindtap="setParams" data-item="{{item}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active"
+                    wx:for="{{reqList}}" wx:key="aaa"  url="../rqst-edit/rqst-edit?reqId={{item.reqId}}">
+
+                <view class="weui-cell__bd">{{item.clfn}}，{{item.userInfo.nickName}},{{item.rdst}}</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access">{{item.mbnb}}</view>
+            </navigator>
+        </view>
+
+
+
+    </view><!--框架尾与页面内容空3行-->
+    <include src="../tplt/footer.wxml"/>
+</view>

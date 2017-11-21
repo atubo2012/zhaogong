@@ -1,0 +1,4 @@
+<view class="page__hd">
+    <view class="page__title">{{pageInfo.title}}</view>
+    <view class="page__desc">{{pageInfo.desc}}</view>
+</view>

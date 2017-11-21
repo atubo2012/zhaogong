@@ -1,0 +1,122 @@
+<!--rqst-edit.wxml
+tood:以用户的语言来描述信息项内容
+【需求单输入项分组规则】
+1、服务时间、地点、联系电话、尊称
+2、服务类别
+3、服务类别项下的专有字段
+
+
+【后台对新增或更新的处理的识别和处理方式】
+1、用updateOne的upser模式。
+2、如果有rqstid，则更新，如无则新增。todo：确认updateone做新增处理时，如何处理。
+-->
+
+
+<form bindsubmit="formSubmit" bindreset="formReset">
+    <view class="container">
+        <view class="list">
+            <view class="list-item">
+                <text>上门日期: </text>
+                <picker mode="date" value="{{date}}" start="{{today}}" end="2017-10-16" bindchange="bindDateChange">
+                    {{osdt}}
+                </picker>
+            </view>
+            <view class="list-item">
+                <picker mode="time" value="{{time}}" start="{{nowtime}}" end="23:00" bindchange="bindTimeChange">
+                    上门时间: {{ostm}}
+                </picker>
+            </view>
+
+            <view class="list-item">
+                详细地址：<input class="input-a" name="addr" placeholder="如：XX路XX号XX小区XX层XX室" value="光辉小区"/>
+            </view>
+
+
+            <view  class="list-item">
+                联系电话：<input class="input-a" name="mbnb" value="18666666666"/>
+            </view>
+
+            <view  class="list-item">
+                客户尊姓：<input class="input-a" name="clfn" value="李"/>
+            </view>
+
+            <view class="list-item">
+                房屋面积： <input class="input-a" name="size" value="128"/>
+            </view>
+
+            <view class="list-item" >
+                保洁工具(抹布、拖把、扫帚、簸箕等)：
+                    <radio-group name="tools" >
+                    <radio value="有工具" checked="true"/>房间里有工具
+                    <radio value="无工具"/>请阿姨带工具，用完带回
+                    <radio value="买工具"/>请替我代买一套工具，留在房间
+                </radio-group>
+            </view>
+            <view class="list-item-c">重点区域：
+                <checkbox-group name="imar">
+                    <checkbox value="卫生间" checked="true"/>卫生间
+                    <checkbox value="厨房"/>厨房
+                    <checkbox value="客厅"/>客厅
+                    <checkbox value="卧室"/>卧室
+                    <checkbox value="阳台"/>阳台
+                </checkbox-group>
+            </view>
+            <view class="list-item-c">清洁标准：
+                <radio-group name="clst">
+                    <radio value="表面无尘"/>表面无尘
+                    <radio value="全面无尘"/>全面无尘
+                    <radio value="重点去渍"/>重点区域去渍
+                </radio-group>
+            </view>
+            <view class="list-item-c">优先原则：
+                <radio-group name="prpl">
+                    <radio value="洁净度优先，不限时间"/>洁净度优先，不限时间
+                    <radio value="时间优先，约定时间内做完"/>时间优先，约定时间内做完
+                </radio-group>
+            </view>
+            <view class="list-item-c">您与房屋：
+                <radio-group name="role">
+                    <radio value="业主"/>我是业主
+                    <radio value="租客"/>我是租客
+                    <radio value="中介"/>我受业主委托
+                </radio-group>
+            </view>
+
+            <view class="list-item">
+                补充事项：
+                <input name="memo" class="input-a"  value="注释在这里写"/>
+            </view>
+
+            <view >
+                <button formType="submit" type="primary" >提交</button>
+                <button formType="reset" type="warn" >重填</button>
+            </view>
+        </view>
+
+    </view>
+</form>
+
+
+        <!--view>switch
+              <switch name="switch1" />
+            </view>
+            <view>slider
+              <slider name="slider" show-value />
+            </view>
+             <view>
+            <checkbox-group bindchange="checkboxChange">
+              <label class="checkbox" wx:for="{{items}}">
+                <checkbox value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+              
+            </checkbox-group>
+
+
+
+            <view>
+              <checkbox-group name="tktl-check-group">
+                <checkbox value="1"  />卫生间
+                <checkbox value="2"  />客厅
+                <checkbox value="3"  />替我代买一套
+              </checkbox-group>
+            </view>
+          </view-->

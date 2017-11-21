@@ -1,0 +1,64 @@
+<!--rqst-edit.wxml
+tood:以用户的语言来描述信息项内容
+【需求单输入项分组规则】
+1、服务时间、地点、联系电话、尊称
+2、服务类别
+3、服务类别项下的专有字段
+
+
+【后台对新增或更新的处理的识别和处理方式】
+1、用updateOne的upser模式。
+2、如果有rqstid，则更新，如无则新增。todo：确认updateone做新增处理时，如何处理。
+-->
+
+
+<form bindsubmit="formSubmit" bindreset="formReset">
+    <view class="input-area">
+        <view>真实姓名：
+            <input name="name" value="{{lborInfo.name}}"/>
+        </view>
+        <view>手机号码：
+            <input name="mbnb" value="{{lborInfo.mbnb}}"/>
+        </view>
+        <view>居住地址：
+            <input name="addr" value="{{lborInfo.addr}}"/>
+        </view>
+        <view>
+            <image src="{{source}}" mode="aspecFill" style="width: 640rpx; height: 640rpx" hidden="{{hideimg}}"/>
+            <button bindtap="ulcertpic" type="primary" size="mini">上传证件照</button>
+        </view>
+        <view class="btn-area">
+            <button formType="submit" type="primary" size="mini">保存</button>
+            <button formType="reset" type="warn" size="mini">重填</button>
+            <button bindtap="setidle" type="primary" size="mini">更新档期</button>
+        </view>
+    </view>
+</form>
+
+
+<view>档期信息</view>
+
+<view wx:for="{{weekly}}" wx:key="a1" wx:for-item="wk" wx:for-index="wkidx">
+
+    <form bindsubmit="addidle">
+        <input name="wkidx" value="{{wkidx}}" disabled="true"/>
+        <button formType="submit" type="primary" size="mini">+</button>
+    </form>
+
+    <view wx:for="{{wk.idle}}" wx:key="a2" wx:for-item="idled" wx:for-index="idledidx">
+        <form bindsubmit="delidle">
+            <view>
+                DAY:<input name="day" value="{{wk.day}}" disabled="true" hidden="true"/>
+                DAYindex:<input name="wkidx" value="{{wkidx}}"       disabled="true"  hidden="true"/>
+                idleindex<input name="idledidx" value="{{idledidx}}" disabled="true"  hidden="true"/>
+                空闲时段:
+                <input name="fr" value="{{idled.fr}}" data-wkidx="{{wkidx}}" data-idledidx="{{idledidx}}" bindinput="frInput"/>到
+                <input name="to" value="{{idled.to}}" data-wkidx="{{wkidx}}" data-idledidx="{{idledidx}}" bindinput="toInput"/>
+
+                <button formType="submit" type="primary" size="mini">-</button>
+            </view>
+        </form>
+    </view>
+
+</view>
+

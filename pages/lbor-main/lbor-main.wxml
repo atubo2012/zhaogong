@@ -1,0 +1,40 @@
+<view class="page">
+    <include src="../tplt/pagehead.wxml"/>
+    <view class="page__bd page__bd_spacing"><!--框架头与页面内容空3行-->
+
+
+        <view class="slide"><!--可以定义每个页面的-->
+            <swiper indicator-dots="true"
+                    autoplay="true" interval="{{cf.vc.swiperItvl}}"
+                    duration="{{cf.vc.swiperDurt}}"> <!--TODO属性值貌似没法放在配置文件中-->
+                <block wx:for="{{imgUrls}}" wx:key="aa">
+                    <swiper-item><!--mode一般选择aspectFill，以较短边来填充，图片不会变形。-->
+                        <image src="{{item}}" class="slide-image" width="355" height="150" mode="aspectFill"/>
+                    </swiper-item>
+                </block>
+            </swiper>
+        </view>
+
+
+        <view class="weui-cells__title">----------------------</view>
+        <view class="weui-cells weui-cells_after-title">
+            <navigator url="../rqst-list/rqst-list?reqType=abc" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                <view class="weui-cell__bd">客户需求</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access">零活、家政、企业用工</view>
+            </navigator>
+            <navigator url="../lbor-edit/lbor-edit" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                <view class="weui-cell__bd">个人信息</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access">联系信息、空闲档期</view>
+            </navigator>
+            <navigator url="../lbor-edit/lbor-edit" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                <view class="weui-cell__bd">提升技能</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access">参加培训、认证技能</view>
+            </navigator>
+        </view>
+
+
+
+    </view><!--框架尾与页面内容空3行-->
+    <include src="../tplt/footer.wxml"/>
+</view>
+

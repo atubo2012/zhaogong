@@ -1,0 +1,24 @@
+<view class="page">
+    <include src="../tplt/pagehead.wxml"/>
+    <view class="page__bd"><!--框架头与页面内容空3行-->
+
+
+
+        <view bindtap="bindViewTap" class="userinfo">
+            <image wx:if="{{userInfo.avatarUrl}}"
+                   class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"/>
+            <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+            <text class="user-motto">{{motto}}</text>
+        </view>
+
+        <!--view hidden="{{!newUser}}"-->
+        <view>
+            <button class='weui-btn' bindtap="setRoleLbor" type="primary">我想找工作</button>
+            <button class="weui-btn" bindtap="setRoleClnt" type="primary">我想找帮手</button>
+        </view>
+
+
+
+    </view><!--框架尾与页面内容空3行-->
+    <include src="../tplt/footer.wxml"/>
+</view>

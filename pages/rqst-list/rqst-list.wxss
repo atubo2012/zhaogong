@@ -1,0 +1,32 @@
+/* pages/reqlist/reqlist.wxss */
+.slide-image{
+    width: 100%;
+    height: 100%;
+}
+.slide swiper{
+    height: 500rpx ;
+}
+
+.main-menu{
+    display: flex;
+    flex-direction: column;
+}
+.menu-item{
+    display:flex;
+    flex:1;
+    border:1rpx solid #eee;
+    margin-top: 20rpx;
+    padding:30rpx;
+    cursor:pointer;
+    background-color: #ffff00;
+}
+
+.menu-item image{
+    width:40rpx;
+    height:40rpx;
+    padding:10rpx;
+}
+
+.menu-item text{
+    flex: 1;
+}

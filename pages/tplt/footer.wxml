@@ -1,0 +1,6 @@
+<view class="weui-footer">
+    <view class="weui-footer__links">
+        <navigator url="../about/about" class="weui-footer__link">找工</navigator>
+    </view>
+    <view class="weui-footer__text">Copyright © 2017</view>
+</view>

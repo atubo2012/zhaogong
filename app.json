@@ -1,0 +1,60 @@
+  {
+  "pages": [
+    "pages/index/index",
+    "pages/lbor-main/lbor-main",
+    "pages/rqst-list/rqst-list",
+    "pages/lbor-edit/lbor-edit",
+    "pages/clnt-main/clnt-main",
+    "pages/rqst-edit/rqst-edit",
+    "pages/me/me",
+    "pages/addr-list/addr-list",
+    "pages/clct-list/clct-list",
+    "pages/logs/logs",
+    "pages/viewp/viewp",
+    "pages/comp/comp",
+    "pages/index2/index2",
+    "pages/chat/chat",
+    "pages/api/api",
+    "pages/cert-list/cert-list",
+    "pages/cmmt-list/cmmt-list",
+    "pages/brws-list/brws-list",
+    "pages/about/about",
+    "pages/fdbk-edit/fdbk-edit",
+    "pages/msg/msg"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "找工", 
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/clnt-main/clnt-main",
+        "text": "找帮手"
+      },
+      {
+        "pagePath": "pages/lbor-main/lbor-main",
+        "text": "找工作"
+      },
+      {
+        "pagePath": "pages/logs/logs",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的"
+      }
+    ]
+  },
+  "debug": false,
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  }
+}
