@@ -1,0 +1,98 @@
+<view class="page">
+    <include src="../tplt/pagehead.wxml"/>
+    <view class="page__bd">
+
+        <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">错误提示</view>
+
+        <!--表单类别区-->
+        <view class="weui-cells__title">
+            <view class="weui-flex">
+                <view class="weui-flex__item">{{listTitle}}</view>
+                <view class="weui-flex__item" style="text-align:right">
+                    <image src="../../image/add.png" class="icon1" bindtap="onAdd" align="right"/>
+                </view>
+            </view>
+        </view>
+        <view class="weui-cells weui-cells_after-title">
+
+            <!--新增区，点击新增图标显示-->
+            <view class="weui-panel__bd" hidden="{{addHidden}}">
+                <form bindsubmit="onSubmit" bindreset="formReset">
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__bd">
+                            <input class="weui-input" name="addr" placeholder="XX路XX号XX小区XX层XX室"
+                                   value="{{newRecord.newAddr}}" bindinput="bindKeyInput"/>
+                        </view>
+                    </view>
+                    <scroll-view scroll-y="true" class="scrollview">
+                        <view wx:for="{{addressList}}" wx:key="yyy">
+                            <view id="{{item}}" bindtap="itemtap" class="itemview"
+                                  data-location="{{item.location}}"
+                                  data-address="{{item.address}}">{{item.address}}</view>
+                        </view>
+                    </scroll-view>
+                    <view class="weui-btn-area">
+                        <button class="weui-btn" form-type="submit" type="{{buttonType}}"
+                            disabled="{{submitButtonDisabled}}">提交
+                        </button>
+                        <button class="weui-btn" bindtap="cancel">取消</button>
+                    </view>
+                </form>
+            </view>
+
+            <!--列表区，加载页面时显示，点击删除或修改时显示编辑区的内容-->
+            <view class="weui-panel" wx:for="{{list}}" wx:key="aaa" data-item="{{item}}">
+                <view class="weui-panel__bd">
+                    <view class="weui-media-box weui-media-box_text">
+                        <view class="weui-media-box__title weui-media-box__title_in-text">
+                            {{item.addr}}
+                        </view>
+                        <view class="weui-flex">
+                            <view class="weui-flex__item weui-media-box__info weui-media-box__info__meta"
+                                  style="text-align:right">
+                                {{item.updt}}
+                                <image src="../../image/edit.png" class="icon1" bindtap="onEdit"
+                                       data-idx="{{index}}"/>
+                                <image src="../../image/delete.png" class="icon1" bindtap="onDelete"
+                                       data-idx="{{index}}"/>
+                            </view>
+                        </view>
+                    </view>
+
+                    <!--编辑表单-->
+                    <form bindsubmit="onSubmit" bindreset="formReset" hidden="{{!item.hidden}}">
+                        <view class="weui-cell weui-cell_input">
+                            <view class="weui-cell__bd">
+                                <input class="weui-input" data-idx="{{index}}" name="addr" placeholder="XX路XX号XX小区XX层XX室"
+                                       value="{{item.addr}}" disabled="{{item.disabled}}" bindinput="bindKeyInput2"/>
+                                <input class="weui-input" name="addrId" value="{{item.addrId}}" hidden="true"/>
+                                <input class="weui-input" name="rdst" value="{{item.rdst}}" hidden="true"/>
+                            </view>
+                        </view>
+                        <scroll-view scroll-y="true" class="scrollview">
+                            <view wx:for="{{addressList}}" wx:for-item="item1" wx:key="zzz" wx:for-index="idx">
+                                <view class="itemview"  bindtap="itemtap2"
+                                      data-idx="{{idx}}"
+                                      data-rcdidx="{{index}}"
+                                      data-location="{{item1.location}}"
+                                      data-address="{{item1.address}}">{{item1.address}}
+                                </view>
+                            </view>
+                        </scroll-view>
+                        <view class="weui-btn-area">
+                            <button class="weui-btn" form-type="submit" type="{{buttonType}}"
+                                    disabled="{{submitButtonDisabled}}">
+                                提交
+                            </button>
+                            <button class="weui-btn" type="default" bindtap="cancel">取消</button>
+                        </view>
+                    </form>
+                </view>
+
+
+            </view>
+        </view>
+
+    </view>
+    <include src="../tplt/footer.wxml"/>
+</view>
