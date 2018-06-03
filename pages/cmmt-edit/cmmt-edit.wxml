@@ -1,0 +1,71 @@
+<view class="page">
+    <include src="../tplt/pagehead.wxml"/>
+    <view class="page__bd">
+
+
+        <form bindsubmit="onSubmit" bindreset="formReset">
+
+            <input name="observerOpenId" value="{{rdata.observerOpenId}}" hidden="true"/>
+            <input name="assesseeOpenId" value="{{rdata.assesseeOpenId}}" hidden="true"/>
+            <input name="role" value="{{rdata.role}}" hidden="true"/>
+
+            <view class="page__bd page__bd_spacing" >
+                <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">错误提示</view>
+
+                <!--评价信息-->
+                <view class="weui-cells__title">评价(订单编号:{{rdata.reqId}})</view>
+                <view class="weui-cells weui-cells_after-title">
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__bd">
+                            <input class="weui-input" name="comment" placeholder="评价："
+                                   value="{{rdata.comment}}" />
+                            <input name="reqId"     value="{{rdata.reqId}}" hidden="true"/>
+                            <input name="starAmt"   value="{{rdata.starAmt}}" hidden="true"/>
+                        </view>
+                    </view>
+
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__bd">
+                            星级：
+                                <block wx:for="{{starItems}}"  wx:key="aa">
+                                    <image id="{{index}}" class="icon1" src="../../image/star-{{item.checked ? 'gold':'unchecked'}}.png" data-idx="{{index}}" bindtap="setStar"/>
+                                </block>
+                        </view>
+
+                    </view>
+
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__bd">
+                            印象：
+                            <block wx:for="{{impItems}}"  wx:key="bb">
+                                <text id="{{index}}" data-times="{{item.times+1}}" bindtap="impClick" style="border :solid 1px red ;border-radius:5px 5px 5px 5px;">{{item.desc}}{{item.times}} </text>
+                                <image wx:if="{{item.isNew}}" id="{{index}}" class="icon1" src="../../image/delete.png" bindtap="delTag"/>
+
+                            </block>
+                            <image  id="{{index}}" class="icon1" src="../../image/add.png" bindtap="showAddTag1"/>
+
+                            <block wx:if="{{showAddTag}}">
+                                <input value="{{newTag}}" bindinput="setTag" placeholder="添加新印象......"/>
+                                <image class="icon1" src="../../image/submit.png" bindtap="addNewImp"/>
+                            </block>
+                        </view>
+                    </view>
+                </view>
+                <view class="weui-btn-area">
+                    <button class="weui-btn" form-type="submit" type="primary"
+                            disabled="{{submitButtonDisabled}}">提交
+                    </button>
+                    <button class="weui-btn" form-type="submit" data-submitType="delete" type="warn"
+                            disabled="{{submitButtonDisabled}}">删除
+                    </button>
+                    <button class="weui-btn" bindtap="changePreview" type="default">返回</button>
+                </view>
+            </view>
+
+        </form>
+
+    </view>
+
+
+    <include src="../tplt/footer.wxml"/>
+</view>

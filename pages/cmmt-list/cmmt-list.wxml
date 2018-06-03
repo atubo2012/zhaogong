@@ -1,2 +1,33 @@
-<!--pages/cmmt-list/cmmt-list.wxml-->
-<text>pages/cmmt-list/cmmt-list.wxml</text>
+<view class="page">
+    <include src="../tplt/pagehead.wxml"/>
+    <view class="page__bd page__bd_spacing"><!--框架头与页面内容空3行-->
+
+
+
+        <view class="flex-style">
+            <view  wx:for="{{tabInfo}}" wx:key="ccc"  data-mode="{{item.mode}}" data-openid="{{openId}}" class="flex-item {{item.isActive ? 'active':''}}" bindtouchstart="onTabClick">
+                {{item.desc}}
+            </view>
+        </view>
+
+        <view class="weui-panel" wx:for="{{reqList}}" wx:key="aaa">
+            <view class="weui-panel__bd">
+                <view class="weui-media-box weui-media-box_text">
+                    <view class="weui-media-box__title weui-media-box__title_in-text">
+                        {{item.comment}}(单号:{{item.reqId}})
+                    </view>
+                    <view class="weui-media-box__desc">{{item.starAmt}}星</view>
+                    <view class="weui-media-box__info">
+                        <view wx:for="{{item.impItems}}"  wx:key="bbb"  wx:for-item="itm2" wx:for-index="idx2" class="weui-media-box__info__meta{{idx2==0 ? '':' weui-media-box__info__meta_extra'}}">
+                            <text style="border :solid 1px red ;border-radius:5px 5px 5px 5px;"> {{itm2.desc}}{{itm2.times}}</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+
+
+
+    </view><!--框架尾与页面内容空3行-->
+    <include src="../tplt/footer.wxml"/>
+</view>
