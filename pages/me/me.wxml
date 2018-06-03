@@ -1,93 +1,53 @@
-<view class="container">
+<view class="page">
+    <!--include src="../tplt/pagehead.wxml"/-->
+    <view class="page__bd">
 
-    <!--CLNT的视图-->
-    <view class='main-menu' >
-        <navigator url="../about/about">
-            <view class="menu-item">
-                <text>关于</text><!--日期、业务种类、状态、服务人员、给予评价-->
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
+
+        <!--用户信息头文件-->
+        <include src="../tplt/myinfo.wxml"/>
+
+
+        <!--通过配置文件管理“我的”页面中要显示的内容，主要使用WEUI的badge样例风格-->
+        <block wx:for="{{lists}}" wx:for-item="list" wx:key="aa">
+            <view wx:if="{{role===list.role || 'COMM'===list.role}}" class="weui-cells__title">{{list.title}}</view>
+            <view wx:if="{{role===list.role || 'COMM'===list.role}}" class="weui-cells weui-cells_after-title">
+                <block wx:for="{{list.items}}" wx:for-item="item" wx:key="bb">
+
+                    <!--view级别的快捷方式-->
+                    <navigator url="{{item.url}}" class="weui-cell weui-cell_access" >
+                        <view class="weui-cell__bd">
+                            <view style="display: inline-block; vertical-align: middle">{{item.label}}</view>
+                            <view wx:if="{{item.hasNum}}" class="weui-badge" style="margin-left: 5px;">
+                                {{item.num}}
+                            </view>
+                        </view>
+                        <view class="weui-cell__ft weui-cell__ft_in-access">
+                            {{item.desc}}
+                        </view>
+
+                        <view wx:if="{{item.hasDot}}" class="weui-badge weui-badge_dot"
+                              style="margin-left: 5px;margin-right: 5px;"/>
+                    </navigator>
+                </block>
             </view>
-        </navigator>
-        <navigator url="../rqst-list/rqst-list?type=my">
-            <view class="menu-item">
-                <text>我的订单</text><!--日期、业务种类、状态、服务人员、给予评价-->
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
-        <navigator url="../addr-list/addr-list"><!--参考京东的地址管理风格-->
-            <view class="menu-item">
-                <text>常用地址</text>
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
-        <navigator url="../clct-list/clct-list">
-            <view class="menu-item">
-                <text>我的收藏</text>
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
+        </block>
+
+        <!--<view class="weui-cells__title">默认首页</view>-->
+        <!--<view class="weui-cells weui-cells_after-title">-->
+
+            <!--<view class="weui-cell weui-cell_access">-->
+                <!--<view class="weui-cell__hd">请选择:</view>-->
+                <!--<view class="weui-cell__bd">-->
+                    <!--<radio-group bindchange="roleChange">-->
+                        <!--<label wx:for="{{items}}" wx:key="a1" wx:if="{{item.name!='COMM'}}" >-->
+                            <!--<radio class="weui-radio" value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}-->
+                        <!--</label>-->
+                    <!--</radio-group>-->
+                <!--</view>-->
+            <!--</view>-->
+        <!--</view>-->
+
     </view>
-
-    <!--LBOR的视图-->
-    <view class='main-menu' >
-        <navigator url="../rqst-list/rqst-list?reqType=abc">
-            <view class="menu-item">
-                <text>我的单子</text>
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
-        <navigator url="../lbor-edit/lbor-edit">
-            <view class="menu-item">
-                <text>个人信息</text>
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
-        <navigator url="../cert-list/cert-list"><!--参考京东的地址管理风格，可以在该页中增加培训的内容-->
-            <view class="menu-item">
-                <text>证书信息</text>
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
-        <navigator url="../cmmt-list/cmmt-list">
-            <view class="menu-item">
-                <text>我的评价</text>
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
-    </view>
-
-    <!--公共信息-->
-    <view class='main-menu' >
-        <navigator url="../user-edit/idle-list">
-            <view class="menu-item">
-                <text>个人设置</text><!--头像、手机号、邮箱、实名认证、默认界面-->
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
-        <navigator url="../brws-list/brws-list">
-            <view class="menu-item">
-                <text>浏览记录</text>
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
-        <navigator url="../about/about">
-            <view class="menu-item">
-                <text>关于我们</text>
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
-        <navigator url="../fdbk-edit/fdbk-edit">
-            <view class="menu-item">
-                <text>意见反馈</text>
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
-        <navigator url="../share/share">
-            <view class="menu-item">
-                <text>分享找工</text>
-                <image src="../../image/ar.jpg" mode="aspectFill"/>
-            </view>
-        </navigator>
-    </view>
-
+    <include src="../tplt/footer.wxml"/>
 </view>
+

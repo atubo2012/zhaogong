@@ -3,27 +3,29 @@
     <view class="page__bd page__bd_spacing"><!--框架头与页面内容空3行-->
 
 
-
-        <view class="weui-cell weui-cell_access">
-            <view class="weui-cell__bd">地址管理</view>
-            <view class="weui-cell__ft weui-cell__ft_in-access" bindtap="add">添加</view>
-            <button  type="primary" size="mini" bindtap="onAdd">添加</button>
-            <button  type="primary" size="mini" bindtap="onSubmit">保存</button>
+        <view class="weui-cells__title_with_link">
+            <view>常用地址</view>
+            <view style="align:right">
+                <image src="../../image/save.png" class="icon1" bindtap="onSubmit"/>
+                <image src="../../image/add.png" class="icon1" bindtap="onAdd"/>
+            </view>
         </view>
 
-        <view class="weui-cells weui-cells_after-title">
+        <view wx:for="{{addrs}}" wx:key="a1" wx:for-item="addr" wx:for-index="addrsidx">
+            <form>
 
-            <view wx:for="{{addrs}}" wx:key="a1" wx:for-item="addr" wx:for-index="addrsidx">
-                <form>
+                <input name="addrsidx" value="{{addrsidx}}" hidden="true"/>
 
-                    <input name="addrsidx" value="{{addrsidx}}" hidden="true"/>
+                <view class="weui-cells__title">{{addrsidx+1}}</view>
+                <view class="weui-cells weui-cells_after-title">
 
                     <view class="weui-cell weui-cell_input">
                         <view class="weui-cell__hd">
                             <view class="weui-label">城市</view>
                         </view>
                         <view class="weui-cell__bd">
-                            <input name="city" value="{{addr.city}}" data-idx="{{addrsidx}}" data-prop="city"
+                            <input class="weui-input" name="city" value="{{addr.city}}" data-idx="{{addrsidx}}"
+                                   data-prop="city"
                                    bindinput="onSetProps"/>
                         </view>
                     </view>
@@ -33,7 +35,8 @@
                             <view class="weui-label">区/县</view>
                         </view>
                         <view class="weui-cell__bd">
-                            <input name="dist" value="{{addr.dist}}" data-idx="{{addrsidx}}" data-prop="dist"
+                            <input class="weui-input" name="dist" value="{{addr.dist}}" data-idx="{{addrsidx}}"
+                                   data-prop="dist"
                                    bindinput="onSetProps"/>
                         </view>
                     </view>
@@ -43,7 +46,8 @@
                             <view class="weui-label">手机</view>
                         </view>
                         <view class="weui-cell__bd">
-                            <input name="mbnb" value="{{addr.mbnb}}" data-idx="{{addrsidx}}" data-prop="mbnb"
+                            <input class="weui-input" name="mbnb" value="{{addr.mbnb}}" data-idx="{{addrsidx}}"
+                                   data-prop="mbnb"
                                    bindinput="onSetProps"/>
                         </view>
                     </view>
@@ -53,14 +57,14 @@
                             <view class="weui-label">姓名</view>
                         </view>
                         <view class="weui-cell__bd">
-                            <input name="name" value="{{addr.name}}" data-idx="{{addrsidx}}" data-prop="name"
+                            <input class="weui-input" name="name" value="{{addr.name}}" data-idx="{{addrsidx}}"
+                                   data-prop="name"
                                    bindinput="onSetProps"/>
                         </view>
                     </view>
-                </form>
-            </view>
+                </view>
+            </form>
         </view>
-
 
 
     </view>

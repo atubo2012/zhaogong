@@ -1,7 +1,7 @@
-let common = require('../../common.js');
-let cf = require('../../config.js');
-const app = getApp();
 let ut = require('../../utils/utils.js');
+const app = getApp();
+let cf = app.globalData.cf;
+
 
 Page({
     /**
@@ -23,20 +23,29 @@ Page({
             {day:'SA',idle:[]},
             {day:'SU',idle:[]},
         ],
+
+        //tabnav的选项内容
+        tabs: ["个人信息", "空闲时段"],
+        activeIndex: 1,
+        sliderOffset: 0,
+        sliderLeft: 0
+
+
     },
 
-
+    gogogo:function (e) {
+        this.setData({
+            hideimg:!this.data.hideimg
+        })
+    },
     /**
      * 上传图片
      */
     ulcertpic: function () {
         let _that = this;
-
         wx.chooseImage({
-
             success: function (res) {
                 let tempFilePaths = res.tempFilePaths;
-
                 wx.uploadFile({
                     url: cf.service.uploadUrl,
                     filePath: tempFilePaths[0],
@@ -44,27 +53,26 @@ Page({
                     formData: {
                         'user': 'testusername'
                     },
+                    header: {
+                        'session3rdKey':wx.getStorageSync('session3rdKey'),
+                    },
                     success: function (res) {
-                        //do something
-                        console.log("后台应答上传成功1-res.data：" + res.data);
-                        console.log("后台应答上传成功2-JS(res.data)：" + JSON.stringify(res.data));
-                        console.log("后台应答上传成功3-JS(res.：" + JSON.stringify(res));
-
+                        ut.debug(res);
                         //后台生成的文件名
                         let fn = res.data;
-                        _that.setData({source: cf.service.uploadUrl+'/' + fn});
+                        ut.debug('文件路径'+cf.service.uploadUrl+'/' + fn);
                         wx.showToast({title: '上传成功', icon: 'success', duration: 2000});
-
                         //wx.previewImage({current:'uploads',urls:[]});
                         //wx.navigateTo({url: '../index/index'});
 
                         //上传成功后，将上传的图片显示出来
                         _that.setData({
+                            source: cf.service.uploadUrl+'/' + fn,
                             hideimg:false
                         })
                     },
                     fail: function (res) {
-                        console.log("上传失败：" + res.data)
+                        ut.error("上传失败：" , res.data)
                     }
                 });
             }
@@ -86,8 +94,12 @@ Page({
         ut.debug('e.detail.value',e.detail.value);
 
         //form表单内的数据
-        let formData = e.detail.value;
-        ut.debug('初始的表单数据：',formData);
+        let fd = e.detail.value;
+        ut.debug('初始的表单数据：',fd);
+
+
+        let formData = {name:fd.name,mbnb:fd.mbnb,laddr:fd.laddr};
+
 
         //ut.showLog('初始的表单数据：'+JSON.stringify(formData));
 
@@ -111,7 +123,7 @@ Page({
                 rdata: formData
             },
             header: {
-                'content-type': 'application/json'
+                'session3rdKey':wx.getStorageSync('session3rdKey'),
             },
             success: function (res) {
 
@@ -122,12 +134,10 @@ Page({
                     icon: 'success',
                     duration: cf.vc.ToastShowDurt
                 });
-                // wx.redirectTo({
-                //     url: '../rqst-list/rqst-list'
-                // });
-                // wx.switchTab({
-                //     url:'../../pages/lbor-edit/lbor-edit'
-                // });
+
+                 wx.navigateTo({
+                     url:'../../pages/lbor-edit/lbor-edit'
+                 });
             },
             complete: function (res) {
                 console.log("修改个人信息完成");
@@ -147,30 +157,49 @@ Page({
             osdt: e.detail.value,
         })
     },
-    bindTimeChange: function(e) {
+    bindTimeChange1: function(e) {
         console.log('picker发送选择改变，携带值为', e.detail.value);
+
+
+        let wkidx = parseInt(e.target.dataset.wkidx);
+        let idledidx = parseInt(e.target.dataset.idledidx);
+        console.log(this.data.weekly);
+
+
+        this.data.weekly[wkidx].idle[idledidx].fr=e.detail.value;
         this.setData({
-            ostm: e.detail.value,
-        })
+            weekly:this.data.weekly
+        });
+    },
+    bindTimeChange2: function (e) {
+        console.log('picker发送选择改变，携带值为', e.detail.value);
+
+        let wkidx = parseInt(e.target.dataset.wkidx);
+        let idledidx = parseInt(e.target.dataset.idledidx);
+        console.log(this.data.weekly);
+
+        this.data.weekly[wkidx].idle[idledidx].to=e.detail.value;
+        this.setData({
+            weekly:this.data.weekly
+        });
     },
 
     addidle: function (e) {
-
-        console.log('addidle1');
-        console.log(JSON.stringify(e));
-
-        console.log('addidle1');
-        console.log(e.detail.value);
-
         let wkidx = parseInt(e.detail.value.wkidx);
-
-        this.data.weekly[wkidx].idle.push({fr:'1111',to:'2222'});
+        this.data.weekly[wkidx].idle.push({fr:'09:00',to:'12:00'});
+        this.setData({
+            weekly:this.data.weekly
+        });
+    },
+    addidle2: function (e) {
+        console.log(e);
+        let wkidx = parseInt(e.target.dataset.wkidx);
+        this.data.weekly[wkidx].idle.push({fr:'09:00',to:'12:00'});
         this.setData({
             weekly:this.data.weekly
         });
     },
     delidle: function (e) {
-        console.log(JSON.stringify(e.detail));
 
         let wkidx = parseInt(e.detail.value.wkidx);
         let idledidx =parseInt(e.detail.value.idledidx);
@@ -181,8 +210,18 @@ Page({
             weekly:this.data.weekly
         });
 
-        console.log('删除['+wkidx+'|'+idledidx+']时段后weekly：');
-        console.log(JSON.stringify(this.data.weekly));
+    },
+
+    delidle2: function (e) {
+
+        let wkidx = parseInt(e.target.dataset.wkidx);
+        let idledidx =parseInt(e.target.dataset.idledidx);
+
+        //从空闲时段数组中删除选中的元素
+        this.data.weekly[wkidx].idle.splice(idledidx,1);
+        this.setData({
+            weekly:this.data.weekly
+        });
 
     },
     frInput:function (e) {
@@ -193,7 +232,7 @@ Page({
         this.setData({
             weekly:this.data.weekly
         });
-        //console.log(JSON.stringify(this.data.weekly));
+
     },
     toInput:function (e) {
 
@@ -204,9 +243,20 @@ Page({
         this.setData({
             weekly:this.data.weekly
         });
-        //console.log(JSON.stringify(this.data.weekly));
 
     },
+    addrInput:function (e) {
+
+        //通过组件中的数据绑定，获得与该输入项有关的参数
+        let dataset = e.target.dataset;
+
+        this.data.weekly[dataset.wkidx].idle[dataset.idledidx].waddr=e.detail.value;
+        this.setData({
+            weekly:this.data.weekly
+        });
+
+    },
+
     /**
      * 页面加载时，查询用户信息
      */
@@ -218,45 +268,19 @@ Page({
             title: '个人信息更新'
         });
 
-        /**
-         * 获取当前微信用户信息，在app的onload函数中没有被执行的时候
-         * TODO：此处是否有必要增加以下代码获取userInfo，屏蔽代码后尝试是否可以
-         */
-        // if (app.globalData.userInfo) {
-        //     //console.log('app.globalData.userInfo='+JSON.stringify(app.globalData.userInfo));
-        //     this.setData({
-        //         userInfo: app.globalData.userInfo,
-        //         hasUserInfo: true
-        //     })
-        // } else {
-        //     // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-        //     // 所以此处加入 callback 以防止这种情况
-        //     app.userInfoReadyCallback = res => {
-        //         console.log('res.userInfo='+JSON.stringify(res.userInfo));
-        //         this.setData({
-        //             userInfo: res.userInfo,
-        //             hasUserInfo: true
-        //         })
-        //     }
-        // }
-
-
         //加载当前用户的空闲信息
         wx.request({
             url:cf.service.lborDetlUrl,
             data:{
                 userInfo:app.globalData.userInfo
             },
-            header:{
-                'Content-Type':'application/json'
+            header: {
+                'session3rdKey':wx.getStorageSync('session3rdKey'),
             },
             success:function (res) {
 
                 let lborInfo = JSON.stringify(res.data);
 
-                console.log(res);
-                console.log(res.data);
-                console.log(lborInfo);
 
                 //如果后台返回的数据为空说明尚未建立用户信息
                 if("0"===lborInfo)
@@ -266,11 +290,30 @@ Page({
                     console.log('后台lborInfo有数据，设置data中的lborInfo');
                     _that.setData({lborInfo:res.data});
                     _that.setData({weekly:res.data.weekly});
-                    _that.setData({source:res.data.source});
+                    //_that.setData({source:res.data.source});
                     _that.setData({hideimg:false});//设置为图片可展示
                 }
             }
-        })
+        });
+
+        //navtab的界面初始化
+        let that = this;
+        wx.getSystemInfo({
+            success: function(res) {
+                ut.debug('系统信息对象',res);
+                that.setData({
+                    sliderLeft: (res.windowWidth / that.data.tabs.length) / 2,
+                    sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
+                });
+            }
+        });
+    },
+
+    tabClick: function (e) {
+        this.setData({
+            sliderOffset: e.currentTarget.offsetLeft,
+            activeIndex: e.currentTarget.id
+        });
     },
 
     /**

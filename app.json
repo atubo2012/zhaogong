@@ -37,6 +37,7 @@
         "pagePath": "pages/clnt-main/clnt-main",
         "text": "找帮手"
       },
+
       {
         "pagePath": "pages/lbor-main/lbor-main",
         "text": "找工作"

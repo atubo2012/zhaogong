@@ -2,176 +2,313 @@
     <include src="../tplt/pagehead.wxml"/>
     <view class="page__bd">
 
-    <form bindsubmit="formSubmit" bindreset="formReset">
 
-        <view class="page__bd page__bd_spacing" hidden="{{preview}}">
-            <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">错误提示</view>
+        <form bindsubmit="onSubmit" bindreset="formReset">
 
-            <view class="weui-cells__title">预约时间</view>
-            <view class="weui-cells weui-cells_after-title"/>
+            <view class="page__bd page__bd_spacing" hidden="{{preview}}">
+                <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">错误提示</view>
 
-            <!--view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">日期</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <picker mode="date" value="{{date}}" start="{{today}}" end="2017-10-16" bindchange="bindDateChange">
-                        . {{osdt}}
-                    </picker>
-                </view>
-            </view>
-
-            <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">时间</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <picker mode="time" value="{{time}}" start="{{nowtime}}" end="23:00" bindchange="bindTimeChange">
-                        . {{ostm}}
-                    </picker>
-                </view>
-            </view -->
-
-
-            <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">日期</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <picker mode="date" value="{{rdata.osdt}}" start="2015-09-01" end="2017-09-01"
-                            bindchange="bindDateChange">
-                        <view class="weui-input">{{rdata.osdt}}</view>
-                    </picker>
-                    <input name="osdt" value="{{rdata.osdt}}" hidden="true"/>
-                </view>
-            </view>
-            <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">时间</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <picker mode="time" value="{{rdata.ostm}}" start="09:01" end="21:01" bindchange="bindTimeChange">
-                        <view class="weui-input">{{rdata.ostm}}</view>
-                    </picker>
-                    <input name="ostm" value="{{rdata.ostm}}" hidden="true"/>
-                </view>
-            </view>
-
-
-            <view class="weui-cells__title">联系方式</view>
-            <view class="weui-cells weui-cells_after-title"/>
-
-            <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">详细地址</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <input class="weui-input" name="addr"  placeholder="如：XX路XX号XX小区XX层XX室"
-                           value="{{rdata.addr}}" />
-                </view>
-            </view>
-
-            <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">联系电话</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <input class="weui-input" name="mbnb" value="{{rdata.mbnb}}"/>
-                </view>
-            </view>
-
-            <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">客户尊姓</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <input class="weui-input" name="clfn" value="{{rdata.clfn}}"/>
-                </view>
-            </view>
-
-            <view class="weui-cell weui-cell_input weui-cell_vcode">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">手机号</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <input class="weui-input" name="mbnb2" value="{{rdata.mbnb2}}" placeholder="请输入手机号"/>
-                </view>
-                <view class="weui-cell__ft">
-                    <view class="weui-vcode-btn">获取验证码</view>
-                </view>
-            </view>
-
-            <view class="weui-cell weui-cell_input weui-cell_vcode">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">验证码</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <input class="weui-input" name="yzm" value="{{rdata.yzm}}" placeholder="请输入验证码"/>
-                </view>
-                <view class="weui-cell__ft">
-                    <image class="weui-vcode-img" src="../../image/vcode.jpg" style="width: 108px" />
-                </view>
-            </view>
-
-
-            <view class="weui-cells__title">房屋情况</view>
-            <view class="weui-cells weui-cells_after-title"/>
-            <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">房屋面积</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <input class="weui-input" name="size" value="{{rdata.size}}"/>
-                    <input name="reqId" value="{{rdata.reqId}}" hidden="true"/>
-                    <input name="rdst" value="{{rdata.rdst}}" hidden="true"/>
-                </view>
-            </view>
-            <radio-group bindchange="radioChange" name="tools">
-                <label class="weui-cell weui-check__label" wx:for="{{radioItems}}" wx:key="value">
-                    <radio class="weui-check" value="{{item.value}}" checked="{{item.checked}}"/>
-
-                    <view class="weui-cell__bd">{{item.name}}</view>
-                    <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
-                        <icon class="weui-icon-radio" type="success_no_circle" size="16"/>
+                <!--业务信息部分-上门服务时间-->
+                <view class="weui-cells__title">服务时间</view>
+                <view class="weui-cells weui-cells_after-title">
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__hd">
+                            <view class="weui-label">上门时间</view>
+                        </view>
+                        <view class="weui-cell__bd">
+                            <picker mode="date" value="{{rdata.osdt}}" start="{{rdata.osdt}}" end="2020-12-31"
+                                    bindchange="bindDateChange">
+                                <view class="weui-input">{{rdata.osdt}}</view>
+                            </picker>
+                            <input name="osdt" value="{{rdata.osdt}}" hidden="true"/>
+                        </view>
+                        <view class="weui-cell__bd">
+                            <picker mode="time" value="{{rdata.ostm}}" start="{{rdata.ostm}}" end="23:59"
+                                    bindchange="bindTimeChange">
+                                <view class="weui-input">{{rdata.ostm}}</view>
+                            </picker>
+                            <input name="ostm" value="{{rdata.ostm}}" hidden="true"/>
+                        </view>
                     </view>
-                </label>
-            </radio-group>
 
-
-            <view class="weui-btn-area">
-                <button class="weui-btn" form-type="submit" type="primary" disabled="{{submitButtonDisabled}}">提交</button>
-                <button class="weui-btn" bindtap="changePreview" type="default">取消</button>
-
-            </view>
-
-        </view>
-
-        <view class="weui-form-preview" hidden="{{!preview}}">
-            <view class="weui-form-preview__hd">
-                <view class="weui-form-preview__label">付款金额</view>
-                <view class="weui-form-preview__value_in-hd">¥2400.00</view>
-            </view>
-            <view class="weui-form-preview__bd">
-                <view class="weui-form-preview__item">
-                    <view class="weui-form-preview__label">服务时间</view>
-                    <view class="weui-form-preview__value">{{rdata.osdt}} {{rdata.ostm}}</view>
+                    <!--业务信息部分-工时与单价-->
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__hd">
+                            <view class="weui-label">工时费</view>
+                        </view>
+                        <view class="weui-cell__bd">
+                            <picker bindchange="bindPickerChangeUprice" value="{{index}}" range="{{upriceList}}">
+                                <view class="weui-input">{{rdata.uprice}}</view>
+                            </picker>
+                            <input name="uprice" value="{{rdata.uprice}}" hidden="true"/>
+                        </view>
+                        <view class="weui-cell__hd">
+                            <view class="weui-label">工时数</view>
+                        </view>
+                        <view class="weui-cell__bd">
+                            <picker bindchange="bindPickerChangeDuration" value="{{index}}" range="{{durationList}}"
+                            >
+                                <view class="weui-input">{{rdata.dura}}</view>
+                            </picker>
+                            <input name="dura" value="{{rdata.dura}}" hidden="true"/>
+                        </view>
+                    </view>
                 </view>
-                <view class="weui-form-preview__item">
-                    <view class="weui-form-preview__label">地址</view>
-                    <view class="weui-form-preview__value">{{rdata.addr}}</view>
+
+                <!--联系信息部分-地址、称呼、手机信息-->
+                <view class="weui-cells__title">服务地址</view>
+                <view class="weui-cells weui-cells_after-title">
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__bd">
+                            <input class="weui-input" name="addr" placeholder="地址：XX路XX号XX小区XX层XX室"
+                                   value="{{rdata.addr}}" bindinput="bindKeyInput"/>
+                            <input class="weui-input" name="location" hidden="true"
+                                   value="{{rdata.location}}" bindinput="bindKeyInput"/>
+                        </view>
+                    </view>
+                    <scroll-view scroll-y="true" class="scrollview">
+                        <view wx:for="{{addressList}}" wx:key="yyy">
+                            <view id="{{item}}" bindtap="itemtap" class="itemview" data-location="{{item.location}}"
+                                  data-address="{{item.address}}">{{item.address}}
+                            </view>
+                        </view>
+                    </scroll-view>
+
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__bd">
+                            <input class="weui-input" name="clfn" value="{{rdata.clfn}}" placeholder="尊姓："/>
+                        </view>
+                        <view class="weui-cell__bd">
+                            <radio-group name="sex">
+                                <block wx:for="{{sexItems}}" wx:key="a2c">
+                                    <radio value="{{item.name}}" checked="{{item.checked}}">
+                                        {{item.value}}
+                                    </radio>
+                                </block>
+                            </radio-group>
+                        </view>
+                    </view>
+
+                    <scroll-view scroll-y="true" class="scrollview">
+                        <view wx:for="{{uPriceList}}" wx:key="yyy">
+                            <view id="{{item}}" bindtap="itemtap3" class="itemview">{{item}}</view>
+                        </view>
+                    </scroll-view>
+
+
+                    <!--view class="weui-cell weui-cell_input weui-cell_vcode">
+                        <view class="weui-cell__bd">
+                            <input class="weui-input" name="mbnb2" type="number" value="{{rdata.mbnb2}}"
+                                   placeholder="手机号："/>
+                        </view>
+                    </view>
+                    <view class="weui-cell weui-cell_input weui-cell_vcode">
+                        <view class="weui-cell__bd">
+                            <input class="weui-input" name="yzm" value="{{rdata.yzm}}" placeholder="验证码："/>
+                        </view>
+                        <view class="weui-cell__ft">
+                            <image class="weui-vcode-img" src="../../image/vcode.jpg" style="width: 108px"/>
+                        </view>
+                    </view-->
+
+
+
+                    <!--手机号和校验码-->
+                    <!--
+                        新增场景：
+                        1、默认显示当前用户自己的手机号。onLoad时使用app.globalData.userInfo.mobile设置手机号值。不显示验证码按钮和输入栏位(hideSC:true)
+                        2、如手机号改为非本人手机号，且格式正确（mobile的keyinput事件第11个字符输入后，与rdata.mobile比较），则显示发送短信验证码按钮和验证码输入栏位。
+                        3、发送短信后按钮描述倒计时显示，并显示验证按钮。
+                        4、验证按钮按下后比较验证码是否一致，如不一致则面包提示，如一致则：
+                            4.1将新手机号设置到rdata.mobile中
+                            4.2隐藏按钮和认证码栏位
+
+                        5、如手机号改回本人手机号（mobile的keyinput事件第11个字符输入后，与rdata.mobile比较），则隐藏认证码按钮和输入栏位。
+
+                        修改场景：
+                        1、默认显示系统保存的手机号。onLoad时使用rdata.mbnb2设置手机号值。
+                        2、其他步骤与新增场景相同
+                    -->
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__bd">
+                            <input name="mobile" class="weui-input"  placeholder="手机号"
+                                   value="{{rdata.mobile}}"  focus="{{focusMobile}}" bindinput="setMobile"/>
+                        </view>
+                        <view class="weui-cell__bd" hidden="{{hideSC}}">
+                            <input name="smsCode" class="weui-input" placeholder="验证码"
+                                   value="{{app.globalData.cf.runtimeConfig.sendSms ? '' : smsCode}}" focus="{{focusSC}}" bindinput="checkSC"/>
+                        </view>
+                        <view class="weui-cell__ft">
+                            <button size="mini" type="primary"  hidden="{{hideSC}}" style="overflow: inherit;"
+                                    disabled="{{buttonDisabled}}" bindtap="checkMobile" >{{buttonDesc}}
+                            </button>
+                        </view>
+                    </view>
+
+                    <!--<mobileinput title="手机号组件" class="weui-cell weui-cell_input"-->
+                                 <!--bind:cpevent="onCpeMobileReady" input-data="{{rdata.mbnb2}}"/>-->
                 </view>
-                <view class="weui-form-preview__item">
-                    <view class="weui-form-preview__label">电话</view>
-                    <view class="weui-form-preview__value">{{rdata.mbnb}}</view>
+
+
+                <!--业务差异化信息部分-->
+                <view class="weui-cells__title">房屋情况</view>
+                <view class="weui-cells weui-cells_after-title">
+                    <view class="weui-cell weui-cell_input">
+                        <radio-group bindchange="toolChange" name="hasTool">
+                            <label wx:for="{{toolList}}" wx:key="a2">
+                                <radio class="weui-input" value="{{item.value}}" checked="{{item.checked}}">
+                                    {{item.name}}
+                                </radio>
+                            </label>
+                        </radio-group>
+                    </view>
+                    <view class="weui-cell weui-cell_input">
+                        <radio-group name="pet">
+                            <label wx:for="{{items}}" wx:key="a1">
+                                <radio class="weui-input" value="{{item.name}}" checked="{{item.checked}}">
+                                    {{item.value}}
+                                </radio>
+                            </label>
+                        </radio-group>
+                    </view>
+                    <view class="weui-cell weui-cell_input">
+                        <!--<view class="weui-cell__hd">-->
+                            <!--<view class="weui-label">面积</view>-->
+                        <!--</view>-->
+                        <view class="weui-cell__bd">
+                            <input class="weui-input" name="size" value="{{rdata.size}}" type="number" maxlength="4"
+                                   placeholder="面积：如102平米"/>
+                            <input name="reqId" value="{{rdata.reqId}}" hidden="true"/>
+                            <input name="rdst" value="{{rdata.rdst}}" hidden="true"/>
+                            <input name="stat" value="{{rdata.stat}}" hidden="true"/>
+                        </view>
+                    </view>
+
+                    <view class="weui-cell weui-cell_input">
+                        <!--<view class="weui-cell__hd">-->
+                            <!--<view class="weui-label">户型</view>-->
+                        <!--</view>-->
+                        <view class="weui-cell__bd">
+                            <input class="weui-input" name="layout" value="{{rdata.layout}}" placeholder="户型：如两室两厅/四室两厅"/>
+                        </view>
+                    </view>
+
+                </view>
+
+
+                <view class="weui-btn-area">
+                    <button class="weui-btn" form-type="submit" type="primary"
+                            disabled="{{submitButtonDisabled}}">提交
+                    </button>
+                    <button class="weui-btn" form-type="submit" data-submitType="delete" type="warn"
+                            disabled="{{submitButtonDisabled}}">删除
+                    </button>
+                    <button class="weui-btn" bindtap="changePreview" type="default">返回</button>
                 </view>
             </view>
-            <view class="weui-btn-area">
-                <button class="weui-btn" bindtap="changePreview">修改</button>
-                <button class="weui-btn" data-reqId="{{rdata.reqId}}" bindtap="delete" >删除</button>
+
+
+            <!--需求详情部分-->
+            <view class="weui-form-preview" hidden="{{!preview}}">
+
+                <view class="weui-form-preview__hd">
+                    <view class="weui-form-preview__label">金额</view>
+                    <view class="weui-form-preview__value_in-hd">{{rdata.uprice*rdata.dura}}元({{rdata.dura}}小时)</view>
+                </view>
+                <view class="weui-form-preview__bd">
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">服务时间</view>
+                        <view class="weui-form-preview__value">{{rdata.osdt}} {{rdata.ostm}}</view>
+                    </view>
+
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">地址</view>
+                        <view class="weui-form-preview__value">{{addrHidden}}</view>
+                    </view>
+
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">用户</view>
+                        <view class="weui-form-preview__value">
+                            <navigator url="../cmmt-list/cmmt-list?type=lookta&&mode=tota&&openId={{rdata.clntInfo.openId}}" class="weui-footer__link"
+                                       hover-class="weui-cell_active">
+                            {{rdata.clntInfo.nickName}} (联系人：{{rdata.clfn}}{{rdata.sex}}）
+                            </navigator>
+                        </view>
+                    </view>
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">交通</view>
+                        <view class="weui-form-preview__value">
+                            <navigator url="../gdmap/gdmap?location={{rdata.location}}" class="weui-footer__link"
+                                       hover-class="weui-cell_active">
+                                {{traffic.distance}}公里，骑车{{traffic.durationRidding}}分钟/步行{{traffic.durationWalking}}分钟
+                            </navigator>
+                        </view>
+                    </view>
+                </view>
+
+                <!--地图控件区-->
+                <!--view wx:if="{{message.type == 'speak'}}" class="user-message {{message.isMe ? 'me' : 'other'}}"-->
+                <view class="flex-style">
+                    <view  wx:for="{{tabInfo}}" wx:key="ccc"  class="flex-item {{item.isActive ? 'active':''}}" bindtouchstart="{{item.method}}">
+                        {{item.desc}}{{(item.isActive && item.mode!=='transit') ? durationGd :''}}
+                    </view>
+                </view>
+                <view>
+                    <map longitude="{{mapCenter.longitude}}"
+                         latitude="{{mapCenter.latitude}}"
+                         markers="{{markers}}"
+                         polyline="{{polyline}}"
+                         scale="10"
+                         style="width: 100%; height: 400rpx;"/>
+                </view>
+
+
+                <!--按钮控件区-->
+                <view class="weui-form-preview__bd">
+                    <!--修改、再来一单的功能，实际上是显示编辑表单，在编辑界面中提交；客户关闭、阿姨上单、客户取消、阿姨不去了，则是直接提交，只更新订单的状态-->
+                    <view class="weui-btn-area">
+                        <block wx:if="{{(app.globalData.userInfo.role==='CLNT' && rdata.clntInfo.openId===app.globalData.userInfo.openId)}}">
+                            <!--在wait状态时，客户可修改和关闭；在get状态时，客户可取消-->
+                            <button class="weui-btn" bindtap="changePreview" data-submitType="edit" hidden="{{rdata.stat!=='wait'}}" disabled="{{submitButtonDisabled}}">修改</button>
+                            <button class="weui-btn" form-type="submit"  data-submitType="close"  hidden="{{rdata.stat!=='wait'}}" disabled="{{submitButtonDisabled}}">关闭</button>
+                            <button class="weui-btn" form-type="submit"  data-submitType="clnt-cancel" hidden="{{rdata.stat!=='get'}}" disabled="{{submitButtonDisabled}}">取消订单</button>
+                            <button class="weui-btn" bindtap="changePreview" data-submitType="onemore">再来一单</button>
+                            <button hidden="{{!(rdata.stat ==='finish')}}"  data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价</button>
+
+                        </block>
+
+                        <block wx:if="{{app.globalData.userInfo.role==='LBOR'}}">
+                            <!--在wait状态时，阿姨可上单-->
+                            <button hidden="{{!(rdata.stat==='wait')}}" form-type="submit" data-submitType="get"  class="weui-btn" disabled="{{submitButtonDisabled}}">上单</button>
+
+                            <!--在get状态且接单阿姨为本人时，阿姨可撤销-->
+                            <button hidden="{{!(rdata.stat ==='get')}}" form-type="submit" data-submitType="start" class="weui-btn" disabled="{{submitButtonDisabled}}">开工</button>
+
+                            <!--在get状态且接单阿姨为本人时，阿姨可取消-->
+                            <button hidden="{{!(rdata.stat ==='get')}}" form-type="submit" data-submitType="lbor-cancel" class="weui-btn" disabled="{{submitButtonDisabled}}">不去了</button>
+
+                            <!--在start状态且接单阿姨为本人时，阿姨可撤销-->
+                            <button hidden="{{!(rdata.stat ==='start')}}" form-type="submit" data-submitType="finish" class="weui-btn" disabled="{{submitButtonDisabled}}">完工</button>
+
+                            <!--在finish状态且接单阿姨为本人时，阿姨可评价-->
+                            <button hidden="{{!(rdata.stat ==='finish')}}" data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价</button>
+
+                        </block>
+
+                        <block wx:if="{{!app.globalData.userInfo}}">
+                            <button class="weui-btn" disabled="{{submitButtonDisabled}}" type="primary" bindtap="goRegist">马上去登录</button>
+                        </block>
+
+                    </view>
+                </view>
+
+
             </view>
-        </view>
-    </form>
+
+        </form>
 
     </view>
+
+
     <include src="../tplt/footer.wxml"/>
 </view>

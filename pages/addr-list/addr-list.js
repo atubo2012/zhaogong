@@ -1,7 +1,5 @@
-let common = require('../../common.js');
-let cf = require('../../config.js');
-let ut = require('../../utils/utils.js');
 const app = getApp();
+const cf = app.globalData.cf;
 
 Page({
 

@@ -40,8 +40,13 @@ App({
      */
     onLaunch: function (options) {
 
+        //如未指定运行模式，则默认为生产模式
+        const runmode = options.query.runmode ? options.query.runmode:'prod';
+        console.log('runmode',runmode);
+
         //根据小程序的启动参数，初始化运行时参数
-        this.globalData['cf']=new ZgConfig(options.query.runmode);
+        this.globalData['cf']=new ZgConfig(runmode);
+
 
         let that = this;
 
@@ -163,6 +168,7 @@ App({
      */
     checkUser: function (cb) {
 
+        console.log('checkUser: userInfo is ',wx.getStorageSync('userInfo'));
         let that = this;
         //检查是否是新用户
         wx.request({

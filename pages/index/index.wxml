@@ -4,18 +4,37 @@
 
 
 
-        <view bindtap="bindViewTap" class="userinfo">
-            <image wx:if="{{userInfo.avatarUrl}}"
-                   class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"/>
-            <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-            <text class="user-motto">{{motto}}</text>
+
+        <!--显示微信昵称和头像-->
+        <view class="acenter2">
+            <view class="avatar2" >
+                <open-data type="userAvatarUrl"/>
+            </view>
+        </view>
+        <view class="acenter">
+            <open-data type="userNickName"/>
         </view>
 
-        <!--view hidden="{{!newUser}}"-->
+        <!--显示功能区-->
         <view>
-            <button class='weui-btn' bindtap="setRoleLbor" type="primary">我想找工作</button>
-            <button class="weui-btn" bindtap="setRoleClnt" type="primary">我想找帮手</button>
+            <block wx:if="{{isLogined}}">
+                <!--<text class="userinfo-nickname">{{userInfo.nickName}}|{{userInfo.openId}}</text>-->
+                <!--<text class="user-motto">{{motto}}</text>-->
+                <button class='weui-btn' bindtap="setRoleLbor" type="primary">我想找工作</button>
+                <button class="weui-btn" bindtap="setRoleClnt" type="primary">我想找帮手</button>
+            </block>
+
+            <block wx:if="{{!isLogined}}">
+                <button class="weui-btn" open-type="getUserInfo"  bindgetuserinfo="login4" type="primary">
+                    微信登录
+                </button>
+            </block>
+
+            <!--<button class="weui-btn" bindtap="goTest" type="primary">评论</button>-->
+            <!--<button class="weui-btn" bindtap="goTest2" type="primary">档期</button>-->
+            <!--<button class="weui-btn" bindtap="goTest3" type="primary">libs</button>-->
         </view>
+
 
 
 

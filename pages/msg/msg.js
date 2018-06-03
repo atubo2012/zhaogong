@@ -1,7 +1,4 @@
 const app = getApp();
-let common = require('../../common.js');
-let cf = require('../../config.js');
-let ut = require('../../utils/utils.js');
 
 Page({
 
@@ -12,7 +9,7 @@ Page({
     },
     goMyRqst:function () {
         wx.redirectTo({
-            url:'../../pages/rqst-list/rqst-list?nickName'+app.globalData.userInfo.nickName
+            url:'../../pages/rqst-list/rqst-list?type=my'
         });
     },
 

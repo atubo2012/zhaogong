@@ -2,18 +2,27 @@
     <include src="../tplt/pagehead.wxml"/>
     <view class="page__bd page__bd_spacing"><!--框架头与页面内容空3行-->
 
-
-        <view class="weui-cells__title">带说明、跳转的列表项</view>
-        <view class="weui-cells weui-cells_after-title">
-            <navigator bindtap="setParams" data-item="{{item}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active"
-                    wx:for="{{reqList}}" wx:key="aaa"  url="../rqst-edit/rqst-edit?reqId={{item.reqId}}">
-
-                <view class="weui-cell__bd">{{item.clfn}}，{{item.userInfo.nickName}},{{item.rdst}}</view>
-                <view class="weui-cell__ft weui-cell__ft_in-access">{{item.mbnb}}</view>
-            </navigator>
-        </view>
-
-
+        <navigator bindtap="setParams" data-item="{{item}}" class="weui-panel"
+                   wx:for="{{reqList}}" wx:key="aaa"
+                   url="../rqst-edit/rqst-edit?reqId={{item.reqId}}&location={{item.location}}">
+            <view class="weui-panel__bd">
+                <view class="weui-media-box weui-media-box_text">
+                    <view class="weui-media-box__title weui-media-box__title_in-text"
+                          style="{{(item.stat=='wait' || item.stat=='get') ? '':'color: #999'}}">
+                        {{item.uprice*item.dura}}元 (做{{item.dura}}小时 {{item.size}}平米 {{item.hasTool}})
+                    </view>
+                    <view class="weui-media-box__desc">{{item.addr}}</view>
+                    <view class="weui-media-box__info">
+                        <view class="weui-media-box__info__meta">{{item.osdt}} {{item.ostm}}</view>
+                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.clfn}}{{item.sex}}</view>
+                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.reqId}}</view>
+                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.stat}}</view>
+                    </view>
+                        <!--view class="weui-media-box__info__meta weui-media-box__info__meta_extra" wx:if="{{item.rdst==='1'}}">待上单</view>
+                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra" wx:elif="{{item.rdst==='0'}}">已关闭</view-->
+                </view>
+            </view>
+        </navigator>
 
     </view><!--框架尾与页面内容空3行-->
     <include src="../tplt/footer.wxml"/>

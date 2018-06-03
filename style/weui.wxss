@@ -12,6 +12,29 @@ icon {
     vertical-align: middle
 }
 
+.avatar open-data {
+    border-radius: 50%;
+    overflow:  hidden ;
+}
+.acenter {
+    text-align: center;
+}
+
+
+.acenter2 {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+.avatar2 {
+    width: 100rpx;
+    height: 100rpx;
+    margin: auto;
+}
+
+
+
 .weui-cells {
     position: relative;
     margin-top: 1.17647059em;
@@ -22,7 +45,7 @@ icon {
 
 .weui-cells:before {
     top: 0;
-    border-top: 1 rpx solid #d9d9d9
+    border-top: 1rpx solid #d9d9d9
 }
 
 .weui-cells:after, .weui-cells:before {
@@ -36,7 +59,7 @@ icon {
 
 .weui-cells:after {
     bottom: 0;
-    border-bottom: 1 rpx solid #d9d9d9
+    border-bottom: 1rpx solid #d9d9d9
 }
 
 .weui-cells__title {
@@ -86,14 +109,16 @@ icon {
     align-items: center
 }
 
+/**
+表格输入项的分割符，在每个格子的前面加分隔符。但对第一个格子不加分隔符。
+ */
 .weui-cell:before {
     content: " ";
     position: absolute;
-    left: 0;
     top: 0;
     right: 0;
     height: 1px;
-    border-top: 1 rpx solid #d9d9d9;
+    border-top: 1rpx solid #d9d9d9;
     color: #d9d9d9;
     left: 15px
 }
@@ -207,6 +232,8 @@ icon {
     line-height: 2.58823529em
 }
 
+
+
 .weui-toptips {
     position: fixed;
     -webkit-transform: translateZ(0);
@@ -248,7 +275,7 @@ icon {
 
 .weui-form-preview:before {
     top: 0;
-    border-top: 1 rpx solid #d9d9d9
+    border-top: 1rpx solid #d9d9d9
 }
 
 .weui-form-preview:after, .weui-form-preview:before {
@@ -262,7 +289,7 @@ icon {
 
 .weui-form-preview:after {
     bottom: 0;
-    border-bottom: 1 rpx solid #d9d9d9
+    border-bottom: 1rpx solid #d9d9d9
 }
 
 .weui-form-preview__value {
@@ -287,7 +314,7 @@ icon {
     bottom: 0;
     right: 0;
     height: 1px;
-    border-bottom: 1 rpx solid #d9d9d9;
+    border-bottom: 1rpx solid #d9d9d9;
     color: #d9d9d9;
     left: 15px
 }
@@ -315,7 +342,7 @@ icon {
     top: 0;
     right: 0;
     height: 1px;
-    border-top: 1 rpx solid #d5d5d6;
+    border-top: 1rpx solid #d5d5d6;
     color: #d5d5d6
 }
 
@@ -356,7 +383,7 @@ icon {
     top: 0;
     width: 1px;
     bottom: 0;
-    border-left: 1 rpx solid #d5d5d6;
+    border-left: 1rpx solid #d5d5d6;
     color: #d5d5d6
 }
 
@@ -387,7 +414,7 @@ icon {
     height: 2.58823529em;
     min-height: 2.58823529em;
     line-height: 2.58823529em;
-    border-right: 1 rpx solid #d9d9d9
+    border-right: 1rpx solid #d9d9d9
 }
 
 .weui-select:before {
@@ -725,11 +752,8 @@ icon {
 .weui-footer__link:before {
     content: " ";
     position: absolute;
-    left: 0;
-    top: 0;
     width: 1px;
-    bottom: 0;
-    border-left: 1 rpx solid #c7c7c7;
+    border-left: 1rpx solid #c7c7c7;
     color: #c7c7c7;
     left: -.65em;
     top: .36em;
@@ -746,8 +770,8 @@ icon {
 }
 
 .weui-grids {
-    border-top: 1 rpx solid #d9d9d9;
-    border-left: 1 rpx solid #d9d9d9;
+    border-top: 1rpx solid #d9d9d9;
+    border-left: 1rpx solid #d9d9d9;
     overflow: hidden
 }
 
@@ -757,8 +781,8 @@ icon {
     padding: 20px 10px;
     width: 33.33333333%;
     box-sizing: border-box;
-    border-right: 1 rpx solid #d9d9d9;
-    border-bottom: 1 rpx solid #d9d9d9
+    border-right: 1rpx solid #d9d9d9;
+    border-bottom: 1rpx solid #d9d9d9
 }
 
 .weui-grid_active {
@@ -898,7 +922,7 @@ icon {
 
 .weui-panel:before {
     top: 0;
-    border-top: 1 rpx solid #e5e5e5
+    border-top: 1rpx solid #e5e5e5
 }
 
 .weui-panel:after, .weui-panel:before {
@@ -907,12 +931,12 @@ icon {
     left: 0;
     right: 0;
     height: 1px;
-    color: #e5e5e5
+    color: #e64340;
 }
 
 .weui-panel:after {
     bottom: 0;
-    border-bottom: 1 rpx solid #e5e5e5
+    border-bottom: 1rpx solid #e5e5e5
 }
 
 .weui-panel__hd {
@@ -925,11 +949,10 @@ icon {
 .weui-panel__hd:after {
     content: " ";
     position: absolute;
-    left: 0;
     bottom: 0;
     right: 0;
     height: 1px;
-    border-bottom: 1 rpx solid #e5e5e5;
+    border-bottom: 1rpx solid #e5e5e5;
     color: #e5e5e5;
     left: 15px
 }
@@ -942,11 +965,10 @@ icon {
 .weui-media-box:before {
     content: " ";
     position: absolute;
-    left: 0;
     top: 0;
     right: 0;
     height: 1px;
-    border-top: 1 rpx solid #e5e5e5;
+    border-top: 1rpx solid #e5e5e5;
     color: #e5e5e5;
     left: 15px
 }
@@ -1072,7 +1094,7 @@ icon {
     z-index: 500;
     top: 0;
     width: 100%;
-    border-bottom: 1 rpx solid #ccc
+    /**border-bottom: 1rpx solid #ccc**/
 }
 
 .weui-navbar__item {
@@ -1087,7 +1109,10 @@ icon {
 }
 
 .weui-navbar__item.weui-bar__item_on {
-    color: #1aad19
+    color: #1aad19;
+    background-color: white;
+    border-bottom: 5rpx solid #1aad19
+
 }
 
 .weui-navbar__slider {
@@ -1136,8 +1161,8 @@ icon {
     display: flex;
     box-sizing: border-box;
     background-color: #efeff4;
-    border-top: 1 rpx solid #d7d6dc;
-    border-bottom: 1 rpx solid #d7d6dc
+    border-top: 1rpx solid #d7d6dc;
+    border-bottom: 1rpx solid #d7d6dc
 }
 
 .weui-icon-search {
@@ -1164,7 +1189,7 @@ icon {
     flex: auto;
     border-radius: 5px;
     background: #fff;
-    border: 1 rpx solid #e6e6ea
+    border: 1rpx solid #e6e6ea
 }
 
 .weui-search-bar__box {
