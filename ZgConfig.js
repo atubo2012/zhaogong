@@ -23,16 +23,29 @@ function ZgConfig(runmode) {
             url:'http://zgreq.qstarxcx.com', //在开发人员本地的host中，将该域名指向127.0.0.1
             sendSms:false,          //是否真正发送短信
             countDownSecond : 10,   //倒计时
+            payDisct:0.01,
+            getOutTradeNo : function(tradeNo){
+                return tradeNo;
+                //return 'dev_tn'+new Date().getTime();   //开发环境中使用临时生成的交易编号，不必每次都生成新的订单来测试，提升效率
+            }
         },
         'test':{    //提交体验用户试用时以此方式
             url:'https://86316533.qstarxcx.com',
             sendSms:true,
             countDownSecond : 30,
+            payDisct:0.01,
+            getOutTradeNo : function(tradeNo){
+                return tradeNo;
+            }
         },
         'prod':{    //体验体验用户验证后，使用此种编译模式编译后发布
             url:'https://86316533.qstarxcx.com',
             sendSms:true,
             countDownSecond : 60,
+            payDisct:1,
+            getOutTradeNo : function(tradeNo){
+                return tradeNo;
+            }
         }
     }[runmode];
 
@@ -41,6 +54,12 @@ function ZgConfig(runmode) {
     let url = this.url; //此处定义的url局部变量，是供service引用
 
     this.service = {
+
+        // 微信支付
+        wxpayUrl: `${url}/wxpay`,
+
+        wxpayQueryUrl: `${url}/wxpayquery`,
+
 
         // wafer1登录模式，用于建立会话。后台收到该请求后，调用server端由腾讯提供的sdk(login-service)
         loginUrl: `${url}/login`,

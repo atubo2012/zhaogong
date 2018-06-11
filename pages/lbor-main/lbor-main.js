@@ -22,9 +22,9 @@ Page({
     onLoad: function (params) {
         this.setData({
             imgUrls: [
-                cf.url + '/uploads/avatar-ba2f1dfa962667b56983c9f459f050f8.jpg',
-                cf.url + '/uploads/avatar-bb50cc8ed4b8fb9e4a28d22791a9f4af.png',
-                'http://www.wxapp-union.com/template/win8_2_zuk/src/logo.png'
+                'http://pic.597.com/com/2016/04/28/16042802190195192.jpg',
+                'http://top.shang360.com/upload/article/20161125/39759338671480058904.jpg',
+                'https://86316533.qstarxcx.com/upload/avatar-1d2705c60f054b82aa0f5e2cfd1574ac.jpg'
             ],
 
             imgUrls2: [

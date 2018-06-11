@@ -2,7 +2,7 @@
 let ut = require('../../utils/utils.js');
 let amapFile = require('../../vendor/amap-wx.js');
 const app = getApp();
-const cfg = app.globalData.cf;
+const cf = app.globalData.cf;
 
 
 Page({
@@ -58,7 +58,7 @@ Page({
 
 
         smsCode: '',//短信认证码
-        second: cfg.runtimeConfig.countDownSecond, //再次发送验证码按钮前需等待的时间
+        second: cf.runtimeConfig.countDownSecond, //再次发送验证码按钮前需等待的时间
         oldMobile: '',//当前用户的手机号，加载本页时初始化。
         newMobile: '',//mobile字段中输入的值，只要不与oldMobile相同，则显示“验证码区域”，第11位输入完成后，比较是否与oldMobile不同，如不同则显示在验证完认证码后，该值被设置到rdata.mobile中；如该值与oldMobile相等，则隐藏验证码输入框
 
@@ -79,6 +79,81 @@ Page({
         trafficType: 'walking',  //页面加载时默认选中的交通方式
 
 
+    },
+
+    payTap: function () {
+        let that = this;
+
+
+        let out_trade_no = cf.runtimeConfig.getOutTradeNo(that.data.rdata.reqId);           //开发环境中使用临时生成的交易编号
+        let total_fee = (that.data.rdata.cost * 100 * cf.runtimeConfig.payDisct).toFixed(0);  //开发环境中对实际金额降低100倍支付
+        console.log('统一下单RP', out_trade_no, total_fee);
+
+
+        wx.request({
+            url: cf.service.wxpayUrl,
+            data: {
+                /**
+                 * 商户支付的订单号由商户自定义生成，微信支付要求商户订单号保持唯一性（建议根据当前系统时间加随机序列来生成订单号）。
+                 * 重新发起一笔支付要使用原订单号，避免重复支付；
+                 * 已支付过或已调用关单、撤销（请见后文的API列表）的订单号不能重新发起支付。
+                 */
+                out_trade_no: out_trade_no,
+                total_fee: total_fee,
+                openid: app.globalData.userInfo.openId,
+
+                //商品类别丰富后，即可再次扩展，也可从订单信息中获得。TODO:在订单中记录商品类别(body)和商品编号(product_id)。
+                body: '家政-临时保洁',//body是两级商品类别的描述信息，两级描述之间用减号分割
+                product_id: 'gt_temp_clean',//product_id是特定商品类别项下的商品编号。
+            },
+            header: {
+                'session3rdKey': wx.getStorageSync('session3rdKey'),
+            },
+            success: function (res) {
+                ut.checkSession(res, app, that, function (option) {
+                let payModel = res.data;
+                console.log('统一下单RD=', payModel, res);
+
+                if (res.data.status === '100') {
+                    wx.requestPayment({
+                        'timeStamp': payModel.timestamp,
+                        'nonceStr': payModel.nonceStr,
+                        'package': payModel.package,
+                        'signType': 'MD5',
+                        'paySign': payModel.paySign,
+                        'success': function (res1) {
+                            console.log('支付成功，结果=', res1);
+
+                            if(res1.errMsg==='requestPayment:ok'){
+                                //TODO可以显示倒计时，订单生成中。
+                                wx.request({
+                                    url: cf.service.wxpayQueryUrl,
+                                    data: {
+                                        out_trade_no: out_trade_no,
+                                    },
+                                    success: function (res3) {
+                                        console.log(res3);
+                                        wx.showToast({
+                                            title: '支付成功',
+                                            icon: 'success',
+                                            duration: cf.vc.ToastShowDurt
+                                        });
+                                        that.setData({'rdata.stat': 'paid'});
+                                    }
+                                })
+                            }
+                        },
+                        'fail': function (res2) {
+                            console.log('支付失败，结果:', res2);
+                        }
+                    })
+                }
+            });
+            },
+            fail: function (res) {
+                console.log('后端支付服务异常:', res);
+            }
+        })
     },
 
     /**
@@ -139,9 +214,9 @@ Page({
                 'openId': app.globalData.userInfo.openId,
                 'mobile': this.data.newMobile,
                 'smsCode': this.data.smsCode,
-                'sendSms': cfg.runtimeConfig.sendSms
+                'sendSms': cf.runtimeConfig.sendSms
             };
-            ut.request(cfg.service.mobileSCUrl, rdata,false,
+            ut.request(cf.service.mobileSCUrl, rdata, false,
                 (res) => {
                     ut.debug('短信发送应答', res.data);
                     //未被占用
@@ -188,7 +263,6 @@ Page({
     },
 
 
-
     /**
      * 功能：验证码光标离开时校验验证码的正确性
      * 算法：
@@ -201,12 +275,12 @@ Page({
         if (e.detail.value === this.data.smsCode) {
             this.setData({
                 hideSC: true,
-                'rdata.mobile':_that.data.newMobile
+                'rdata.mobile': _that.data.newMobile
             });
             ut.showToast('验证码正确');
 
         } else {
-            console.log('验证码内容为'+e.detail.value);
+            console.log('验证码内容为' + e.detail.value);
         }
     },
 
@@ -234,7 +308,7 @@ Page({
         })
     },
 
-    goRegist:function () {
+    goRegist: function () {
         wx.switchTab({
             url: '../index/index'
         })
@@ -290,18 +364,19 @@ Page({
     },
 
     bindPickerChangeUprice: function (e) {
-        ut.debug(e);
         let that = this;
 
         this.setData({
-            'rdata.uprice': that.data.upriceList[e.detail.value],
-        })
+            'rdata.uprice': Number(that.data.upriceList[e.detail.value]),
+        });
+
+        console.log('typeof(uprice)=', typeof(that.data.rdata.uprice), that.data.rdata.uprice);
     },
     bindPickerChangeDuration: function (e) {
         ut.debug(e);
         let that = this;
         this.setData({
-            'rdata.dura': that.data.durationList[e.detail.value],
+            'rdata.dura': Number(that.data.durationList[e.detail.value]),
         })
     },
 
@@ -338,241 +413,243 @@ Page({
         app.globalData['bizParameters'] = '全局参数在这里传递';
 
 
-
         //ut.checkSession(app, that, function (params2) {
-            //I：如果id字段不为空，则进入编辑模式，从后台获取数据，然后用setData(rdata:res.data[0])，渲染页面数据。
-            if (typeof(option.reqId) !== "undefined") {
-                ut.debug('进入编辑模式.....加载业务数据');
+        //I：如果id字段不为空，则进入编辑模式，从后台获取数据，然后用setData(rdata:res.data[0])，渲染页面数据。
+        if (typeof(option.reqId) !== "undefined") {
+            ut.debug('进入编辑模式.....加载业务数据');
 
-                //便于地图行程切换时使用参数
-                that.setData({
+            //便于地图行程切换时使用参数
+            that.setData({
+                reqId: option.reqId
+            });
+
+            //从后台获取数据
+            wx.request({
+                url: cf.service.rqstListUrl,
+                data: {
                     reqId: option.reqId
-                });
+                },
+                success: function (res) {
 
-                //从后台获取数据
-                wx.request({
-                    url: cfg.service.rqstListUrl,
-                    data: {
-                        reqId: option.reqId
-                    },
-                    success: function (res) {
+                    let ret = res.data[0]; //后端返回的是一个数组。
+                    //如果后台返回的数据为空说明尚未建立用户信息
+                    if ("0" === ret) {
+                        ut.debug('后台无数据。');
+                    } else {
+                        ut.debug('后台有数据，将应答结果设置到rdata中', res);
 
-                            let ret = res.data[0]; //后端返回的是一个数组。
-                            //如果后台返回的数据为空说明尚未建立用户信息
-                            if ("0" === ret) {
-                                ut.debug('后台无数据。');
-                            } else {
-                                ut.debug('后台有数据，将应答结果设置到rdata中', res);
+                        //用DB保存的值渲染单选框中的数据
+                        let items = ut.getRa(ret.pet, that.data.items);
+                        let sexItems = ut.getRa(ret.sex, that.data.sexItems);
 
-                                //用DB保存的值渲染单选框中的数据
-                                let items = ut.getRa(ret.pet, that.data.items);
-                                let sexItems = ut.getRa(ret.sex, that.data.sexItems);
+                        //动态渲染当前地址到客户地址的距离
+                        ut.getTraffic4tx(app.globalData.address.address, ret.addr, function (ret) {
+                            that.setData({
+                                'traffic': ret,
+                            });
+                        });
 
-                                //动态渲染当前地址到客户地址的距离
-                                ut.getTraffic4tx(app.globalData.address.address, ret.addr, function (ret) {
+                        that.setData({
+                            'rdata': ret,//渲染表单中各个输入项的数据
+                            'rdata.location': JSON.stringify(ret.location),
+                            'rdata.clntInfo': ret.clntInfo,
+                            'rdata.lborInfo': (ret.lborInfo ? ret.lborInfo : {}),
+                            'addrHidden': ut.getHiddenAddr(ret.addr),
+                            'items': items,
+                            'sexItems': sexItems,
+                            'toolList': ret.toolList, //不建议将特殊组件的数据结构保存到数据库，此处仅为一个示例。其他模块中不必设置这个字段
+                        });
+
+                        console.log('加载页面后的rdata', that.data.rdata);
+
+
+                        /**
+                         * 展示地图 //TODO:将敏感数据放到ZgConfig.js中
+                         */
+                        let myAmapFun = new amapFile.AMapWX({key: '2d15ece70392d0afd89dae800f78f94d'});
+
+                        let to = '';
+                        let from = '';
+
+                        wx.getLocation({
+                            success: function (res) {
+
+                                ut.debug('99999999999999', res, that.data.rdata.location);
+                                //1、如果是带参数加载，则将初始参数记录在data对象中
+                                if (typeof(option) !== 'undefined') {
+
+                                    //1-1准备起止点的坐标参数
+                                    from = res.longitude + ',' + res.latitude;
+                                    let fromObj = {'latitude': res.latitude, 'longitude': res.longitude};
+                                    ut.debug('getLocation', from, fromObj);
+
+                                    let location = JSON.parse(that.data.rdata.location);
+                                    to = location.longitude + ',' + location.latitude;
+                                    let toObj = {
+                                        'latitude': location.latitude,
+                                        'longitude': location.longitude
+                                    };
+                                    ut.debug('toObj', toObj);
+
+                                    //1-2准备起止点的标记风格参数
+                                    let markerFrom = {
+                                        iconPath: "../../image/navi_start.png",
+                                        id: 0,
+                                        width: 23,
+                                        height: 33
+                                    };
+                                    let markerTo = {
+                                        iconPath: "../../image/navi_stop.png",
+                                        id: 0,
+                                        width: 23,
+                                        height: 33
+                                    };
+                                    let markers = [
+                                        (Object.assign(markerFrom, fromObj)),
+                                        (Object.assign(markerTo, toObj))
+                                    ];
+                                    ut.debug('markers', markers);
+
+                                    //1-3根据起止点的坐标，得出将显示的地图中央坐标
+                                    let mapCenter = {
+                                        longitude: (res.longitude + location.longitude) / 2,
+                                        latitude: (res.latitude + location.latitude) / 2
+                                    };
+                                    ut.debug('mapCenter', mapCenter);
+
+                                    //1-4将上述参数保存在data对象中便于生成地图使用
                                     that.setData({
-                                        'traffic': ret,
-                                    });
-                                });
+                                        to: to,
+                                        from: from,
+                                        mapCenter: mapCenter,
+                                        markers: markers
+                                    })
 
-                                that.setData({
-                                    'rdata': ret,//渲染表单中各个输入项的数据
-                                    'rdata.location': JSON.stringify(ret.location),
-                                    'rdata.clntInfo': ret.clntInfo,
-                                    'rdata.lborInfo': (ret.lborInfo ? ret.lborInfo : {}),
-                                    'addrHidden': ut.getHiddenAddr(ret.addr),
-                                    'items': items,
-                                    'sexItems': sexItems,
-                                    'toolList': ret.toolList, //不建议将特殊组件的数据结构保存到数据库，此处仅为一个示例。其他模块中不必设置这个字段
-                                });
+                                } else {
+                                    to = that.data.to;
+                                    from = that.data.from;
+                                }
 
 
+                                //2准备路径规划参数
+                                //2-1非公交类交通工具使用的参数对象
+                                let params = {
+                                    origin: from,
+                                    destination: to,
+                                    success: function (data) {
+                                        let points = [];
+                                        if (data.paths && data.paths[0] && data.paths[0].steps) {
+                                            let steps = data.paths[0].steps;
+                                            for (let i = 0; i < steps.length; i++) {
+                                                let poLen = steps[i].polyline.split(';');
+                                                for (let j = 0; j < poLen.length; j++) {
+                                                    points.push({
+                                                        longitude: parseFloat(poLen[j].split(',')[0]),
+                                                        latitude: parseFloat(poLen[j].split(',')[1])
+                                                    })
+                                                }
+                                            }
+                                        }
 
-                                /**
-                                 * 展示地图 //TODO:将敏感数据放到ZgConfig.js中
-                                 */
-                                let myAmapFun = new amapFile.AMapWX({key: '2d15ece70392d0afd89dae800f78f94d'});
+                                        that.setData({
+                                            polyline: [{
+                                                points: points,
+                                                color: "#0091ff",
+                                                width: 6,
+                                                arrowLine: true
+                                            }],
 
-                                let to = '';
-                                let from = '';
-
-                                wx.getLocation({
-                                    success: function (res) {
-
-                                        ut.debug('99999999999999', res, that.data.rdata.location);
-                                        //1、如果是带参数加载，则将初始参数记录在data对象中
-                                        if (typeof(option) !== 'undefined') {
-
-                                            //1-1准备起止点的坐标参数
-                                            from = res.longitude + ',' + res.latitude;
-                                            let fromObj = {'latitude': res.latitude, 'longitude': res.longitude};
-                                            ut.debug('getLocation', from, fromObj);
-
-                                            let location = JSON.parse(that.data.rdata.location);
-                                            to = location.longitude + ',' + location.latitude;
-                                            let toObj = {
-                                                'latitude': location.latitude,
-                                                'longitude': location.longitude
-                                            };
-                                            ut.debug('toObj', toObj);
-
-                                            //1-2准备起止点的标记风格参数
-                                            let markerFrom = {
-                                                iconPath: "../../image/navi_start.png",
-                                                id: 0,
-                                                width: 23,
-                                                height: 33
-                                            };
-                                            let markerTo = {
-                                                iconPath: "../../image/navi_stop.png",
-                                                id: 0,
-                                                width: 23,
-                                                height: 33
-                                            };
-                                            let markers = [
-                                                (Object.assign(markerFrom, fromObj)),
-                                                (Object.assign(markerTo, toObj))
-                                            ];
-                                            ut.debug('markers', markers);
-
-                                            //1-3根据起止点的坐标，得出将显示的地图中央坐标
-                                            let mapCenter = {
-                                                longitude: (res.longitude + location.longitude) / 2,
-                                                latitude: (res.latitude + location.latitude) / 2
-                                            };
-                                            ut.debug('mapCenter', mapCenter);
-
-                                            //1-4将上述参数保存在data对象中便于生成地图使用
+                                            steps: data.paths[0].steps
+                                        });
+                                        if (data.paths[0] && data.paths[0].distance) {
                                             that.setData({
-                                                to: to,
-                                                from: from,
-                                                mapCenter: mapCenter,
-                                                markers: markers
-                                            })
-
-                                        } else {
-                                            to = that.data.to;
-                                            from = that.data.from;
+                                                distance: data.paths[0].distance + '米'
+                                            });
                                         }
-
-
-                                        //2准备路径规划参数
-                                        //2-1非公交类交通工具使用的参数对象
-                                        let params = {
-                                            origin: from,
-                                            destination: to,
-                                            success: function (data) {
-                                                let points = [];
-                                                if (data.paths && data.paths[0] && data.paths[0].steps) {
-                                                    let steps = data.paths[0].steps;
-                                                    for (let i = 0; i < steps.length; i++) {
-                                                        let poLen = steps[i].polyline.split(';');
-                                                        for (let j = 0; j < poLen.length; j++) {
-                                                            points.push({
-                                                                longitude: parseFloat(poLen[j].split(',')[0]),
-                                                                latitude: parseFloat(poLen[j].split(',')[1])
-                                                            })
-                                                        }
-                                                    }
-                                                }
-
-                                                that.setData({
-                                                    polyline: [{
-                                                        points: points,
-                                                        color: "#0091ff",
-                                                        width: 6,
-                                                        arrowLine: true
-                                                    }],
-
-                                                    steps: data.paths[0].steps
-                                                });
-                                                if (data.paths[0] && data.paths[0].distance) {
-                                                    that.setData({
-                                                        distance: data.paths[0].distance + '米'
-                                                    });
-                                                }
-                                                if (data.paths[0] && data.paths[0].duration) {
-                                                    that.setData({
-                                                        durationGd: '(' + parseInt(data.paths[0].duration / 60) + '分钟' + ')'
-                                                    });
-                                                }
-                                                if (data.taxi_cost) {
-                                                    that.setData({
-                                                        cost: '打车约' + parseInt(data.taxi_cost) + '元'
-                                                    });
-                                                }
-                                            },
-                                            fail: function (info) {
-                                                ut.error('OAERROR:非公交类路径规划服务调用失败', info)
-                                            }
-                                        };
-
-                                        //2-2公交交通使用的参数对象
-                                        let paramsTransit = {
-                                            origin: from,
-                                            destination: to,
-                                            city: '上海',
-                                            success: function (data) {
-                                                console.log('1111111111111111111', data);
-                                                let transits = [];
-                                                if (data && data.transits) {
-                                                    transits = data.transits;
-                                                    for (let i = 0; i < transits.length; i++) {
-                                                        let segments = transits[i].segments;
-                                                        transits[i].transport = [];
-                                                        for (let j = 0; j < segments.length; j++) {
-                                                            if (segments[j].bus && segments[j].bus.buslines && segments[j].bus.buslines[0] && segments[j].bus.buslines[0].name) {
-                                                                let name = segments[j].bus.buslines[0].name;
-                                                                name = name + '\n\n  [' + segments[j].bus.buslines[0].departure_stop.name + '站上，' + segments[j].bus.buslines[0].arrival_stop.name + '站下]'
-                                                                if (j !== 0) {
-                                                                    name = '--' + name;
-                                                                }
-                                                                transits[i].transport.push(name);
-                                                            }
-                                                        }
-                                                    }
-
-                                                    ut.debug('公交路线', transits);
-                                                }
-                                                that.setData({
-                                                    transits: transits
-                                                });
-
-                                            },
-                                            fail: function (info) {
-                                                console.log('000000000000000000000000', info);
-                                            }
-                                        };
-
-                                        //3根据不同的交通方式调用对应的api生成地图
-                                        if (that.data.trafficType === 'driving') {
-                                            myAmapFun.getDrivingRoute(params);
-                                        } else if (that.data.trafficType === 'ridding') {
-                                            myAmapFun.getRidingRoute(params);
-                                        } else if (that.data.trafficType === 'walking') {
-                                            myAmapFun.getWalkingRoute(params);
-                                        } else if (that.data.trafficType === 'transit') {
-                                            myAmapFun.getTransitRoute(paramsTransit)
+                                        if (data.paths[0] && data.paths[0].duration) {
+                                            that.setData({
+                                                durationGd: '(' + parseInt(data.paths[0].duration / 60) + '分钟' + ')'
+                                            });
                                         }
+                                        if (data.taxi_cost) {
+                                            that.setData({
+                                                cost: '打车约' + parseInt(data.taxi_cost) + '元'
+                                            });
+                                        }
+                                    },
+                                    fail: function (info) {
+                                        ut.error('OAERROR:非公交类路径规划服务调用失败', info)
                                     }
-                                });
+                                };
 
+                                //2-2公交交通使用的参数对象
+                                let paramsTransit = {
+                                    origin: from,
+                                    destination: to,
+                                    city: '上海',
+                                    success: function (data) {
+                                        console.log('1111111111111111111', data);
+                                        let transits = [];
+                                        if (data && data.transits) {
+                                            transits = data.transits;
+                                            for (let i = 0; i < transits.length; i++) {
+                                                let segments = transits[i].segments;
+                                                transits[i].transport = [];
+                                                for (let j = 0; j < segments.length; j++) {
+                                                    if (segments[j].bus && segments[j].bus.buslines && segments[j].bus.buslines[0] && segments[j].bus.buslines[0].name) {
+                                                        let name = segments[j].bus.buslines[0].name;
+                                                        name = name + '\n\n  [' + segments[j].bus.buslines[0].departure_stop.name + '站上，' + segments[j].bus.buslines[0].arrival_stop.name + '站下]'
+                                                        if (j !== 0) {
+                                                            name = '--' + name;
+                                                        }
+                                                        transits[i].transport.push(name);
+                                                    }
+                                                }
+                                            }
+
+                                            ut.debug('公交路线', transits);
+                                        }
+                                        that.setData({
+                                            transits: transits
+                                        });
+
+                                    },
+                                    fail: function (info) {
+                                        console.log('000000000000000000000000', info);
+                                    }
+                                };
+
+                                //3根据不同的交通方式调用对应的api生成地图
+                                if (that.data.trafficType === 'driving') {
+                                    myAmapFun.getDrivingRoute(params);
+                                } else if (that.data.trafficType === 'ridding') {
+                                    myAmapFun.getRidingRoute(params);
+                                } else if (that.data.trafficType === 'walking') {
+                                    myAmapFun.getWalkingRoute(params);
+                                } else if (that.data.trafficType === 'transit') {
+                                    myAmapFun.getTransitRoute(paramsTransit)
+                                }
                             }
-                        //})
+                        });
+
                     }
-                })
+                    //})
+                }
+            })
 
-            } else {
-                ut.debug('进入新增模式，隐藏详情页面');
-
-                //以新增模式进入本页，检查userInfo是否有效，若无效则提示重新登录
-                ut.checkSession(null,app,that,()=>{
-                    that.setData({
-                        preview: false,
-                        'rdata.mobile': app.globalData.userInfo.mobile, //默认取自当前用户的手机号
-                    });
-                })
-            }
+        } else {
+            ut.debug('进入新增模式，隐藏详情页面');
+            //以新增模式进入本页，检查userInfo是否有效，若无效则提示重新登录
+            ut.checkSession(null, app, that, () => {
+                that.setData({
+                    preview: false,
+                    'rdata.mobile'  : app.globalData.userInfo.mobile, //默认取自当前用户的手机号
+                    'rdata.uprice'  : that.data.upriceList[0],
+                    'rdata.dura'    : that.data.durationList[0],
+                    'rdata.clfn'    : app.globalData.userInfo.name,
+                });
+            })
+        }
 
     },
 
@@ -649,17 +726,39 @@ Page({
             rdata.stat = 'start';
             //rdata.lborInfo=app.globalData.userInfo;//上单用户的信息
             //rdata.clntInfo=this.data.rdata.clntInfo;
+            rdata.begin_time = new Date();
         } else if (st === 'lbor-cancel') { //阿姨取消
             rdata.stat = 'wait';
             rdata.lborInfo = {};
         } else if (st === 'finish') {      //阿姨完工
             rdata.stat = 'finish';
+
+            rdata.end_time = new Date();
+            rdata.time_cost = ((new Date(rdata.end_time) - new Date(rdata.begin_time)) / 1000 / 60).toFixed(0);//分钟
+            rdata.cost = ((rdata.time_cost / 60) * rdata.uprice).toFixed(0);
+
+            console.log(
+                '耗时：' + rdata.time_cost + '分钟',
+                '单价：' + rdata.uprice,
+                '费用：' + rdata.cost
+            );
+
+
+            //TODO:计算结束时间与开始时间之差
         }
         else {                          //新建单子
-            ut.debug('submitType未被设置，表明是新建订单，则补充客户信息');
+            ut.debug('submitType未被设置，表明是新建订单，则补充客户信息', rdata);
             rdata.clntInfo = app.globalData.userInfo;
-        }
 
+            //再此校验数据的的规则：必填项、数字格式
+            //todo：根据字段配置信息，执行校验规则
+
+            console.log('rdata.uprice before submit', rdata.uprice);
+            rdata.cost = 0;
+
+        }
+        rdata.uprice = Number(rdata.uprice);
+        rdata.cost = Number(rdata.cost);
 
         if (goOne) {
 
@@ -671,7 +770,7 @@ Page({
 
 
             wx.request({
-                url: cfg.service.rqstEditUrl,
+                url: cf.service.rqstEditUrl,
                 data: {
                     /**
                      *前端的参数通过rdata封装，不用在data中按输入域设置参数值，以减少前端代码量。
@@ -691,7 +790,7 @@ Page({
                         wx.showToast({
                             title: retMsg,
                             icon: 'success',
-                            duration: cfg.vc.ToastShowDurt,
+                            duration: cf.vc.ToastShowDurt,
                             success: function () {
 
                                 //准备msg文件中所需要的内容TODO:将链接也作为参数传到下一页，或将下面的代码封装成一个函数。
@@ -802,6 +901,7 @@ Page({
         })
     },
     changePreview: function (e) {
+        let that = this;
         this.setData({
             preview: !this.data.preview,
         });
@@ -810,12 +910,28 @@ Page({
 
         if (st === 'onemore') {
             ut.debug('再来一单,清空reqId');
+
+            let address = this.data.rdata.addr;
+            let location = this.data.rdata.location;
+            console.log(address);
+            //清理表单中的各种数据
+            that.setData({
+                'rdata'    : {},
+            });
+
+            //加载表单中的新单必要信息
             this.setData({
                 'rdata.reqId': '',
-                'rdata.osdt': '',
-                'rdata.ostm': '',
-                'rdata.stat': 'wait'
+                'rdata.mobile'  : app.globalData.userInfo.mobile, //默认取自当前用户的手机号
+                'rdata.uprice'  : that.data.upriceList[0],
+                'rdata.addr'    : address,
+                'rdata.location': location,
+                'rdata.dura'    : that.data.durationList[0],
+                'rdata.clfn'    : app.globalData.userInfo.name,
+                'rdata.stat'    : 'wait'
             });
+
+
         }
 
     },

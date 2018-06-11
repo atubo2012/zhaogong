@@ -22,6 +22,7 @@
                 <!--<text class="user-motto">{{motto}}</text>-->
                 <button class='weui-btn' bindtap="setRoleLbor" type="primary">我想找工作</button>
                 <button class="weui-btn" bindtap="setRoleClnt" type="primary">我想找帮手</button>
+                <navigator wx:if="{{cf.runMode==='dev' || cf.runMode==='test'}}" url="../rqst-list/rqst-list?type=my" class="weui-footer__link">我的订单</navigator>
             </block>
 
             <block wx:if="{{!isLogined}}">

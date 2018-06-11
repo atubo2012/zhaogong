@@ -1,9 +1,9 @@
 let qcloud = require('./vendor/qcloud-weapp-client-sdk/index');
 let ZgConfig = require('ZgConfig.js');
 let ut = require('utils/utils.js');
+const updateManager = wx.getUpdateManager();
 
 App({
-
     //全局参数的顺序：系统信息、用户信息、运行时信息、应用的全局参数。按照从稳定到活跃的顺序安排。
     globalData: {
 
@@ -11,6 +11,7 @@ App({
          * 系统信息
          */
         sysInfo: {},    //用户的手机终端环境信息，app初始化时获取
+
 
         /**
          * 用户信息
@@ -76,6 +77,36 @@ App({
                 console.error('获取位置发生错误',res);
             },
         });
+
+
+
+        //20180604，支持更新检查
+        //官文参考：
+        // 1、https://developers.weixin.qq.com/miniprogram/dev/api/getUpdateManager.html
+        // 2、https://developers.weixin.qq.com/blogdetail?action=get_post_info&lang=zh_CN&token=1491144534&docid=000c2430d30b70251e86f0a0256c09&inwindow=1
+        updateManager.onCheckForUpdate(function (res) {
+            // 请求完新版本信息的回调
+            console.log('MP更新状态！',res.hasUpdate);
+        });
+
+        updateManager.onUpdateReady(function () {
+            wx.showModal({
+                title: '更新提示',
+                content: '新版本已经准备好，是否重启应用？',
+                success: function (res) {
+                    if (res.confirm) {
+                        // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+                        updateManager.applyUpdate()
+                    }
+                }
+            })
+
+        });
+
+        updateManager.onUpdateFailed(function () {
+            // 新的版本下载失败
+            console.log('MP更新失败！');
+        })
 
     },
 

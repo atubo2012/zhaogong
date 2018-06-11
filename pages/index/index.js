@@ -10,7 +10,8 @@ Page({
         userInfo: {},
         isLogined: false,//默认状态为未登录，该属性控制显示“微信登录”按钮还是“业务功能按钮”
         stUserInfo: wx.getStorageSync('userInfo'),
-        code: ''
+        code: '',
+        cf:cf,
     },
 
     /**
