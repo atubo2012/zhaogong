@@ -11,12 +11,14 @@
         <block wx:for="{{lists}}" wx:for-item="list" wx:key="aa">
             <view wx:if="{{role===list.role || 'COMM'===list.role}}" class="weui-cells__title">{{list.title}}</view>
             <view wx:if="{{role===list.role || 'COMM'===list.role}}" class="weui-cells weui-cells_after-title">
-                <block wx:for="{{list.items}}" wx:for-item="item" wx:key="bb">
+                <block wx:for="{{list.items}}" wx:for-item="item" wx:key="bb" >
 
-                    <!--view级别的快捷方式-->
-                    <navigator url="{{item.url}}" class="weui-cell weui-cell_access" >
+                    <!--内容仅限管理员才可查看的实现方式-->
+                    <navigator url="{{item.url}}" class="weui-cell weui-cell_access"
+                               wx:if="{{ !item.forAdmin ||( item.forAdmin && userInfo.is_admin)}}"
+                    >
                         <view class="weui-cell__bd">
-                            <view style="display: inline-block; vertical-align: middle">{{item.label}}</view>
+                            <view style="display: inline-block; vertical-align: middle">{{item.label}} </view>
                             <view wx:if="{{item.hasNum}}" class="weui-badge" style="margin-left: 5px;">
                                 {{item.num}}
                             </view>
@@ -29,23 +31,11 @@
                               style="margin-left: 5px;margin-right: 5px;"/>
                     </navigator>
                 </block>
+
+
             </view>
         </block>
 
-        <!--<view class="weui-cells__title">默认首页</view>-->
-        <!--<view class="weui-cells weui-cells_after-title">-->
-
-            <!--<view class="weui-cell weui-cell_access">-->
-                <!--<view class="weui-cell__hd">请选择:</view>-->
-                <!--<view class="weui-cell__bd">-->
-                    <!--<radio-group bindchange="roleChange">-->
-                        <!--<label wx:for="{{items}}" wx:key="a1" wx:if="{{item.name!='COMM'}}" >-->
-                            <!--<radio class="weui-radio" value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}-->
-                        <!--</label>-->
-                    <!--</radio-group>-->
-                <!--</view>-->
-            <!--</view>-->
-        <!--</view>-->
 
     </view>
     <include src="../tplt/footer.wxml"/>

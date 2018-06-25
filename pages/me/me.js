@@ -1,6 +1,6 @@
 let ut = require('../../utils/utils.js');
 const app = getApp();
-
+const cf = app.globalData.cf;
 Page({
 
     /**
@@ -27,30 +27,46 @@ Page({
         lists: [
 
             {
-                title: '我的信息', role: 'LBOR', items: [
+                title: '我的信息',
+                role: 'LBOR',
+
+                items: [
                 {label: '我的档期', url: '../lbor-edit/lbor-edit', desc: ''},
                 {label: '我的证书', url: '../cert-list/cert-list', desc: ''},
                 {label: '工作简历', url: '../cert-list/cert-list', desc: ''},
                 ]
             },
             {
-                title: '我的信息', role: 'CLNT', items: [
+                title: '我的信息',
+                role: 'CLNT',
+
+                items: [
                 {label: '我的订单', url: '../rqst-list/rqst-list?type=my', desc: '说明'},//日期、业务种类、状态、服务人员、给予评价
             ]
             },
             {
-                title: '通用', role: 'COMM', items: [
-                {label: '用户信息', url: '../user-edit/user-edit', desc: '查看、修改'},
-                {label: '我的评价', url: '../cmmt-list/cmmt-list?type=lookme&&mode=tome', desc: '说明'},
-                {label: '我的订单', url: '../rqst-list/rqst-list?type=my', desc: '说明',},
-                {label: '常用地址', url: '../addr-edit/addr-edit', desc: ''},//参考京东的地址管理风格，可以在该页中增加培训的内容
-                {label: '常用联系人', url: '../addr-list/addr-list', desc: ''},
+                title: '通用',
+                role: 'COMM',
+
+                items: [
+                    {label: '我的订单', url: '../rqst-list/rqst-list?type=my', desc: '查看、修改',},
+                    {label: '我的评价', url: '../cmmt-list/cmmt-list?type=lookme&&mode=tome', desc: '查看'},
+                    {label: '个人信息', url: '../user-edit/user-edit', desc: '查看、修改'},
+                    {label: '关于'   ,url:'../about/about'        ,desc:'查看'},
+
+
+                    {label: '用户信息', url: '../user-list/user-list', desc: '查看',forAdmin:true},
+
+
+
+                    // {label: '常用地址', url: '../addr-edit/addr-edit', desc: ''},//参考京东的地址管理风格，可以在该页中增加培训的内容
+                    // {label: '常用联系人', url: '../addr-list/addr-list', desc: ''},
                 /**
                  {label:'收藏'   ,url:'../clct-list/clct-list',desc:'',num:'你好',hasNum:true},
                  {label:'关注'   ,url:'../fcus-list/clct-list',desc:''},
                  {label:'分享有礼',url:'../share/share'        ,desc:''},
                  {label:'浏览记录',url:'../brws-list/brws-list',desc:'',hasDot:true},
-                 {label:'关于'   ,url:'../about/about'        ,desc:'说明'},
+
                  */
             ]
             },
@@ -76,7 +92,7 @@ Page({
     onLoad: function () {
         ut.checkSession(null,app,this,()=>{
             if(''===app.globalData.userInfo.role){
-                ut.debug('默认角色尚未设置');
+                //ut.debug('默认角色尚未设置');
                 this.openConfirm();
             }else{
                 this.renderData();
@@ -89,7 +105,6 @@ Page({
 
     renderData:function () {
         let that = this;
-        ut.debug('渲染页面');
         this.setData({
             role: app.globalData.userInfo.role,
             items:ut.getRa(app.globalData.userInfo.role,that.data.items),
