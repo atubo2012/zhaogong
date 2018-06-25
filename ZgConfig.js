@@ -1,10 +1,17 @@
 /**
  * 根据编译时参数，初始化配置信息
- * @param runmode 编译时设置的参数
+ * @param runtime 编译时设置的参数集合
  */
-function ZgConfig(runmode) {
+function ZgConfig(runtime) {
 
-    this.runMode = runmode;
+    this.runMode = runtime.runmode;
+
+    this.language = '';
+    if(!runtime.sysinfo || !runtime.sysinfo.language || runtime.sysinfo.language===''){
+        this.language = 'zh_CN';
+    }else{
+        this.language = runtime.sysinfo.language;
+    }
 
     /**
      * 域名命名规范：
@@ -47,7 +54,13 @@ function ZgConfig(runmode) {
                 return tradeNo;
             }
         }
-    }[runmode];
+    }[this.runMode];
+
+    /**
+     * 特权用户白名单
+     * TODO:可以在运行时从后台获取。
+     */
+    this.whiteList=['13917153958','18616257890','17701826978'];
 
     //根据传入的运行模式参数，生效对应的参数
     this.url = this.runtimeConfig.url;
@@ -85,8 +98,14 @@ function ZgConfig(runmode) {
         // LB个人信息修改接口
         lborEditUrl: `${url}/lbor-edit`,
 
+        // LB个人信息修改接口
+        lborListUrl: `${url}/lbor-list`,
+
         // 用户个人信息修改接口
         userEditUrl: `${url}/user-edit`,
+
+        //用户列表查询
+        userListUrl: `${url}/user-list`,
 
         //检查用户状态
         userCheckUrl: `${url}/user-chck`,
@@ -117,7 +136,7 @@ function ZgConfig(runmode) {
     this.vc = {
         swiperItvl      : 5000, //每张图片展现的时间。
         swiperDurt      : 2000,  //切换一张图片的过程所需要的时间
-        ToastShowDurt   : 3000,  //提交后的面包提示框展现持续时间
+        ToastShowDurt   : 2000,  //提交后的面包提示框展现持续时间
         PAGE_REFRESH_INTERVAL: 3000,//页面多次刷新之间的最短时间间隔
     };
 
@@ -129,27 +148,25 @@ function ZgConfig(runmode) {
      * 面向服务商的文字使用中文，正面、激励
      */
     this.pageInfo = [
-        {page: 'index', title: '一切皆有可能', desc: '相信美好的事情即将发生！'},
+        {page: 'index',     title: '一切皆有可能', desc: '相信美好的事情即将发生！'},
         {page: 'clnt-main', title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
         {page: 'rqst-edit', title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
-        {page: 'lbor-main', title: '服务源自真诚', desc: '靠谱、专业、真诚！'},
-        {page: 'rqst-list', title: '服务源自真诚', desc: '靠谱、专业、真诚！'},
+        {page: 'lbor-main', title: '成就自己', desc: '靠谱、专业、真诚！'},
+        {page: 'rqst-list', title: '成就自己', desc: '靠谱、专业、真诚！'},
         {page: 'lbor-edit', title: '耐心', desc: '是一切聪明才智的基础！'},
-        {page: 'me', title: '耐心', desc: '是一切聪明才智的基础！'},
-        {page: 'addr-list', title: '找工', desc: '相信美好的事情即将到来'},
-        {page: 'addr-edit', title: '找工', desc: '相信美好的事情即将到来'},
-        {page: 'about', title: '成就自己', desc: '影响他人'},
-        {page: '', title: '功不唐捐', desc: '天下没有白费的努力，《我们应走的路》，胡适'},
-        {page: '', title: '今日的努力', desc: '必定有将来的大成就'},
+        {page: 'me',        title: '耐心', desc: '是一切聪明才智的基础！'},
+        {page: 'addr-list', title: '一切皆有可能', desc: '相信美好的事情即将到来'},
+        {page: 'addr-edit', title: '一切皆有可能', desc: '相信美好的事情即将到来'},
+        {page: 'about',     title: '成就自己', desc: '影响他人'},
         {page: '', title: '靠谱比聪明更重要', desc: '《靠谱》，大石哲之'},
         {page: '', title: '容忍比自由更重要', desc: '《容忍与自由》，胡适'},
-        {page: '', title: '向内求', desc: '关注自己'},
+        {page: '', title: '向内求', desc: '成就自己'},
         {page: '', title: '以终为始', desc: ''},
         {page: '', title: '', desc: ''},
         {page: '', title: '', desc: ''},
     ];
 
-    this.pageSize = 5;//每次查询返回的记录数
+    this.pageSize = 10;//每次查询返回的记录数
 
     /**
      * 异常信息常量定义
@@ -168,6 +185,17 @@ function ZgConfig(runmode) {
         //第三方类异常
         OT_0001: {desc: '显示给用户的异常描述', sugt: '给用户的下一步行动建议'},
     };
+
+    //提示类的信息
+    this.hint={
+        'zh_CN':{
+            'H_LOADING'   :'加载中',
+            'H_LOADED'    :'加载完成',
+            'H_NOMORE'    :'没有数据了'
+        }
+
+    }[this.language];
+
 }
 
 module.exports = ZgConfig;
