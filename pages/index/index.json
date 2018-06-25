@@ -1,1 +1,6 @@
-{}
+{
+  "usingComponents":{
+    "mobileinput":"/components/mobileinput",
+    "addressinput":"/components/addressinput"
+  }
+}

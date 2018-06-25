@@ -6,13 +6,34 @@ let cf = app.globalData.cf;
 Page({
     data: {
         pageInfo: app.getPageInfo('index'),
+        cf:cf,
         motto: '',
         userInfo: {},
         isLogined: false,//默认状态为未登录，该属性控制显示“微信登录”按钮还是“业务功能按钮”
-        stUserInfo: wx.getStorageSync('userInfo'),
+        //stUserInfo: wx.getStorageSync('userInfo'),
         code: '',
-        cf:cf,
     },
+
+
+    /**
+     * 获取手机号组件内的数据
+     * @param e
+     */
+    testcc:function (e) {
+        let ccmb = this.selectComponent("#ccmb");
+        console.log('ccmb',ccmb.data);
+
+    },
+    onChooseAddressEvent:function (e) {
+        console.log(e);
+    },
+    onCheckMobileEvent:function (e) {
+        console.log(e);
+    },
+
+
+
+
 
     /**
      * 根据场景类别加载页面
@@ -21,12 +42,6 @@ Page({
      */
     onLoad: function (option) {
         let that = this;
-
-        //根据运行时参数，初始化，下面两行代码仅用作特性验证
-        // app.globalData['runMode']=option.runmode;
-        // app.globalData['cf'] = new ZgConfig(option.runmode);
-        // cf = app.globalData['cf'];
-
 
         console.debug(
             '================',
@@ -48,7 +63,8 @@ Page({
         if (!ut.hasStored('userInfo') || //本地尚无用户信息，说明是用户第一次访问
             app.globalData.entryType === 'SESSION_TIMEOUT' ){//由于后端程序会话超时导致的加载首页
             that.setData({
-                isLogined: false
+                isLogined: false,
+                submitButtonDisabled:false
             });
         } else {
             /**
@@ -193,16 +209,6 @@ Page({
         //     });
         // });
 
-        /**
-         * TODO:
-         * 1、识别是否为新用户
-         * 2-1、如果是新用户，则将页面导航到Role（找帮手/找工作）
-         * 3-1、选定角色后导航到reqList看需求单或svcType选择服务种类
-         * 4-1、LB点击需求列表进入reqDetl，选择上单时，提示填写个人信息和档期。录入完后进入该需求单。
-         * 4-2、HI选择svcType进入reqEdit，录入需求信息，提交后提醒已发给n个供应商，接单后短信提醒。
-         *
-         * 2-2、如果是老用户，则根据角色进入到reqList或svcType
-         */
     },
 
     /**
@@ -574,6 +580,14 @@ Page({
      * @param e
      */
     login4: function (e) {
+        this.setData({
+            submitButtonDisabled:true
+        });
+        wx.showLoading({
+            title: cf.hint.H_LOADING,
+        });
+
+
         let that = this;
 
         //取得非敏感的userInfo后，保存到共享数据区
@@ -619,7 +633,7 @@ Page({
                                     //登录成功后显示功能按钮
                                     that.setData({
                                         isLogined: true,
-                                        userInfo: app.globalData.userInfo
+                                        // userInfo: app.globalData.userInfo
                                     });
 
                                     //检查是否是新用户，新用户则创建一条记录，老用户则返回老用户的记录（包括手机、角色等）
@@ -637,6 +651,10 @@ Page({
 
                                             app.globalData.userInfo = res2.data;
 
+                                            ut.debug('userCheckUrl：',app.globalData.userInfo)
+                                            that.setData({
+                                                userInfo: app.globalData.userInfo
+                                            });
 
                                             //如果后台返回的数据为空（）或者mobile字段尚未填写，则说明用户未注册，将用户标识为新用户。
                                             if ("0" === ret || res2.data.mobile === '') {
@@ -656,6 +674,9 @@ Page({
 
                                             //检查用户是否已注册，本条语句是为测试。应在需要保留用户信息的时候调用以下语句，引导用户去注册。
                                             app.isNewUser();
+                                        },
+                                        complete:function (res) {
+                                            wx.hideLoading();
                                         }
                                     });
                                 }
@@ -667,13 +688,14 @@ Page({
                     }
                 });
             },
+
+
         });
     },
 
 
 
     onShow: function () {
-
         //若是由于会话超时导致的首页刷新，则执行重新登录操作。
         if (app.globalData.entryType === 'SESSION_TIMEOUT') {
             //app.globalData.userInfo = null;
