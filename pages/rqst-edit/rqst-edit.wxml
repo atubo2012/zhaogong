@@ -23,7 +23,7 @@
                             <input name="osdt" value="{{rdata.osdt}}" hidden="true"/>
                         </view>
                         <view class="weui-cell__bd">
-                            <picker mode="time" value="{{rdata.ostm}}" start="{{rdata.ostm}}" end="23:59"
+                            <picker mode="time" value="{{rdata.ostm}}" start="{{start_time}}" end="23:59"
                                     bindchange="bindTimeChange">
                                 <view class="weui-input">{{rdata.ostm}}</view>
                             </picker>
@@ -144,8 +144,6 @@
                         </view>
                     </view>
 
-                    <!--<mobileinput title="手机号组件" class="weui-cell weui-cell_input"-->
-                                 <!--bind:cpevent="onCpeMobileReady" input-data="{{rdata.mbnb2}}"/>-->
                 </view>
 
 
@@ -226,7 +224,7 @@
                         <view class="weui-form-preview__value">
                             <navigator url="../cmmt-list/cmmt-list?type=lookta&&mode=tota&&openId={{rdata.clntInfo.openId}}" class="weui-footer__link"
                                        hover-class="weui-cell_active">
-                            {{rdata.clntInfo.nickName}} (联系人：{{rdata.clfn}}{{rdata.sex}}）
+                            {{rdata.clfn}}{{rdata.sex}}
                             </navigator>
                         </view>
                     </view>
@@ -283,6 +281,7 @@
                             <view wx:if="{{rdata.stat ==='start'}}">工作正在进行中</view>
                             <button class="weui-btn" data-submitType="onemore" hidden="{{!(rdata.stat==='paid')}}"  bindtap="changePreview" >再来一单</button>
                             <button hidden="{{!(rdata.stat ==='finish')}}"   class="weui-btn" disabled="{{submitButtonDisabled}}" type="primary"  bindtap="payTap">马上支付({{rdata.cost}}元)</button>
+                            <button class="weui-btn" disabled="{{submitButtonDisabled}}"   open-type="share">分享</button>
                             <button hidden="{{!(rdata.stat ==='paid')}}"  data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价</button>
 
                         </block>

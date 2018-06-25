@@ -26,9 +26,10 @@ Page({
 
             osdt: ut.getToday('-'),
             ostm: ut.getNow(':'),      //TODO:将时间改为整点小时和30分钟，参考滴滴出行
-            stat: 'wait',    //订单状态：1待接-wait，2已接-get，3服务中-serve，4已完成-over，5已评价comment，A过期、B关闭-close
+            stat: 'wait',
 
         },
+        start_time: ut.getNow(':'),
 
 
         //TODO:可将以下码表类的信息统一放在config.js中（静态保存，或从后端动态下载），便于管理。
@@ -81,6 +82,35 @@ Page({
 
     },
 
+    /**
+     *
+     * @param res
+     * @returns {{title: string, path: string}}
+     */
+    onShareAppMessage: function (res) {
+        if (res.from === 'button') {
+            // 来自页面内转发按钮
+            console.log('onShareAppMessage',res)
+        }
+        return {
+            title: '临时保洁',
+            path: '/pages/rqst-edit/rqst-edit?reqId=' + this.data.rdata.reqId,
+            success:(res)=> {
+                wx.getShareInfo({
+                    shareTicket: res.shareTickets[0],
+                    success: function (res) {
+                        console.log('encryptedData',res.encryptedData)
+                        console.log('iv:',res.iv)
+                    }
+                });
+            }
+        }
+    },
+
+
+    /**
+     * 订单支付按下后的处理
+     */
     payTap: function () {
         let that = this;
 
@@ -111,44 +141,44 @@ Page({
             },
             success: function (res) {
                 ut.checkSession(res, app, that, function (option) {
-                let payModel = res.data;
-                console.log('统一下单RD=', payModel, res);
+                    let payModel = res.data;
+                    console.log('统一下单RD=', payModel, res);
 
-                if (res.data.status === '100') {
-                    wx.requestPayment({
-                        'timeStamp': payModel.timestamp,
-                        'nonceStr': payModel.nonceStr,
-                        'package': payModel.package,
-                        'signType': 'MD5',
-                        'paySign': payModel.paySign,
-                        'success': function (res1) {
-                            console.log('支付成功，结果=', res1);
+                    if (res.data.status === '100') {
+                        wx.requestPayment({
+                            'timeStamp': payModel.timestamp,
+                            'nonceStr': payModel.nonceStr,
+                            'package': payModel.package,
+                            'signType': 'MD5',
+                            'paySign': payModel.paySign,
+                            'success': function (res1) {
+                                console.log('支付成功，结果=', res1);
 
-                            if(res1.errMsg==='requestPayment:ok'){
-                                //TODO可以显示倒计时，订单生成中。
-                                wx.request({
-                                    url: cf.service.wxpayQueryUrl,
-                                    data: {
-                                        out_trade_no: out_trade_no,
-                                    },
-                                    success: function (res3) {
-                                        console.log(res3);
-                                        wx.showToast({
-                                            title: '支付成功',
-                                            icon: 'success',
-                                            duration: cf.vc.ToastShowDurt
-                                        });
-                                        that.setData({'rdata.stat': 'paid'});
-                                    }
-                                })
+                                if (res1.errMsg === 'requestPayment:ok') {
+                                    //TODO可以显示倒计时，订单生成中。
+                                    wx.request({
+                                        url: cf.service.wxpayQueryUrl,
+                                        data: {
+                                            out_trade_no: out_trade_no,
+                                        },
+                                        success: function (res3) {
+                                            console.log(res3);
+                                            wx.showToast({
+                                                title: '支付成功',
+                                                icon: 'success',
+                                                duration: cf.vc.ToastShowDurt
+                                            });
+                                            that.setData({'rdata.stat': 'paid'});
+                                        }
+                                    })
+                                }
+                            },
+                            'fail': function (res2) {
+                                console.log('支付失败，结果:', res2);
                             }
-                        },
-                        'fail': function (res2) {
-                            console.log('支付失败，结果:', res2);
-                        }
-                    })
-                }
-            });
+                        })
+                    }
+                });
             },
             fail: function (res) {
                 console.log('后端支付服务异常:', res);
@@ -182,7 +212,7 @@ Page({
      * 功能：发送验证码
      * 算法：
      * 1、禁用发送按钮，防止重复点击
-     * 2、如格式不正确，则回复发送按钮，并提示格式错误
+     * 2、如格式不正确，则恢复发送按钮，并提示格式错误
      * 3、如格式正确，生成动态码，光标移到动态码栏位
      * 4、发送短信指令：动态码、发送开关、手机号、openId
      * @param e
@@ -463,14 +493,22 @@ Page({
                         console.log('加载页面后的rdata', that.data.rdata);
 
 
+                        wx.showShareMenu({
+                            withShareTicket: true,
+                            // success: function (e) {
+                            //     console.log('in wx.showShareMenu1',e)
+                            // }
+                            // ,fail: function (e) {
+                            //     console.log('in wx.showShareMenu2',e)
+                            // }
+                        });
+
                         /**
                          * 展示地图 //TODO:将敏感数据放到ZgConfig.js中
                          */
                         let myAmapFun = new amapFile.AMapWX({key: '2d15ece70392d0afd89dae800f78f94d'});
-
                         let to = '';
                         let from = '';
-
                         wx.getLocation({
                             success: function (res) {
 
@@ -643,10 +681,10 @@ Page({
             ut.checkSession(null, app, that, () => {
                 that.setData({
                     preview: false,
-                    'rdata.mobile'  : app.globalData.userInfo.mobile, //默认取自当前用户的手机号
-                    'rdata.uprice'  : that.data.upriceList[0],
-                    'rdata.dura'    : that.data.durationList[0],
-                    'rdata.clfn'    : app.globalData.userInfo.name,
+                    'rdata.mobile': app.globalData.userInfo.mobile, //默认取自当前用户的手机号
+                    'rdata.uprice': that.data.upriceList[0],
+                    'rdata.dura': that.data.durationList[0],
+                    'rdata.clfn': app.globalData.userInfo.name,
                 });
             })
         }
@@ -891,9 +929,25 @@ Page({
 
 
     bindDateChange: function (e) {
+
+
+        let newDate = new Date(e.detail.value).getTime();
+        let todayDate = new Date(this.data.rdata.osdt).getTime();
+        console.log('选中的日期', newDate, todayDate);
+
+        if (newDate === todayDate) {
+            this.setData({
+                'start_time': ut.getNow(':'),
+            });
+        } else {
+            this.setData({
+                'start_time': '00:00',
+            });
+        }
+
         this.setData({
             'rdata.osdt': e.detail.value,
-        })
+        });
     },
     bindTimeChange: function (e) {
         this.setData({
@@ -916,19 +970,19 @@ Page({
             console.log(address);
             //清理表单中的各种数据
             that.setData({
-                'rdata'    : {},
+                'rdata': {},
             });
 
             //加载表单中的新单必要信息
             this.setData({
                 'rdata.reqId': '',
-                'rdata.mobile'  : app.globalData.userInfo.mobile, //默认取自当前用户的手机号
-                'rdata.uprice'  : that.data.upriceList[0],
-                'rdata.addr'    : address,
+                'rdata.mobile': app.globalData.userInfo.mobile, //默认取自当前用户的手机号
+                'rdata.uprice': that.data.upriceList[0],
+                'rdata.addr': address,
                 'rdata.location': location,
-                'rdata.dura'    : that.data.durationList[0],
-                'rdata.clfn'    : app.globalData.userInfo.name,
-                'rdata.stat'    : 'wait'
+                'rdata.dura': that.data.durationList[0],
+                'rdata.clfn': app.globalData.userInfo.name,
+                'rdata.stat': 'wait'
             });
 
 
