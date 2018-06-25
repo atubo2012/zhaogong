@@ -25,16 +25,14 @@
         </view>
     </view>
 
+    <web-view src="{{cf.runtimeConfig.url}}"></web-view>
+
     <view class="weui-footer">
         <view class="weui-footer__links">
             <navigator url="../about/about" class="weui-footer__link" bindtap="goHome">首页</navigator>
         </view>
         <view class="weui-footer__text">Copyright © 2017</view>
     </view>
-
-
-    <!--<mobileinput title="手机号组件" class="weui-cell weui-cell_input"-->
-    <!--bind:cpevent="onCpeMobileReady" input-data="{{rdata.mbnb2}}"/>-->
 
 
 </view>

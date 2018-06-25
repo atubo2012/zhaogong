@@ -1,9 +1,11 @@
 let app = getApp();
 let ut = require('../../utils/utils.js');
+let cf = app.globalData.cf;
 
 Page({
     data: {
         pageInfo: app.getPageInfo('about'),
+        cf:cf,
 
         //TODO:可以从数据库中获取，或从github的release文件内容中生成
         contents:[
