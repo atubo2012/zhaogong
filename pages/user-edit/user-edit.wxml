@@ -1,0 +1,128 @@
+<view class="page">
+    <!--<include src="../tplt/pagehead.wxml"/>-->
+    <view class="page__bd"><!--框架头与页面内容空3行-->
+
+        <view class="page__bd page__bd_spacing" hidden="{{preview}}">
+            <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{errInfo}}</view>
+
+            <form bindsubmit="onSubmit" bindreset="formReset"  >
+
+                <!--个人信息-->
+                <view class="weui-cells weui-cells_after-title" >
+
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__bd">
+                            <image src="{{headImage}}" mode="aspecFill"
+                                   class="qs_head_image"
+                                   bindtap="{{hideSubmitButton ? '' : 'ulcertpic'}}"/>
+                        </view>
+                        <view class="weui-cell__bd">
+                            <input name="name" class="weui-input" value="{{userInfo.name}}" placeholder="真实姓名" focus="{{focusName}}" disabled="{{hideSubmitButton}}"/>
+                        </view>
+                    </view>
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__bd">
+                            <input name="mobile" class="weui-input" value="{{userInfo.mobile}}" placeholder="手机号码"
+                                   bindinput="setMobile" focus="{{focusMobile}}" disabled="{{hideSubmitButton}}"/>
+                        </view>
+                        <view class="weui-cell__ft" hidden="{{hideSubmitButton}}">
+                            <image src="../../image/edit.png" class="icon1" bindtap="showSC"/>
+                        </view>
+                    </view>
+
+                    <view class="weui-cell weui-cell_input" hidden="{{hideSC}}">
+                        <view class="weui-cell__bd">
+                            <input name="smsCode" class="weui-input" placeholder="短信验证码" focus="{{focusSC}}"
+                                   value="{{cf.runtimeConfig.sendSms ? '' : smsCode}}" disabled="{{hideSubmitButton}}"/>
+                        </view>
+                        <view class="weui-cell__ft">
+                            <button size="mini" type="primary" style="overflow: inherit;" bindtap="checkMobile"
+                                    disabled="{{buttonDisabled}}">{{buttonDesc}}
+                            </button>
+                        </view>
+                    </view>
+
+                    <!--地址下拉控件  TODO：自定义组件化-->
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__bd">
+                            <input class="weui-input" name="address" placeholder="地址：XX路XX号XX小区XX层XX室"
+                                   value="{{address}}" bindinput="bindKeyInput" disabled="{{hideSubmitButton}}"/>
+                            <input class="weui-input" name="location" hidden="true"
+                                   value="{{location}}" bindinput="bindKeyInput"/>
+                        </view>
+                    </view>
+                    <scroll-view scroll-y="true" class="scrollview">
+                        <view wx:for="{{addressList}}" wx:key="yyy">
+                            <view id="{{item}}" bindtap="itemtap" class="itemview" data-location="{{item.location}}"
+                                  data-address="{{item.address}}">{{item.address}}
+                            </view>
+                        </view>
+                    </scroll-view>
+
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__bd">
+                            <input name="sign" class="weui-input" placeholder="个性签名" value="{{userInfo.sign}}" disabled="{{hideSubmitButton}}"/>
+                        </view>
+                    </view>
+
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__hd">角色</view>
+                        <view class="weui-cell__bd">
+                            <radio-group bindchange="roleChange" class="weui-input" >
+                                <label wx:for="{{items}}" wx:key="a1" wx:if="{{item.name!='COMM'}}" >
+                                    <radio class="weui-radio" value="{{item.name}}" checked="{{item.checked}}" disabled="{{hideSubmitButton}}"/>
+                                    {{item.value}}
+                                </label>
+                            </radio-group>
+                        </view>
+                        <view hidden="{{hideCfm}}" class="weui-cell__ft" style="color:{{rolecfm?'green':'red'}}">
+                            ({{rolecfm ? '审核通过':'待审核'}})
+                        </view>
+
+
+                    </view>
+
+
+                    <!--服务人员的信息-->
+                    <block wx:if="{{showLborInfo}}">
+                        <view class="weui-cell weui-cell_input">
+                            <view class="weui-cell__hd">
+                                提供服务
+                            </view>
+                            <view class="weui-cell__ft">
+                                <checkbox-group bindchange="checkboxChange" class="weui-input">
+                                    <label wx:for="{{bizList}}" wx:key="a0">
+                                        <checkbox value="{{item.value}}" checked="{{item.checked}}" disabled="{{hideSubmitButton}}"/>{{item.name}}
+                                    </label>
+                                </checkbox-group>
+                            </view>
+                        </view>
+
+                        <view class="weui-cell weui-cell_input">
+                            <view class="weui-cell__bd">
+                                <input name="certNumber" class="weui-input" placeholder="证件号码"
+                                       value="{{userInfo.certNumber}}" disabled="{{hideSubmitButton}}"/>
+                            </view>
+                        </view>
+
+                        <view class="weui-cell weui-cell_input">
+                            <view class="weui-cell__bd">
+                                <image src="{{certPicUrl}}" mode="aspecFill" style="width: 640rpx; height: 360rpx"
+                                       bindtap="{{hideSubmitButton ? '' : 'ulcertpic'}}"/>
+                            </view>
+                        </view>
+                    </block>
+
+                </view>
+
+                <!--form button区-->
+                <view class="weui-btn-area" hidden="{{hideSubmitButton}}">
+                    <button formType="submit" type="primary" disabled="{{submitButtonDisabled}}">保存</button>
+                </view>
+
+            </form>
+        </view>
+    </view>
+    <include src="../tplt/footer.wxml"/>
+</view>
+

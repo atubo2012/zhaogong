@@ -4,6 +4,7 @@
     "pages/lbor-main/lbor-main",
     "pages/rqst-list/rqst-list",
     "pages/lbor-edit/lbor-edit",
+    "pages/lbor-list/lbor-list",
     "pages/clnt-main/clnt-main",
     "pages/rqst-edit/rqst-edit",
     "pages/me/me",
@@ -18,13 +19,13 @@
     "pages/msg/msg",
     "pages/addr-edit/addr-edit",
     "pages/gdmap/gdmap",
-    "pages/user-edit/user-edit"
-
+    "pages/user-edit/user-edit",
+    "pages/user-list/user-list"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "找工", 
+    "navigationBarTitleText": "找工",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -37,7 +38,6 @@
         "pagePath": "pages/clnt-main/clnt-main",
         "text": "找帮手"
       },
-
       {
         "pagePath": "pages/lbor-main/lbor-main",
         "text": "找工作"
@@ -53,6 +53,5 @@
     "request": 10000,
     "downloadFile": 10000
   },
-  "enablePullDownRefresh":true
-
+  "enablePullDownRefresh": true
 }

@@ -3,6 +3,9 @@ let ZgConfig = require('ZgConfig.js');
 let ut = require('utils/utils.js');
 const updateManager = wx.getUpdateManager();
 
+let socketOpen = false
+let socketMsgQueue = ['aaa','bbb']
+
 App({
     //全局参数的顺序：系统信息、用户信息、运行时信息、应用的全局参数。按照从稳定到活跃的顺序安排。
     globalData: {
@@ -41,22 +44,34 @@ App({
      */
     onLaunch: function (options) {
 
-        //如未指定运行模式，则默认为生产模式
-        const runmode = options.query.runmode ? options.query.runmode:'prod';
-        console.log('runmode',runmode);
-
-        //根据小程序的启动参数，初始化运行时参数
-        this.globalData['cf']=new ZgConfig(runmode);
-
-
         let that = this;
 
-        //获取用户手机的系统信息
+        //this.wsTest();
+
+        if(options.scene === 1044){
+            console.log('场景1044',options.shareTicket)
+        }
+
+
+        //运行时环境参数
+        let runtime = {};
+
+        //获取用户手机的系统信息，设置获得语言环境。
         wx.getSystemInfo({
             success: function (res) {
                 that.globalData.sysInfo = res;
+                runtime.sysinfo = res;
             }
         });
+
+
+        //如未指定运行模式，则默认为生产模式
+        runtime.runmode= options.query.runmode ? options.query.runmode:'prod';
+        console.log('runtime',runtime);
+
+        //根据小程序运行时环境参数，初始化运行时参数
+        this.globalData['cf']=new ZgConfig(runtime);
+
 
         //使用腾讯地图api获得地理信息获取用户的地理坐标
         wx.getLocation({
@@ -88,7 +103,6 @@ App({
             // 请求完新版本信息的回调
             console.log('MP更新状态！',res.hasUpdate);
         });
-
         updateManager.onUpdateReady(function () {
             wx.showModal({
                 title: '更新提示',
@@ -102,7 +116,6 @@ App({
             })
 
         });
-
         updateManager.onUpdateFailed(function () {
             // 新的版本下载失败
             console.log('MP更新失败！');
@@ -321,6 +334,53 @@ App({
     setGlobalParam:function (key,value) {
         this.globalData['gp_'+key] = value;
     },
+
+
+    /**
+     * wss通讯测试
+     */
+    wsTest:function(){
+
+
+        sendSocketMessage('i will be back')
+        wx.connectSocket({
+            url: 'ws://zgreq.qstarxcx.com:8080',
+            method: "GET",
+            success(e) {
+                console.log('success',e,typeof(e));
+            },
+            fail(e) {
+                console.log('fail',e)
+            }
+        });
+
+        wx.onSocketOpen(function(res){
+
+            console.log('open',res);
+            socketOpen = true
+            for (let i = 0; i < socketMsgQueue.length; i++){
+                sendSocketMessage(socketMsgQueue[i])
+            }
+            socketMsgQueue = []
+        })
+
+        function sendSocketMessage(msg) {
+            if (socketOpen) {
+                wx.sendSocketMessage({
+                    data:msg
+                })
+            } else {
+                socketMsgQueue.push(msg)
+            }
+        }
+        wx.onSocketError(function(res){
+            console.log('WebSocket连接打开失败，请检查！',res)
+        })
+
+        wx.onSocketMessage(function(res) {
+            console.log('收到服务器内容：' + JSON.stringify(res))
+        })
+    }
 
 
 });

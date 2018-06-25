@@ -2,6 +2,7 @@
 
 const MAP_KEY_TX = 'ZOUBZ-HID6G-SCPQS-I6A4Q-BHPKT-L2BIC';
 
+//也可使用第三方模块获得随机数 https://github.com/chancejs/chancejs
 let randomString = function(len) {
     len = len || 32;    //这个默认复制的方式很帅
     let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
@@ -183,7 +184,7 @@ exports.showToast = function (title) {
     wx.showToast({
         title: title,
         icon: 'success',
-        duration: require('../config.js').vc.ToastShowDurt
+        duration: getApp().globalData.cf.vc.ToastShowDurt
     });
 };
 
@@ -191,10 +192,21 @@ exports.alert = function (title, iconType) {
     wx.showToast({
         title: title,
         icon: iconType,
-        duration: require('../config.js').vc.ToastShowDurt
+        duration: getApp().globalData.cf.vc.ToastShowDurt
     });
 };
 
+//onLoad()中调用
+exports.showLoading = function () {
+    wx.showLoading({
+        title: getApp().globalData.cf.hint.H_LOADING,
+    });
+};
+//onLoad()中调用
+exports.hideLoading = function () {
+    wx.hideLoading();
+}
+;
 /**
  * 功能：跳转到某个tab页
  * @param toUrl
@@ -204,8 +216,16 @@ exports.switchTab = function (toUrl) {
         wx.switchTab({
             url: toUrl
         })
-    }, require('../config.js').vc.ToastShowDurt);
+    }, getApp().globalData.cf.vc.ToastShowDurt);
 
+};
+
+exports.isInWhiteList = function isInWhiteList (mobile){
+    let app = getApp();
+    let ret = app.globalData.cf.whiteList.indexOf(mobile)>=0;
+    console.log('aaaa===============',mobile,app.globalData.cf.whiteList,ret);
+
+    return  ret;
 };
 
 /**
