@@ -1,0 +1,23 @@
+<navigator class="weui-panel"
+           url="../rqst-edit/rqst-edit?reqId={{item.reqId}}&location={{item.location}}">
+    <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+            <view class="weui-media-box__title weui-media-box__title_in-text"
+                  style="{{(item.stat=='wait' || item.stat=='get') ? '':'color: #999'}}">
+                {{item.uprice*item.dura}}元 (做{{item.dura}}小时 {{item.size}}平米 {{item.hasTool}})
+            </view>
+
+            <view class="weui-media-box__desc">{{item.addr}}</view>
+            <view class="weui-media-box__info">
+                <view class="weui-media-box__info__meta">{{item.osdt}} {{item.ostm}}</view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.clfn}}{{item.sex}}
+                </view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.reqId}}</view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.stat}}</view>
+            </view>
+            <!--view class="weui-media-box__info__meta weui-media-box__info__meta_extra" wx:if="{{item.rdst==='1'}}">待上单</view>
+            <view class="weui-media-box__info__meta weui-media-box__info__meta_extra" wx:elif="{{item.rdst==='0'}}">已关闭</view-->
+        </view>
+    </view>
+</navigator>
+

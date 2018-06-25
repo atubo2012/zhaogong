@@ -1,0 +1,19 @@
+<view class="weui-cell weui-cell_input">
+    <view class="weui-cell__bd">
+        <input name="address" value="{{address}}"  placeholder="地址" bindinput="_setAddress"/>
+    </view>
+    <view class="weui-cell__ft" >
+        <button size="mini" type="primary" bindtap="_chooseAddress">{{buttonDesc}}</button>
+    </view>
+</view>
+<view class="weui-cell weui-cell_input" >
+    <view class="weui-cell__bd">
+        <input name="name" value="{{name}}"  placeholder="地名" />
+    </view>
+    <view class="weui-cell__bd" >
+        <input name="latitude" value="{{latitude}}"  placeholder="经度"/>
+    </view>
+    <view class="weui-cell__bd" >
+        <input name="longitude" value="{{longitude}}"  placeholder="纬度"/>
+    </view>
+</view>

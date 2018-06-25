@@ -1,0 +1,20 @@
+<navigator class="weui-panel"
+           url="../user-edit/user-edit?type=ta&openId={{item.openId}}">
+    <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+            <view class="weui-media-box__title weui-media-box__title_in-text" style="display: flex; align-items: center;">
+                <image src="{{item.headImage}}" mode="scaleToFill"
+                             class="qs_head_image float-left" />
+                <text class="listitemtitle">{{item.name}}</text>
+            </view>
+
+            <view class="weui-media-box__desc">{{item.address}}</view>
+            <view class="weui-media-box__info">
+                <view class="weui-media-box__info__meta">{{item.country}} {{item.province}}</view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">
+                    {{item.role}} {{item.rolecfm}}
+                </view>
+            </view>
+        </view>
+    </view>
+</navigator>

@@ -1,0 +1,16 @@
+<!--components/mobileinput.wxml-->
+
+<view class="weui-cell weui-cell_input">
+    <view class="weui-cell__bd">
+        <input name="mobile" placeholder="手机号" value="{{mobile}}" focus="{{focusMobile}}" bindinput="_setMobile"/>
+    </view>
+    <view class="weui-cell__bd" hidden="{{hideSC}}" >
+        <input name="smsCode" placeholder="验证码" value="{{app.globalData.cf.runtimeConfig.sendSms ? '' : smsCode}}"
+               focus="{{focusSC}}"  bindinput="_setSmsCode"/>
+    </view>
+    <view class="weui-cell__ft" hidden="{{hideSC}}" >
+        <button size="mini" type="primary" bindtap="_checkMobile">{{buttonDesc}}</button>
+    </view>
+</view>
+
+
