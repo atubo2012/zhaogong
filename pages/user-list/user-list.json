@@ -1,0 +1,6 @@
+{
+  "usingComponents":{
+    "cc_list":"/components/cc_list",
+    "cc_user_item":"/components/cc_user_item"
+  }
+}

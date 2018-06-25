@@ -1,0 +1,9 @@
+<view class="page">
+    <include src="../tplt/pagehead.wxml"/>
+    <view class="page__bd page__bd_spacing">
+
+        <cc_list id="cc_list" list="{{list}}"  generic:listitem="cc_user_item" serviceUrl="{{cf.service.userListUrl}}"/>
+
+    </view>
+    <include src="../tplt/footer.wxml"/>
+</view>
