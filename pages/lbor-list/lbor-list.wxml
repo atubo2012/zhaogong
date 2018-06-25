@@ -1,0 +1,21 @@
+<view class="page">
+    <include src="../tplt/pagehead.wxml"/>
+    <view class="page__bd page__bd_spacing">
+
+        <cc_list id="cc_list" list="{{list}}"  generic:listitem="cc_rqst_item" serviceUrl="{{cf.service.lborListUrl}}"/>
+
+    </view>
+    <include src="../tplt/footer.wxml"/>
+</view>
+
+<!--
+组件调用方法：
+1、主调wxml中调用cc_list，指定serviceUrl、listitem（如cc_rqst_item）
+2、主调json中增加listitem和cc_list对应的组件
+3、cc_list.json中增加虚拟节点
+  "componentGenerics": {
+    "listitem": true
+  }
+4、创建cc_rqst_item组件，由该组件完成
+5、连调
+-->
