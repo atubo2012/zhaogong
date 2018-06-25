@@ -2,7 +2,7 @@
     <include src="../tplt/pagehead.wxml"/>
     <view class="page__bd page__bd_spacing"><!--框架头与页面内容空3行-->
 
-        <navigator bindtap="setParams" data-item="{{item}}" class="weui-panel"
+        <navigator data-item="{{item}}" class="weui-panel"
                    wx:for="{{reqList}}" wx:key="aaa"
                    url="../rqst-edit/rqst-edit?reqId={{item.reqId}}&location={{item.location}}">
             <view class="weui-panel__bd">

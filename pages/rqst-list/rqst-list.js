@@ -25,6 +25,9 @@ Page({
         ut.debug('需求列表入参:', params);
         let that = this;
 
+        wx.showLoading({
+            title: cf.hint.H_LOADING,
+        });
         let type = params.type;
         let rdata = {};
 
@@ -63,16 +66,12 @@ Page({
                 that.setData({
                     reqList: res.data
                 });
-
-
+            },
+            complete:function (res) {
+                wx.hideLoading();
             }
         })
 
 
     },
-
-    setParams:function (e) {
-        ut.debug('设置全局参数：',e);
-    },
-
 });
