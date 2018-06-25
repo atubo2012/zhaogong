@@ -1,0 +1,51 @@
+<view class="page">
+    <view class="flex-style">
+        <view class="flex-item {{tabColors.driving}}" bindtouchstart="goToCar">驾车</view>
+        <view class="flex-item {{tabColors.walking}}" bindtouchstart="goToWalk">步行</view>
+        <view class="flex-item {{tabColors.ridding}}" bindtouchstart="goToRide">骑行</view>
+        <view class="flex-item {{tabColors.transit}}" bindtouchstart="goToBus">公交</view>
+    </view>
+
+
+
+    <!--驾车、步行、骑行模式下，展现地图-->
+    <block wx:if="{{trafficType!=='transit'}}">
+        <view class="map_box" hidden="{{showDetail}}">
+            <map id="navi_map" scale="12"
+                 longitude="{{mapCenter.longitude}}"
+                 latitude="{{mapCenter.latitude}}"
+                 markers="{{markers}}"
+                 polyline="{{polyline}}"
+            />
+        </view>
+
+        <!--展现详情-->
+        <view class="text_box" wx:for="{{steps}}" wx:for-item="j" wx:key="zz1">
+            <text class="text_item" >
+                {{index+1}} : {{j.instruction}}
+            </text>
+        </view>
+
+        <view class="text_box">
+            <view class="detail_button" bindtouchstart="goDetail">{{buttonDesc}}</view>
+            <view class="goback_button" bindtap="goBack">返回</view>
+        </view>
+
+    </block>
+
+
+    <block wx:if="{{trafficType==='transit'}}">
+    <view class="text_box" wx:for="{{transits}}" wx:for-item="i"  wx:for-index="trIndex" wx:key="aa">
+        <text class="text_item" >
+            【方案{{trIndex+1}}】：{{i.transport}}
+        </text>
+    </view>
+
+    <view class="text_box">
+        <view class="text">{{distance}} {{cost}}</view>
+        <view class="goback_button" bindtap="goBack">返回</view>
+    </view>
+    </block>
+
+
+</view>
