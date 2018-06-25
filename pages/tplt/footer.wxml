@@ -1,6 +1,8 @@
 <view class="weui-footer">
     <view class="weui-footer__links">
-        <navigator url="../about/about" class="weui-footer__link">找工</navigator>
+        <navigator url="../about/about" class="weui-footer__link" >找工</navigator>
+        <view wx:if="{{!userInfo.rolecfm && userInfo.role==='LBOR'}}"
+              class="weui-badge weui-badge_dot"  />
     </view>
     <view class="weui-footer__text">Copyright © 2017</view>
 </view>
