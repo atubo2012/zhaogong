@@ -156,6 +156,8 @@ Page({
 
         let that = this;
         ut.debug('cmmt-edit', option);
+        ut.showLoading();
+
 
         //I：如果id字段不为空，则进入编辑模式，从后台获取数据，然后用setData(rdata:res.data[0])，渲染页面数据。
         if (typeof(option.reqId) !== "undefined") {
@@ -194,8 +196,10 @@ Page({
                             that.setData({
                                 'impItems': impItems,
                             });
+                            ut.hideLoading();
                         }
-                    })
+                    });
+
                 }
             })
 

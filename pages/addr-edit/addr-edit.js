@@ -256,6 +256,8 @@ let cfg = app.globalData.cf;
      */
     onLoad: function (options) {
 
+        ut.showLoading();
+
         let that = this;
 
         Object.assign(this.data.cond.query, {'userInfo.openId': app.globalData.userInfo.openId});
@@ -316,6 +318,7 @@ let cfg = app.globalData.cf;
                     });
                     ut.debug('onLoad-8，记录数为' + list.length + '，大于等于一页的记录数，说明还有数据，更新后的页码数为' + that.data.paging.pageNum);
                 }
+                ut.hideLoading();
 
             }
         });

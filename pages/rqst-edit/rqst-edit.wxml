@@ -59,8 +59,8 @@
                 <view class="weui-cells weui-cells_after-title">
                     <view class="weui-cell weui-cell_input">
                         <view class="weui-cell__bd">
-                            <input class="weui-input" name="addr" placeholder="地址：XX路XX号XX小区XX层XX室"
-                                   value="{{rdata.addr}}" bindinput="bindKeyInput"/>
+                            <input class="weui-input" name="address" placeholder="地址：XX路XX号XX小区XX层XX室"
+                                   value="{{rdata.address}}" bindinput="bindKeyInput"/>
                             <input class="weui-input" name="location" hidden="true"
                                    value="{{rdata.location}}" bindinput="bindKeyInput"/>
                         </view>
@@ -237,9 +237,10 @@
                             </navigator>
                         </view>
                     </view>
+                    <input name="biz_type" value=""  hidden="true"/>
 
-                    <!--完工后才显示金额-->
-                    <view class="weui-form-preview__item" hidden="{{rdata.stat=='wait' || rdata.stat=='get' || rdata.stat=='start'}}">
+                    <!--完工后才显示金额，只在完工和支付后显示金额-->
+                    <view class="weui-form-preview__item" hidden="{{!(rdata.stat=='finish' || rdata.stat=='paid')}}">
                         <view class="weui-form-preview__label">实际工时与金额</view>
                         <view class="weui-form-preview__value">
                             {{rdata.time_cost}}分钟，{{rdata.cost}}元
@@ -279,18 +280,19 @@
                             <button class="weui-btn" form-type="submit"  data-submitType="close"  hidden="{{rdata.stat!=='wait'}}" disabled="{{submitButtonDisabled}}">关闭订单</button>
                             <button class="weui-btn" form-type="submit"  data-submitType="clnt-cancel" hidden="{{rdata.stat!=='get'}}" disabled="{{submitButtonDisabled}}">取消订单</button>
                             <view wx:if="{{rdata.stat ==='start'}}">工作正在进行中</view>
-                            <button class="weui-btn" data-submitType="onemore" hidden="{{!(rdata.stat==='paid')}}"  bindtap="changePreview" >再来一单</button>
+                            <button class="weui-btn" data-submitType="onemore" hidden="{{!(rdata.stat==='paid' || rdata.stat==='finish'  || rdata.stat==='close')}}"  bindtap="changePreview" >再来一单</button>
                             <button hidden="{{!(rdata.stat ==='finish')}}"   class="weui-btn" disabled="{{submitButtonDisabled}}" type="primary"  bindtap="payTap">马上支付({{rdata.cost}}元)</button>
                             <button class="weui-btn" disabled="{{submitButtonDisabled}}"   open-type="share">分享</button>
                             <button hidden="{{!(rdata.stat ==='paid')}}"  data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价</button>
-
                         </block>
 
                         <block wx:if="{{app.globalData.userInfo.role==='LBOR'}}">
-                            <!--在wait状态时，阿姨可上单-->
+                            <!--在wait状态时，只要是LBOR角色就可以接单-->
                             <button hidden="{{!(rdata.stat==='wait')}}" form-type="submit" data-submitType="get" type="primary" class="weui-btn" disabled="{{submitButtonDisabled}}">上单</button>
+                        </block>
 
-                            <!--在get状态且接单阿姨为本人时，阿姨可撤销-->
+                        <block wx:if="{{app.globalData.userInfo.role==='LBOR'  && rdata.lborInfo.openId===app.globalData.userInfo.openId}}">
+                        <!--在get状态且接单阿姨为本人时，阿姨可撤销-->
                             <button hidden="{{!(rdata.stat ==='get')}}" form-type="submit" data-submitType="start" type="primary" class="weui-btn" disabled="{{submitButtonDisabled}}">开工</button>
 
                             <!--在get状态且接单阿姨为本人时，阿姨可取消-->
@@ -300,14 +302,12 @@
                             <button hidden="{{!(rdata.stat ==='start')}}" form-type="submit" data-submitType="finish" type="primary" class="weui-btn" disabled="{{submitButtonDisabled}}">完工</button>
 
                             <!--在finish状态且接单阿姨为本人时，阿姨可评价-->
-                            <button hidden="{{!(rdata.stat ==='finish')}}" data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价</button>
-
+                            <button hidden="{{!(rdata.stat ==='finish' || rdata.stat ==='paid')}}" data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价</button>
                         </block>
 
                         <block wx:if="{{!app.globalData.userInfo}}">
                             <button class="weui-btn" disabled="{{submitButtonDisabled}}" type="primary" bindtap="goRegist">马上去登录</button>
                         </block>
-
                     </view>
                 </view>
 

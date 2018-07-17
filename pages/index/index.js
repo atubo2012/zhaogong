@@ -12,6 +12,7 @@ Page({
         isLogined: false,//默认状态为未登录，该属性控制显示“微信登录”按钮还是“业务功能按钮”
         //stUserInfo: wx.getStorageSync('userInfo'),
         code: '',
+        app:app
     },
 
 
@@ -51,8 +52,10 @@ Page({
             '\ngetStorageSync(\'session3rdKey\')=', wx.getStorageSync('session3rdKey'),
             '\nuserInfo=', this.data.userInfo,
             '\n当前登录状态：',ut.hasStored('userInfo'),
+            '\n'+Object.keys(cf.charging_type)+'-'+typeof(Object.keys(cf.charging_type))+'-'+typeof(['a','b']),
             '\n^^^^^^^^^^^^^^^^'
         );
+
 
 
         /**
@@ -583,9 +586,7 @@ Page({
         this.setData({
             submitButtonDisabled:true
         });
-        wx.showLoading({
-            title: cf.hint.H_LOADING,
-        });
+        ut.showLoading();
 
 
         let that = this;
@@ -674,9 +675,7 @@ Page({
 
                                             //检查用户是否已注册，本条语句是为测试。应在需要保留用户信息的时候调用以下语句，引导用户去注册。
                                             app.isNewUser();
-                                        },
-                                        complete:function (res) {
-                                            wx.hideLoading();
+                                            ut.hideLoading();
                                         }
                                     });
                                 }

@@ -110,6 +110,12 @@ Page({
 
     /**
      * 订单支付按下后的处理
+     * 算法：
+     * 1、生成交易序号out_trade_no
+     * 2、计算交易金额total_fee
+     * 3、发送请求到后端，后端向微信申请统一下单申请，后端收到申请应答payModel
+     * 4、以payModel作为参数拉起微信支付界面(wx.requestPayment())，输入支付密码，向微信发起支付
+     * 5、支付成功后查询支付结果
      */
     payTap: function () {
         let that = this;
@@ -418,7 +424,7 @@ Page({
 
         let location = {'longitude': e.target.dataset.location.lng, 'latitude': e.target.dataset.location.lat}; //下拉列表中的经纬度构造成对象。
         this.setData({
-            'rdata.addr': e.target.dataset.address,
+            'rdata.address': e.target.dataset.address,
             'rdata.location': JSON.stringify(location),//将对象以字符串的方式
             addressList: []
         })
@@ -431,7 +437,7 @@ Page({
      */
     bindKeyInput: function (e) {
         ut.debug('输入内容', e);
-        ut.setAddress(e, 'addr', 'addressList', this);
+        ut.setAddress(e, 'address', 'addressList', this);
     },
 
 
@@ -473,7 +479,7 @@ Page({
                         let sexItems = ut.getRa(ret.sex, that.data.sexItems);
 
                         //动态渲染当前地址到客户地址的距离
-                        ut.getTraffic4tx(app.globalData.address.address, ret.addr, function (ret) {
+                        ut.getTraffic4tx(app.globalData.address.address, ret.address, function (ret) {
                             that.setData({
                                 'traffic': ret,
                             });
@@ -484,7 +490,7 @@ Page({
                             'rdata.location': JSON.stringify(ret.location),
                             'rdata.clntInfo': ret.clntInfo,
                             'rdata.lborInfo': (ret.lborInfo ? ret.lborInfo : {}),
-                            'addrHidden': ut.getHiddenAddr(ret.addr),
+                            'addrHidden': ut.getHiddenAddr(ret.address),
                             'items': items,
                             'sexItems': sexItems,
                             'toolList': ret.toolList, //不建议将特殊组件的数据结构保存到数据库，此处仅为一个示例。其他模块中不必设置这个字段
@@ -512,7 +518,7 @@ Page({
                         wx.getLocation({
                             success: function (res) {
 
-                                ut.debug('99999999999999', res, that.data.rdata.location);
+                                //ut.debug('99999999999999', res, that.data.rdata.location);
                                 //1、如果是带参数加载，则将初始参数记录在data对象中
                                 if (typeof(option) !== 'undefined') {
 
@@ -527,7 +533,7 @@ Page({
                                         'latitude': location.latitude,
                                         'longitude': location.longitude
                                     };
-                                    ut.debug('toObj', toObj);
+                                    //ut.debug('toObj', toObj);
 
                                     //1-2准备起止点的标记风格参数
                                     let markerFrom = {
@@ -697,7 +703,6 @@ Page({
     },
     onSubmit: function (e) {
 
-
         let goOne = true;
         let that = this;
         //防止重复提交
@@ -826,7 +831,7 @@ Page({
                         let retMsg = res.data;
 
                         wx.showToast({
-                            title: retMsg,
+                            title: retMsg==='ok'? cf.hint.H_SUCCESS:retMsg,
                             icon: 'success',
                             duration: cf.vc.ToastShowDurt,
                             success: function () {
@@ -842,6 +847,8 @@ Page({
                                 }, 2000) //延迟时间
                             }
                         });
+
+
 
 
                     })
@@ -965,7 +972,7 @@ Page({
         if (st === 'onemore') {
             ut.debug('再来一单,清空reqId');
 
-            let address = this.data.rdata.addr;
+            let address = this.data.rdata.address;
             let location = this.data.rdata.location;
             console.log(address);
             //清理表单中的各种数据
@@ -978,7 +985,7 @@ Page({
                 'rdata.reqId': '',
                 'rdata.mobile': app.globalData.userInfo.mobile, //默认取自当前用户的手机号
                 'rdata.uprice': that.data.upriceList[0],
-                'rdata.addr': address,
+                'rdata.address': address,
                 'rdata.location': location,
                 'rdata.dura': that.data.durationList[0],
                 'rdata.clfn': app.globalData.userInfo.name,

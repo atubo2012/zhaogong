@@ -990,6 +990,7 @@ icon {
 }
 
 .weui-media-box__desc {
+    margin-top: 15px;
     color: #999;
     font-size: 13px;
     line-height: 1.2;

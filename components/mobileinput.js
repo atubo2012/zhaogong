@@ -118,7 +118,7 @@ Component({
                     'mobile': _that.data.newMobile
                 });
                 ut.showToast('验证码正确');
-                this.triggerEvent("checkmobileevent", {'data1': '数据1', data: this.data});
+                this.triggerEvent("checkmobileevent", this.data);
 
 
             } else {

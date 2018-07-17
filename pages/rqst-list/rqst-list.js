@@ -10,6 +10,7 @@ Page({
     data: {
         pageInfo: app.getPageInfo('rqst-list'),
         ut : ut, //如页面需要使用utils的方法，则在这里设置
+        cf:cf,
     },
 
     /**
@@ -25,9 +26,7 @@ Page({
         ut.debug('需求列表入参:', params);
         let that = this;
 
-        wx.showLoading({
-            title: cf.hint.H_LOADING,
-        });
+        ut.showLoading();
         let type = params.type;
         let rdata = {};
 
@@ -58,7 +57,7 @@ Page({
                 //如果是看全量订单时，会屏蔽；看自己的订单列表时，才会显示具体地址
                 if (type !== 'my') {
                     res.data.map(function (item) {
-                        item.addr = ut.getHiddenAddr(item.addr);
+                        item.address = ut.getHiddenAddr(item.address);
                     });
                 }
 
@@ -66,9 +65,7 @@ Page({
                 that.setData({
                     reqList: res.data
                 });
-            },
-            complete:function (res) {
-                wx.hideLoading();
+                ut.hideLoading();
             }
         })
 

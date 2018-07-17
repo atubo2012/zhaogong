@@ -20,7 +20,8 @@
     "pages/addr-edit/addr-edit",
     "pages/gdmap/gdmap",
     "pages/user-edit/user-edit",
-    "pages/user-list/user-list"
+    "pages/user-list/user-list",
+    "pages/rqst-accleaning-edit/rqst-accleaning-edit"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -3,17 +3,18 @@
         <input name="address" value="{{address}}"  placeholder="地址" bindinput="_setAddress"/>
     </view>
     <view class="weui-cell__ft" >
-        <button size="mini" type="primary" bindtap="_chooseAddress">{{buttonDesc}}</button>
+        <!--<button size="mini" type="primary" bindtap="_chooseAddress">{{buttonDesc}}</button>-->
+        <image src="/image/map.png" class="icon1" bindtap="_chooseAddress"/>
     </view>
 </view>
-<view class="weui-cell weui-cell_input" >
+<view class="weui-cell weui-cell_input" hidden="true" >
     <view class="weui-cell__bd">
         <input name="name" value="{{name}}"  placeholder="地名" />
     </view>
     <view class="weui-cell__bd" >
-        <input name="latitude" value="{{latitude}}"  placeholder="经度"/>
+        <input name="latitude" value="{{location.latitude}}"  placeholder="经度"/>
     </view>
     <view class="weui-cell__bd" >
-        <input name="longitude" value="{{longitude}}"  placeholder="纬度"/>
+        <input name="longitude" value="{{location.longitude}}"  placeholder="纬度"/>
     </view>
 </view>

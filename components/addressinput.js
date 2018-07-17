@@ -8,10 +8,22 @@ Component({
      */
     properties: {
         title: String,
+
+        //地址
         address: {
             type: String,
             value: ''
         },
+        //经纬度
+        location:{
+            type:Object
+        },
+        //地名
+        name:{
+            type:String,
+            value:''
+        },
+        //按钮文字
         buttonDesc: {
             type: String,
             value: '地图'
@@ -26,16 +38,11 @@ Component({
 
     methods: {
 
-        _setAddress: function (e) {
-            this.setData({
-                address: e.detail.value
-            });
-        },
-
-        _chooseAddress: function (e) {
+        //用户选中地址坐标时设置location
+        _chooseAddress: function () {
             let _that = this;
             if('保存'===this.data.buttonDesc){
-                this.triggerEvent("chooseaddressevent", this.data);
+                this.triggerEvent("chooseaddressevent", _that.data);
                 this.setData({
                     buttonDesc:'地图'
                 })
@@ -46,15 +53,24 @@ Component({
                     _that.setData({
                         'address':res.address,
                         'name'  :res.name,
-                        'latitude':res.latitude,
-                        'longitude':res.longitude,
+                        'location':{'latitude':res.latitude,'longitude':res.longitude},
                         'buttonDesc':'保存'
-                    })
+                    });
+                    _that.triggerEvent("chooseaddressevent", _that.data);
                 },
                 fail:function (res) {
                     console.error(res);
                 }
             })}
+        },
+        //手动修改地址内容时，设置data中的address
+        _setAddress: function (e) {
+            this.setData({
+                address: e.detail.value
+            });
+            console.log('setAddress:',e)
+            //向主调组件发出事件，通知其更新address
+            this.triggerEvent("chooseaddressevent", this.data);
         },
     }
 });

@@ -33,18 +33,19 @@
             </block>
 
             <!--非生产模式下，显示近期开发的测试连接-->
-            <block wx:if="{{cf.runMode!=='prod'}}">
+            <block wx:if="{{cf.runMode==='dev'}}">
+
                 <navigator url="../rqst-list/rqst-list?type=my" class="weui-footer__link">我的订单</navigator>
                 <navigator url="../lbor-list/lbor-list" class="weui-footer__link">组件测试</navigator>
                 <navigator url="../user-list/user-list" class="weui-footer__link">用户列表</navigator>
+                <navigator url="../rqst-accleaning-edit/rqst-accleaning-edit" class="weui-footer__link">空调清洗</navigator>
 
                 <!--todo:将这两个CC用于空调清洗订单中-->
                 <mobileinput id='ccmb' title="手机号组件的标题" mobile="{{userInfo.mobile}}" smsCode=""  bind:checkmobileevent="onCheckMobileEvent"  />
                 <button class="weui-btn" bindtap="testcc" type="primary">取得手机号组件中的信息</button>
 
-                <addressinput id='ccmap' title="选择地址" address="" bind:chooseaddressevent="onChooseAddressEvent"  />
 
-                <!--<cc_list id='cclist' title="XX查询" bind:xxevent="onXXEvent"  />-->
+                <addressinput id='ccmap' title="选择地址" address="哈哈哈1"  bind:chooseaddressevent="onChooseAddressEvent"  />
 
             </block>
         </view>

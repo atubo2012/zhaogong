@@ -9,7 +9,7 @@
                focus="{{focusSC}}"  bindinput="_setSmsCode"/>
     </view>
     <view class="weui-cell__ft" hidden="{{hideSC}}" >
-        <button size="mini" type="primary" bindtap="_checkMobile">{{buttonDesc}}</button>
+        <button size="mini" type="primary" bindtap="_checkMobile" disabled="{{buttonDisabled}}">{{buttonDesc}}</button>
     </view>
 </view>
 

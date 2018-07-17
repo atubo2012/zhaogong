@@ -128,8 +128,6 @@ Component({
                                 'paging.hasMore': true,
                             });
                         }
-                    },
-                    complete:function () {
                         ut.hideLoading();
                     }
                 });

@@ -28,6 +28,23 @@ exports.hasStored = function(key){
 };
 
 
+exports.showTopTips = function (that,topTips,focusName,cf) {
+
+    that.setData({
+        showTopTips: true,
+        topTips: topTips, //此处与字段相关，应可配置
+        [focusName]:true, //中括号表示动态从参数中获取
+        submitButtonDisabled: false
+    });
+    setTimeout(() => {
+            that.setData({
+                showTopTips: false,
+            });
+        }
+        , cf.vc.ToastShowDurt);
+};
+
+
 /**
  * 手机号是否合法
  * @param str
