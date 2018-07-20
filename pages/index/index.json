@@ -1,6 +1,7 @@
 {
   "usingComponents":{
     "mobileinput":"/components/mobileinput",
-    "addressinput":"/components/addressinput"
+    "addressinput":"/components/addressinput",
+    "cc_uploadpic":"/components/cc_uploadpic"
   }
 }

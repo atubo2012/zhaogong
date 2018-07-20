@@ -257,18 +257,21 @@ Page({
             return;
         }
         if (!fd.name || fd.name.trim()==='') { //TODO:代码按配置文件可自动生成
-            this.setData({
-                showTopTips: true,
-                errInfo: '请填写正确的姓名', //此处与字段相关，应可配置
-                focusName:true            //focusName名字应可配置
-            });
-            setTimeout(() => {
-                    that.setData({
-                        showTopTips: false,
-                    });
-                }
-                , cf.vc.ToastShowDurt);
+            ut.showTopTips(that,'请填入姓名','nameFocus',cf);
             return;
+        }
+
+        if(this.data.role==='LBOR'){
+
+            if (!fd.certNumber) {
+                ut.showTopTips(that,'请填写身份证号码','certNumberFocus',cf);
+                return;
+            }
+            if (this.data.certPicUrl.indexOf('sfz_sample.jpg') >= 0) {
+                ut.showTopTips(that,'请上传身份证照片','certNumberFocus',cf);
+                return;
+            }
+
         }
 
 

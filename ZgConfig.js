@@ -95,6 +95,9 @@ function ZgConfig(runtime) {
         // 文件上传接口
         uploadUrl: `${url}/upload`,
 
+        //文件删除接口
+        uploadRmUrl: `${url}/uploadrm`,
+
         // 需求单查询接口
         rqstListUrl: `${url}/rqst-list`,
 
@@ -219,6 +222,7 @@ function ZgConfig(runtime) {
             'finish': '已完工',
             'paid': '已支付',
             'close': '客户关闭',
+            'expired': '已过期',
             'lbor-cancel': '非客户取消',
             'clnt-cancel': '客户取消',
 

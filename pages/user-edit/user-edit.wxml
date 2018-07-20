@@ -3,7 +3,7 @@
     <view class="page__bd"><!--框架头与页面内容空3行-->
 
         <view class="page__bd page__bd_spacing" hidden="{{preview}}">
-            <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{errInfo}}</view>
+            <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{topTips}}</view>
 
             <form bindsubmit="onSubmit" bindreset="formReset"  >
 
@@ -17,7 +17,7 @@
                                    bindtap="{{hideSubmitButton ? '' : 'ulcertpic'}}"/>
                         </view>
                         <view class="weui-cell__bd">
-                            <input name="name" class="weui-input" value="{{userInfo.name}}" placeholder="真实姓名" focus="{{focusName}}" disabled="{{hideSubmitButton}}"/>
+                            <input name="name" class="weui-input" value="{{userInfo.name}}" placeholder="真实姓名" focus="{{nameFocus}}" disabled="{{hideSubmitButton}}"/>
                         </view>
                     </view>
                     <view class="weui-cell weui-cell_input">
@@ -100,15 +100,15 @@
 
                         <view class="weui-cell weui-cell_input">
                             <view class="weui-cell__bd">
-                                <input name="certNumber" class="weui-input" placeholder="证件号码"
-                                       value="{{userInfo.certNumber}}" disabled="{{hideSubmitButton}}"/>
+                                <input name="certNumber" class="weui-input" placeholder="证件号码" type="idcard"
+                                       value="{{userInfo.certNumber}}" disabled="{{hideSubmitButton}}" focus="{{certNumberFocus}}"/>
                             </view>
                         </view>
 
                         <view class="weui-cell weui-cell_input">
                             <view class="weui-cell__bd">
                                 <image src="{{certPicUrl}}" mode="aspecFill" style="width: 640rpx; height: 360rpx"
-                                       bindtap="{{hideSubmitButton ? '' : 'ulcertpic'}}"/>
+                                       bindtap="{{hideSubmitButton ? '' : 'ulCertPic'}}"/>
                             </view>
                         </view>
                     </block>

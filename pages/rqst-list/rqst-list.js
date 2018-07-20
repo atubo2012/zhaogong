@@ -58,6 +58,9 @@ Page({
                 if (type !== 'my') {
                     res.data.map(function (item) {
                         item.address = ut.getHiddenAddr(item.address);
+                        //若上门时间早于当前时间，则提示已过期
+                        if(!ut.isLateThanNow(item.osdt+ ' ' +item.ostm))
+                            item.stat = 'expired';
                     });
                 }
 

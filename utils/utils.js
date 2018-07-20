@@ -101,27 +101,27 @@ exports.checkSession = function (res1, app, that, cb) {
 
     //根据前面的条件判断是否要跳转
     if (redirect) {
-        wx.showModal({
-            title: '提示',
-            content: desc,
-            success: function (res) {
-                if (res.confirm) {
-                    app.globalData.entryType = 'SESSION_TIMEOUT';
-                    wx.switchTab(
-                        {
-                            url: '../index/index'
-                        }
-                    );
-                } else if (res.cancel) {
-                    app.globalData.entryType = 'SESSION_TIMEOUT';
-                    wx.switchTab(
-                        {
-                            url: '../index/index'
-                        }
-                    );
-                }
-            }
-        });
+        // wx.showModal({
+        //     title: '提示',
+        //     content: desc,
+        //     success: function (res) {
+        //         if (res.confirm) {
+        //             app.globalData.entryType = 'SESSION_TIMEOUT';
+        //             wx.switchTab(
+        //                 {
+        //                     url: '../index/index'
+        //                 }
+        //             );
+        //         } else if (res.cancel) {
+        //             app.globalData.entryType = 'SESSION_TIMEOUT';
+        //             wx.switchTab(
+        //                 {
+        //                     url: '../index/index'
+        //                 }
+        //             );
+        //         }
+        //     }
+        // });
     } else {
         cb();
     }
@@ -152,13 +152,15 @@ exports.showModal = function (title,content, confirmCb,cancelCb) {
 /**
  * 功能：上传文件
  * 场景：上传图片，可结合wxml中的图片显示控制参数和按钮使用。
- * 例子：个人信息修改中的身份证上传功能
+ * 案例：个人信息修改中的身份证上传功能
  * @param uploadSrvUrl 文件上传服务
  * @param cb 对上传路径、文件名进行处理
  */
 exports.uploadFile= function (uploadSrvUrl,cb) {
 
     wx.chooseImage({
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
             let tempFilePaths = res.tempFilePaths;
             wx.uploadFile({
@@ -787,6 +789,15 @@ exports.getAddress= function (location,cb) {
             console.error('fail', res);
         }
     });
+};
+
+exports.isLateThanNow=function(then){
+
+    let thenDate = new Date(then);
+    let now = new Date();
+
+    console.log('thenDate:'+thenDate,'nowDate:'+now);
+    return thenDate.getTime()-now.getTime()>0
 };
 
 

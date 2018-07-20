@@ -4,7 +4,7 @@
 
         <navigator data-item="{{item}}" class="weui-panel"
                    wx:for="{{reqList}}" wx:key="aaa"
-                   url="../rqst-{{item.biz_type? item.biz_type+'-' :''}}edit/rqst-{{item.biz_type? item.biz_type+'-' :''}}edit?reqId={{item.reqId}}&location={{item.location}}">
+                   url="../rqst-{{item.biz_type ? 'accleaning-' :''}}edit/rqst-{{item.biz_type? 'accleaning-' :''}}edit?reqId={{item.reqId}}&location={{item.location}}">
 
             <view class="weui-panel__bd">
                 <view class="weui-media-box weui-media-box_text">
@@ -13,8 +13,8 @@
                         <block wx:if="{{item.biz_type===''}}">
                             {{item.uprice*item.dura}}元 (做{{item.dura}}小时 {{item.size}}平米 {{item.hasTool}})
                         </block>
-                        <block wx:if="{{item.biz_type==='accleaning'}}">
-                            {{item.cart.total_cost}}元 {{cf.hint['accleaning']}}
+                        <block wx:if="{{item.biz_type!=''}}">
+                            {{item.cart.total_cost}}元 {{cf.hint[item.biz_type]}}
                         </block>
                     </view>
                     <view class="weui-media-box__desc">{{item.osdt}} {{item.ostm}}</view>
@@ -32,7 +32,7 @@
                         </view>
                     </view>
                     <view class="weui-media-box__info">
-                        <block wx:if="{{item.biz_type==='accleaning'}}">
+                        <block wx:if="{{item.biz_type!==''}}">
                             <block wx:for="{{item.cart.goods}}" wx:for-item="aa" wx:key="aba">
                                 {{aa.type}}:({{aa.uprice}}×{{aa.quantity}}{{aa.unit}})
                             </block>
