@@ -1,0 +1,4 @@
+<button hidden="{{cc_rdata.hide}}"
+        class="weui-btn" disabled="{{cc_rdata.submitButtonDisabled}}"
+        type="primary"  bindtap="_payTap">
+    马上支付({{cc_rdata.cost}}元){{buttonDesc}}</button>

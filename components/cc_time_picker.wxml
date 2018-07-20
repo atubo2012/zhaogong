@@ -1,0 +1,22 @@
+<view class="weui-cells__title">服务时间</view>
+<view class="weui-cells weui-cells_after-title">
+<view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+        <view class="weui-label">预约时间</view>
+    </view>
+    <view class="weui-cell__bd">
+        <picker mode="date" value="{{cc_rdata.date}}" start="{{cc_rdata.date}}" end="2020-12-31"
+                bindchange="_setDate">
+            <view class="weui-input">{{cc_rdata.date}}</view>
+        </picker>
+        <input name="osdt" value="{{cc_rdata.date}}" hidden="true"/>
+    </view>
+    <view class="weui-cell__bd">
+        <picker mode="time" value="{{cc_rdata.time}}" start="{{cc_rdata.time}}" end="23:59"
+                bindchange="_setTime">
+            <view class="weui-input">{{cc_rdata.time}}</view>
+        </picker>
+        <input name="ostm" value="{{cc_rdata.time}}" hidden="true"/>
+    </view>
+</view>
+</view>

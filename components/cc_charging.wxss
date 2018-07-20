@@ -1,0 +1,130 @@
+
+
+
+.weui-cells {
+    position: relative;
+    margin-top: 1.17647059em;
+    background-color: #fff;
+    line-height: 1.41176471;
+    font-size: 17px
+}
+
+.weui-cells:before {
+    top: 0;
+    border-top: 1rpx solid #d9d9d9
+}
+
+.weui-cells:after, .weui-cells:before {
+    content: " ";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    color: #d9d9d9
+}
+
+.weui-cells:after {
+    bottom: 0;
+    border-bottom: 1rpx solid #d9d9d9
+}
+
+.weui-cells__title {
+    margin-top: .77em;
+    margin-bottom: .3em;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #999;
+    font-size: 14px;
+
+}
+
+.weui-cells__title_with_link {
+    margin-top: .77em;
+    margin-bottom: .3em;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #999;
+    font-size: 14px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.weui-cells_after-title {
+    margin-top: 0
+}
+
+.weui-cells__tips {
+    margin-top: .3em;
+    color: #999;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 14px
+}
+
+.weui-cell__bd {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1
+}
+
+.weui-cell__ft {
+    text-align: right;
+    color: #999
+}
+
+.weui-input {
+    height: 2.58823529em;
+    min-height: 2.58823529em;
+    line-height: 2.58823529em
+}
+
+.weui-cell_input {
+    padding-top: 0;
+    padding-bottom: 0
+}
+
+.weui-cell {
+    padding: 10px 15px;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center
+}
+
+
+.icon1 {
+    width: 18px;
+    height: 18px;
+    text-align: right
+}
+
+.weui-label {
+    width: 105px;
+    word-wrap: break-word;
+    word-break: break-all
+}
+
+
+/**
+表格输入项的分割符，在每个格子的前面加分隔符。但对第一个格子不加分隔符。
+ */
+.weui-cell:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1rpx solid #d9d9d9;
+    color: #d9d9d9;
+    left: 15px
+}
+
+.weui-cell:first-child:before {
+    display: none
+}
