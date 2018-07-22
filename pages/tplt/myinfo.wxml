@@ -1,0 +1,14 @@
+<view class="weui-cells__title">我的信息</view>
+<view class="weui-cells weui-cells_after-title">
+<view class="weui-cell" bindtap="goUserEdit">
+    <view class="weui-cell__hd" style="position: relative;margin-right: 10px;">
+        <image src="{{userInfo.headImage}}" mode="aspecFill"
+               class="qs_head_image"/>
+        <view class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;">{{newMsgAmt}}</view>
+    </view>
+    <view class="weui-cell__bd">
+        <view>{{(userInfo.name==='')?userInfo.nickName:userInfo.name}}</view>
+        <view class="qs_motto">个人签名：{{userInfo.sign}}</view>
+    </view>
+</view>
+</view>
