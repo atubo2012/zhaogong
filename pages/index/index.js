@@ -12,7 +12,9 @@ Page({
         isLogined: false,//默认状态为未登录，该属性控制显示“微信登录”按钮还是“业务功能按钮”
         //stUserInfo: wx.getStorageSync('userInfo'),
         code: '',
-        app:app
+        app:app,
+        picsList:['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531906460524&di=7e935c5dc2a04eaa8b3b39654e59a8ff&imgtype=0&src=http%3A%2F%2Fwww.cgaeo.com%2Fwp-content%2Fuploads%2F2017%2F06%2FLynda-The-Good-Parts-of-JavaScript-and-the-Web.jpg',
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531906461012&di=d38144c6ee2f8a6d57dd48c1727e7500&imgtype=0&src=http%3A%2F%2F120xcyy.com%2Fuploads%2Fallimg%2F171024%2F1-1G024224G52C.jpg'],
     },
 
 
@@ -33,6 +35,9 @@ Page({
     },
 
 
+    onUploadChangeEvent:function (e) {
+        console.log(e);
+    },
 
 
 
@@ -52,6 +57,8 @@ Page({
             '\ngetStorageSync(\'session3rdKey\')=', wx.getStorageSync('session3rdKey'),
             '\nuserInfo=', this.data.userInfo,
             '\n当前登录状态：',ut.hasStored('userInfo'),
+            //'\n'+ut.isLateThanNow('2018-07-17 10:48:00'),
+            '\n',ut.getLater(24),
             '\n'+Object.keys(cf.charging_type)+'-'+typeof(Object.keys(cf.charging_type))+'-'+typeof(['a','b']),
             '\n^^^^^^^^^^^^^^^^'
         );
@@ -301,7 +308,7 @@ Page({
                                     }
 
                                     //检查用户是否已注册，本条语句是为测试。应在需要保留用户信息的时候调用以下语句，引导用户去注册。
-                                    app.isNewUser();
+                                    //app.isNewUser();
                                 }
                             });
                         }
@@ -674,7 +681,7 @@ Page({
                                             }
 
                                             //检查用户是否已注册，本条语句是为测试。应在需要保留用户信息的时候调用以下语句，引导用户去注册。
-                                            app.isNewUser();
+                                            //app.isNewUser();
                                             ut.hideLoading();
                                         }
                                     });

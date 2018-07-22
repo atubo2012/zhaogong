@@ -223,6 +223,7 @@ function ZgConfig(runtime) {
             'paid': '已支付',
             'close': '客户关闭',
             'expired': '已过期',
+            'delete': '已作废',
             'lbor-cancel': '非客户取消',
             'clnt-cancel': '客户取消',
 
@@ -253,9 +254,9 @@ function ZgConfig(runtime) {
             {'type': '开荒保洁', 'uprice': 30, 'unit': '平米', desc: '擦玻璃、地面涂料污渍、全面除尘(扫、吸、擦)'},
         ],
         'changelock': [
-            {'type': '一级', 'uprice': 120, 'unit': '把', desc: '含6把钥匙'},
-            {'type': '二级', 'uprice': 280, 'unit': '把'},
-            {'type': '三级', 'uprice': 380, 'unit': '把'},
+            {'type': 'A级', 'uprice': 120, 'unit': '把', desc: '含6把钥匙'},
+            {'type': 'B级', 'uprice': 280, 'unit': '把'},
+            {'type': 'C级', 'uprice': 380, 'unit': '把'},
         ],
         'broadband': [
             {'type': '50M长宽', 'uprice': 300, 'unit': '1年', desc: ''},

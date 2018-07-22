@@ -690,8 +690,9 @@ Page({
                     'rdata.mobile': app.globalData.userInfo.mobile, //默认取自当前用户的手机号
                     'rdata.uprice': that.data.upriceList[0],
                     'rdata.dura': that.data.durationList[0],
-                    'rdata.clfn': app.globalData.userInfo.name,
+                    'rdata.clfn': app.globalData.userInfo.name ? app.globalData.userInfo.name:app.globalData.userInfo.nickName, //若用户尚未注册，则默认填写
                 });
+                //app.isNewUser();
             })
         }
 
@@ -714,6 +715,11 @@ Page({
         let rdata = e.detail.value;
         //从自定义组件中获取mobile手机号数据，追加到rdata中
 
+
+        if(!rdata.location){
+            ut.showTopTips(this,'请输入详细地址','addressFocus',cf);
+            return;
+        }
 
         rdata.location = JSON.parse(rdata.location);
 

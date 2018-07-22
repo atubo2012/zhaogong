@@ -65,7 +65,11 @@ Page({
 
     onLoad: function (option) {
 
-        console.log(option);
+        console.log(option,typeof(option.location),JSON.parse('{"a":111,"b":222}'));
+
+        let t1 = JSON.parse(option.location);
+
+        console.log(t1,typeof(t1));
 
         let that = this;
         let myAmapFun = new amapFile.AMapWX({key: '2d15ece70392d0afd89dae800f78f94d'});
@@ -80,8 +84,6 @@ Page({
 
                     from = res.longitude + ',' + res.latitude;
                     let fromObj = {'latitude': res.latitude, 'longitude': res.longitude};
-
-                    ut.debug('getLocation', from, fromObj);
 
                     let location = JSON.parse(option.location);
                     to = location.longitude + ',' + location.latitude;

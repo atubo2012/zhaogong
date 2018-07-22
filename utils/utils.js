@@ -52,7 +52,7 @@ exports.showTopTips = function (that,topTips,focusName,cf) {
  */
 let isPoneAvailable = function(str) {
 
-    let myreg=/^[1][3,4,5,7,8][0-9]{9}$/;   //另一个校验规则：/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/
+    let myreg=/^[1][3-9][0-9]{9}$/;   //另一个校验规则：/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/
     console.log('校验手机号格式',str,myreg.test(str));
     return myreg.test(str)
 };
@@ -801,6 +801,15 @@ exports.isLateThanNow=function(then){
 };
 
 
+exports.getLater=function(hours,hasSecond,interval){
+    let then= new Date(new Date().getTime()+hours*60*60*1000);
+    let thenTime = fmd(then,'hh:mm:ss');
+
+    let ret = {date:fmd(then,'yyyy-MM-dd'),time:hasSecond ? thenTime:thenTime.substring(0,thenTime.lastIndexOf(':'))};
+
+    console.log('那时',then,'结果',ret);
+    return ret ;
+};
 
 
 

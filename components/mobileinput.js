@@ -20,6 +20,10 @@ Component({
             type: String,
             value: '发送'
         },
+        focusMobile:{
+            type : Boolean,
+            value:false,//焦点移动到手机号输入栏位
+        }
     },
 
 
@@ -30,7 +34,7 @@ Component({
 
 
         buttonDisabled: false,  //隐藏发送动态密码
-        focusMobile: false,//焦点移动到手机号输入栏位
+
 
         focusSC: false,//焦点移动到动态口令
         hideSC: true,    //隐藏动态口令

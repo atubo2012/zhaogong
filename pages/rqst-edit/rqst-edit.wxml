@@ -6,7 +6,7 @@
         <form bindsubmit="onSubmit" bindreset="formReset">
 
             <view class="page__bd page__bd_spacing" hidden="{{preview}}">
-                <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">错误提示</view>
+                <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{topTips}}</view>
 
                 <!--业务信息部分-上门服务时间-->
                 <view class="weui-cells__title">服务时间</view>
@@ -59,7 +59,7 @@
                 <view class="weui-cells weui-cells_after-title">
                     <view class="weui-cell weui-cell_input">
                         <view class="weui-cell__bd">
-                            <input class="weui-input" name="address" placeholder="地址：XX路XX号XX小区XX层XX室"
+                            <input class="weui-input" name="address" placeholder="地址：XX路XX号XX小区XX层XX室" focus="{{addressFocus}}"
                                    value="{{rdata.address}}" bindinput="bindKeyInput"/>
                             <input class="weui-input" name="location" hidden="true"
                                    value="{{rdata.location}}" bindinput="bindKeyInput"/>
