@@ -35,8 +35,10 @@
 
             </view>
         </block>
-
-
+        <view>
+        <button class="weui-btn" size="mini" open-type="feedback">反馈</button>
+        <button class="weui-btn" size="mini" open-type="contact">客服</button>
+        </view>
     </view>
     <include src="../tplt/footer.wxml"/>
 </view>

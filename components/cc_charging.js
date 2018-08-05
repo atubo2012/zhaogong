@@ -13,6 +13,7 @@ Component({
          * 工时费  ：uprice
          * 计件单价 ：piece_price
          * 计件量  ：piece_amount
+         * TODO：已经过时，cc_rdata可以删除了。
          */
         cc_rdata: {
             type: Object
@@ -60,78 +61,47 @@ Component({
         currentChargingTypeDesc: cf.hint[Object.keys(cf.charging_type)[0]],//默认显示的charging_type大类描述
         currentChargingItem: cf.charging_type.accleaning[0],
 
-
         ct: cf.charging_type,
         cf: cf,
-
-
     },
 
 
     methods: {
+        // _bindPickerChangeUprice: function (e) {
+        //     let that = this;
+        //
+        //     this.setData({
+        //         'cc_rdata.uprice': Number(that.data.upriceList[e.detail.value]),
+        //     });
+        //     this.triggerEvent("upriceChangeEvent", Number(that.data.upriceList[e.detail.value]));
+        // },
+        // _bindPickerChangeDuration: function (e) {
+        //     ut.debug(e);
+        //     let that = this;
+        //     this.setData({
+        //         'cc_rdata.dura': Number(that.data.durationList[e.detail.value]),
+        //     });
+        //     this.triggerEvent("duraChangeEvent", Number(that.data.durationList[e.detail.value]));
+        // },
 
-        _bindPickerChangeUprice: function (e) {
-            let that = this;
 
-            this.setData({
-                'cc_rdata.uprice': Number(that.data.upriceList[e.detail.value]),
-            });
-            this.triggerEvent("upriceChangeEvent", Number(that.data.upriceList[e.detail.value]));
-        },
-        _bindPickerChangeDuration: function (e) {
-            ut.debug(e);
-            let that = this;
-            this.setData({
-                'cc_rdata.dura': Number(that.data.durationList[e.detail.value]),
-            });
-            this.triggerEvent("duraChangeEvent", Number(that.data.durationList[e.detail.value]));
-        },
-
-
+        /**
+         * 功能：初始化费用类型选择器
+         * 场景：onload()的修改模式中调用，根据数据库中的biz_type初始化费用选择器
+         * @param charging_type 同订单表中的biz_type
+         * @private
+         */
         _initCharging: function (charging_type) {
             let that = this;
-            console.log('this is in _initCharging', this.data.charging_type);
+            console.log('this is in _initCharging', this.data.charging_type);//组件中初始化设置的业务类型
 
-            // this.setData({
-            //     chargingTypeKeyList: Object.keys(cf.charging_type).map((item, index, arr) => {
-            //         console.log(item + '-', charging_type + 'aa');
-            //         if (charging_type === item) {
-            //             return {desc: cf.hint[item], type: item}
-            //         }
-            //     }),
-            // });
+            that.setData({
+                currentChargingType: charging_type,
+                currentChargingTypeDesc: cf.hint[charging_type],
 
-
-
-            // Object.keys(cf.charging_type).map((item, index, arr) => {
-            //     console.log(item + '-', charging_type + 'aa');
-            //     if (charging_type === item) {
-            //         that.setData({
-            //             currentChargingType: item.type,
-            //             currentChargingTypeDesc: cf.hint[item.type],
-            //
-            //             chargingTypeList: cf.charging_type[item.type],
-            //             currentChargingItem: cf.charging_type[item.type][0],
-            //         });
-            //
-            //     }
-            // });
-
-
-
-                    that.setData({
-                        currentChargingType: charging_type,
-                        currentChargingTypeDesc: cf.hint[charging_type],
-
-                        chargingTypeList: cf.charging_type[charging_type],
-                        currentChargingItem: cf.charging_type[charging_type][0],
-                    });
-
-
-
-
-            console.log('this is in _initCharging2', this.data.chargingTypeKeyList);
-
+                chargingTypeList: cf.charging_type[charging_type],
+                currentChargingItem: cf.charging_type[charging_type][0],
+            });
         },
 
         //大类选择后，初始化子类的列表
@@ -164,7 +134,7 @@ Component({
         //向CART中增加一个类别
         _add2Cart: function (e) {
             let that = this;
-            console.log('e',e, 'item',this.data.currentChargingItem, 'ct',this.data.currentChargingType, 'data',this.data);
+            console.log('e', e, 'item', this.data.currentChargingItem, 'ct', this.data.currentChargingType, 'data', this.data);
             let newCart = {quantity: 1};
 
             //若cart为null，则初始化cart数据
@@ -174,10 +144,9 @@ Component({
             }
 
             //同一个子类的业务类别应只能有一条记录，如重复添加则提示
-            for(let i = 0;i<this.data.cart.goods.length;i++)
-            {
-                if(this.data.cart.goods[i].type === this.data.currentChargingItem.type){
-                    ut.alert(this.data.currentChargingItem.type+'已添加，无需重新添加','none');
+            for (let i = 0; i < this.data.cart.goods.length; i++) {
+                if (this.data.cart.goods[i].type === this.data.currentChargingItem.type) {
+                    ut.alert(this.data.currentChargingItem.type + '已添加，无需重新添加', 'none');
                     return;
                 }
             }

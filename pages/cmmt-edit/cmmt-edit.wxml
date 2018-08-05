@@ -10,7 +10,7 @@
             <input name="role" value="{{rdata.role}}" hidden="true"/>
 
             <view class="page__bd page__bd_spacing" >
-                <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">错误提示</view>
+                <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{topTips}}</view>
 
                 <!--评价信息-->
                 <view class="weui-cells__title">评价(订单编号:{{rdata.reqId}})</view>
@@ -18,7 +18,7 @@
                     <view class="weui-cell weui-cell_input">
                         <view class="weui-cell__bd">
                             <input class="weui-input" name="comment" placeholder="评价："
-                                   value="{{rdata.comment}}" />
+                                   value="{{rdata.comment}}" focus="{{focusComment}}"/>
                             <input name="reqId"     value="{{rdata.reqId}}" hidden="true"/>
                             <input name="starAmt"   value="{{rdata.starAmt}}" hidden="true"/>
                         </view>

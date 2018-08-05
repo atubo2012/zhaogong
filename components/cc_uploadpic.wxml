@@ -1,0 +1,46 @@
+<view class="weui-cells__title" bindtap="_toggleHidden">相关图片</view>
+<view class="weui-cells weui-cells_after-title" hidden="{{hidden}}">
+    <view class="weui-cell">
+        <view class="weui-cell__bd">
+            <view class="weui-uploader">
+                <view class="weui-uploader__bd">
+                    <view class="weui-uploader__files" id="uploaderFiles">
+
+                        <block wx:for-items="{{picsList}}" wx:key="{{index}}">
+                            <view class="weui-uploader__file" id="{{item}}" style="position: relative;margin-right: 10px;">
+                                <image data-url="{{item}}" data-index="{{index}}" class="weui-uploader__img" data-t="maker"  bindtap="_previewImage" src="{{item}}" mode="aspectFill" />
+                                <view wx:if="{{!onlyShow}}" data-index="{{index}}" class="weui-badge" data-t="maker" bindtap="_delImage" style="position: absolute;bottom: +0.1em;right: +0.1em;">
+                                    <image id="{{index}}" class="icon1" src="../image/delete_2.png"/>
+                                </view>
+                            </view>
+                        </block>
+
+                        <!--例子-->
+                        <!--<view class="weui-uploader__file">-->
+                            <!--<image class="weui-uploader__img" src="../image/pic_160.png" mode="aspectFill" />-->
+                        <!--</view>-->
+                        <!--<view class="weui-uploader__file weui-uploader__file_status">-->
+                            <!--<image class="weui-uploader__img" src="../image/pic_160.png" mode="aspectFill" />-->
+                            <!--<view class="weui-uploader__file-content">-->
+                                <!--<icon type="warn" size="23" color="#F43530"></icon>-->
+                            <!--</view>-->
+                        <!--</view>-->
+                        <!--<view class="weui-uploader__file weui-uploader__file_status">-->
+                            <!--<image class="weui-uploader__img" src="../image/pic_160.png" mode="aspectFill" />-->
+                            <!--<view class="weui-uploader__file-content">50%</view>-->
+                        <!--</view>-->
+
+                    </view>
+                    <view class="weui-uploader__input-box" wx:if="{{!onlyShow}}">
+                        <view class="weui-uploader__input" bindtap="_chooseImage"/>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+
+
+
+
+<!--<canvas canvas-id="myCanvas" style="width: 99.5%;  border: 1px solid;" bindtouchstart="_tabCanvas"/>-->

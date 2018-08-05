@@ -4,7 +4,9 @@
 
         <navigator data-item="{{item}}" class="weui-panel"
                    wx:for="{{reqList}}" wx:key="aaa"
-                   url="../rqst-{{item.biz_type ? 'accleaning-' :''}}edit/rqst-{{item.biz_type? 'accleaning-' :''}}edit?reqId={{item.reqId}}&location={{item.location}}">
+                   url="../rqst-{{item.biz_type ? 'accleaning-' :''}}edit/rqst-{{item.biz_type? 'accleaning-' :''}}edit?reqId={{item.reqId}}&location={{item.location}}"
+
+                   bindtap="checkTarget">
 
             <view class="weui-panel__bd">
                 <view class="weui-media-box weui-media-box_text">

@@ -1,9 +1,9 @@
 <view class="page">
-    <!--<include src="../tplt/pagehead.wxml"/>-->
+    <!--<include src="../tplt/pagehead.wxml"/>页头标语，需要时可取消注释启用-->
     <view class="page__bd">
 
 
-        <form bindsubmit="onSubmit" bindreset="formReset">
+        <form bindsubmit="onSubmit" bindreset="formReset" report-submit="true">
 
             <view class="page__bd page__bd_spacing" hidden="{{preview}}">
                 <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{topTips}}</view>
@@ -26,58 +26,23 @@
                     <addressinput id='ccmap' title="选择地址"
                                   location="{{rdata.location}}"
                                   address="{{rdata.address}}" bind:chooseaddressevent="onChooseAddressEvent"  />
-
-
                     <cc_nametitle id='nametitle' name="{{rdata.clfn}}" sex="{{rdata.sex}}" bind:inputnametitleevent="onNameTitleChangeEvent" />
-
                     <mobileinput id='ccmb' title="手机号组件的标题" mobile="{{rdata.mobile}}" smsCode=""
                                  bind:checkmobileevent="onCheckMobileEvent"  focusMobile="{{focusMobile}}"/>
-                    <input name="biz_type" value="{{charging_type}}"  hidden="true"/>
                 </view>
 
+                <!--图片上传-->
                 <cc_uploadpic id='uploadpic' picsList="{{rdata.pics_list}}" bind:uploadchangeevent="onUploadChangeEvent"/>
 
 
-                <!--业务差异化信息部分-->
-                <!--<view class="weui-cells__title">房屋情况</view>-->
-                <!--<view class="weui-cells weui-cells_after-title">-->
-                    <!--<view class="weui-cell weui-cell_input">-->
-                        <!--<radio-group bindchange="toolChange" name="hasTool">-->
-                            <!--<label wx:for="{{toolList}}" wx:key="a2">-->
-                                <!--<radio class="weui-input" value="{{item.value}}" checked="{{item.checked}}">-->
-                                    <!--{{item.name}}-->
-                                <!--</radio>-->
-                            <!--</label>-->
-                        <!--</radio-group>-->
-                    <!--</view>-->
-                    <!--<view class="weui-cell weui-cell_input">-->
-                        <!--<radio-group name="pet">-->
-                            <!--<label wx:for="{{items}}" wx:key="a1">-->
-                                <!--<radio class="weui-input" value="{{item.name}}" checked="{{item.checked}}">-->
-                                    <!--{{item.value}}-->
-                                <!--</radio>-->
-                            <!--</label>-->
-                        <!--</radio-group>-->
-                    <!--</view>-->
-                    <!--<view class="weui-cell weui-cell_input">-->
-                        <!--<view class="weui-cell__bd">-->
-                            <!--<input class="weui-input" name="size" value="{{rdata.size}}" type="number" maxlength="4"-->
-                                   <!--placeholder="面积：如102平米"/>-->
-
-                        <!--</view>-->
-                    <!--</view>-->
-                    <!---->
-                    <!--<view class="weui-cell weui-cell_input">-->
-                        <!--<view class="weui-cell__bd">-->
-                            <!--<input class="weui-input" name="layout" value="{{rdata.layout}}"-->
-                                   <!--placeholder="户型：如两室两厅/四室两厅"/>-->
-                        <!--</view>-->
-                    <!--</view>-->
-                <!--</view>-->
+                <!--隐含字段TODO:可不必显示定义在页面中，仅在后台提交时-->
                 <input name="reqId" value="{{rdata.reqId}}" hidden="true"/>
+                <input name="biz_type" value="{{charging_type}}"  hidden="true"/>
                 <input name="rdst" value="{{rdata.rdst}}" hidden="true"/>
                 <input name="stat" value="{{rdata.stat}}" hidden="true"/>
 
+
+                <!--表单提交按钮-->
                 <view class="weui-btn-area">
                     <button class="weui-btn" form-type="submit" type="primary"
                             disabled="{{submitButtonDisabled}}">提交
@@ -125,6 +90,19 @@
                         </view>
                     </view>
                     <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">订单状态</view>
+                        <view class="weui-form-preview__value">
+                            <navigator
+                                    url="../user-edit/user-edit?type=ta&&openId={{rdata.lborInfo.openId}}"
+                                    class="weui-footer__link"
+                                    hover-class="weui-cell_active">
+                                <text hidden="{{_crBlink}}">{{cf.hint[rdata.stat]}}</text> {{rdata.lborInfo.name}}
+
+                            </navigator>
+                            <text bindtap="onCall" data-mobile="{{rdata.lborInfo.mobile}}">{{rdata.lborInfo.mobile}}</text>
+                        </view>
+                    </view>
+                    <view class="weui-form-preview__item">
                         <view class="weui-form-preview__label">交通</view>
                         <view class="weui-form-preview__value">
                             <navigator url="../gdmap/gdmap?location={{slocation}}" class="weui-footer__link"
@@ -153,26 +131,34 @@
 
                 <!--地图控件区-->
                 <!--view wx:if="{{message.type == 'speak'}}" class="user-message {{message.isMe ? 'me' : 'other'}}"-->
-                <view class="flex-style">
-                    <view wx:for="{{tabInfo}}" wx:key="ccc" class="flex-item {{item.isActive ? 'active':''}}"
-                          bindtouchstart="{{item.method}}">
-                        {{item.desc}}{{(item.isActive && item.mode!=='transit') ? durationGd :''}}
-                    </view>
-                </view>
-                <view>
-                    <map longitude="{{mapCenter.longitude}}"
-                         latitude="{{mapCenter.latitude}}"
-                         markers="{{markers}}"
-                         polyline="{{polyline}}"
-                         scale="10"
-                         style="width: 100%; height: 400rpx;"/>
-                </view>
-                <cc_uploadpic id='uploadpic' onlyShow="true" picsList="{{rdata.pics_list}}" bind:uploadchangeevent="onUploadChangeEvent"/>
+                <!--<view class="flex-style">-->
+                    <!--<view wx:for="{{tabInfo}}" wx:key="ccc" class="flex-item {{item.isActive ? 'active':''}}"-->
+                          <!--bindtouchstart="{{item.method}}">-->
+                        <!--{{item.desc}}{{(item.isActive && item.mode!=='transit') ? durationGd :''}}-->
+                    <!--</view>-->
+                <!--</view>-->
+                <!--<view>-->
+                    <!--<map longitude="{{mapCenter.longitude}}"-->
+                         <!--latitude="{{mapCenter.latitude}}"-->
+                         <!--markers="{{markers}}"-->
+                         <!--polyline="{{polyline}}"-->
+                         <!--scale="10"-->
+                         <!--style="width: 100%; height: 400rpx;"/>-->
+                <!--</view>-->
 
+
+                <cc_mapshow id='cc_mapshow'  bind:mapshowevent="onMapShowEvent"/>
+
+
+                <!--图片展现-->
+                <cc_uploadpic id='uploadpic' onlyShow="true" picsList="{{rdata.pics_list}}" bind:uploadchangeevent="onUploadChangeEvent"/>
 
 
                 <!--按钮控件区-->
                 <include src="../tplt/button4flow.wxml"/>
+
+
+
 
             </view>
 

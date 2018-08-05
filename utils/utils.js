@@ -44,6 +44,22 @@ exports.showTopTips = function (that,topTips,focusName,cf) {
         , cf.vc.ToastShowDurt);
 };
 
+/**
+ * 功能：间隔一定的秒数将显示和隐藏
+ * 场景：开工状态显示，动态提示用户需要做某些事项
+ * @param that
+ * @param seconds
+ * @param keyName
+ */
+exports.showBlink = function (that,keyName,seconds) {
+    const defaultKeyName = '_crBlink';
+    let key = keyName? keyName:defaultKeyName;
+    setInterval(()=>{
+        that.setData({
+            [key]:!that.data[key]
+        })
+    },seconds? seconds*1000 : 1500);
+};
 
 /**
  * 手机号是否合法
@@ -61,6 +77,20 @@ exports.isPoneAvailable  = function(str){
 };
 
 
+exports.enableButton = function (_this, bottonName) {
+    if (bottonName)
+        return _this.setData({[bottonName]: false});
+    else
+        return _this.setData({'submitButtonDisabled': false});
+};
+exports.disableButton = function (_this, bottonName) {
+    if (bottonName)
+        return _this.setData({[bottonName]: true});
+    else
+        return _this.setData({'submitButtonDisabled': true});
+};
+
+
 /**
  * 功能：
  * 1、判断前端页面是否准入：新增、修改类功能页面加载时（onload)，前端校验userInfo是否有效。
@@ -70,7 +100,7 @@ exports.isPoneAvailable  = function(str){
  *
  * 场景：
  * 1、个人类业务信息的新建、修改（如我的、用户信息修改、提交订单）、查等，需将3rdsessionkey作为head参数发送到后端，并在wx.request应答中调用本函数检查后端会话。
- * 3、用户访问首页时。
+ * 2、用户访问首页时。
  *
  * 公开类信息展现的处理方式：
  * 1、公开类业务信息页面加载数据时，无需调用本函数来校验本地会话，更不必校验后端会话，故无需将3rdsessionkey作为head参数发送到后端
@@ -83,47 +113,47 @@ exports.isPoneAvailable  = function(str){
  */
 exports.checkSession = function (res1, app, that, cb) {
     console.log('res1',res1,'app',app.globalData.userInfo);
-    let desc = '';
-    let redirect  = false; //默认为会话有效
 
-    //页面准入场景
+    //页面准入场景，没有用户信息，则显示首页页面
     if(!app.globalData.userInfo){
-        desc = '您尚未登录，请登录后使用。';
-        redirect = true;
-    }
-    //后端会话有效性校验场景
-    else if (res1){
-        if(res1.header.RTCD === 'RTCD_SESSION_TIMEOUT'){
-            desc = '会话已超时，请登录后使用。';
-            redirect = true;
-        }
-    }
+        alertThenCall('请先登录',()=> {
+            app.globalData.entryType = 'SESSION_TIMEOUT';
+            wx.switchTab(
+                {
+                    url: '../index/index'
+                }
+            );
+        });
 
-    //根据前面的条件判断是否要跳转
-    if (redirect) {
-        // wx.showModal({
-        //     title: '提示',
-        //     content: desc,
-        //     success: function (res) {
-        //         if (res.confirm) {
-        //             app.globalData.entryType = 'SESSION_TIMEOUT';
-        //             wx.switchTab(
-        //                 {
-        //                     url: '../index/index'
-        //                 }
-        //             );
-        //         } else if (res.cancel) {
-        //             app.globalData.entryType = 'SESSION_TIMEOUT';
-        //             wx.switchTab(
-        //                 {
-        //                     url: '../index/index'
-        //                 }
-        //             );
-        //         }
-        //     }
-        // });
-    } else {
-        cb();
+    }
+    //后端会话失效场景，
+    else if (res1 && (res1.header.RTCD === 'RTCD_SESSION_TIMEOUT')){
+        alertThenCall('已超时请登录',()=>{
+            app.globalData.entryType = 'SESSION_TIMEOUT';
+            wx.switchTab(
+                {
+                    url: '../index/index'
+                }
+            );
+        })
+            // wx.showModal({
+            //     title: '提示',
+            //     content: desc,
+            //     success: function (res) {
+            //         if (res.confirm || res.cancel)) {
+            //             app.globalData.entryType = 'SESSION_TIMEOUT';
+            //             wx.switchTab(
+            //                 {
+            //                     url: '../index/index'
+            //                 }
+            //             );
+            //         }
+            //     }
+            // });
+
+    }else {
+        console.log('session有效');
+        cb? cb():'';
     }
 };
 
@@ -207,7 +237,35 @@ exports.showToast = function (title) {
     });
 };
 
+/**
+ * 功能：先提示信息，然后调用回到函数
+ * @param title
+ * @param cb 因为在本函数体内是异步执行，所以要实现回调函数在显示后之执行，只要将toast展现时间与回到函数调的等待时间相同即可。
+ */
+let alertThenCall=function (title,cb) {
+    const time = getApp().globalData.cf.vc.ToastShowDurt;
+    wx.showToast({
+        title: title,
+        icon: 'none',
+        duration: time,
+        mask:true
+    });
+
+
+    setTimeout(() => {
+        //console.log('in alertThenCall ',cb,time)
+            cb?cb():'';
+        }, time);
+};
+exports.alertThenCall = function (title,cb) {
+    return alertThenCall(title,cb);
+};
+
 exports.alert = function (title, iconType) {
+    alert2(title,iconType)
+};
+
+let alert2=function(title, iconType) {
     wx.showToast({
         title: title,
         icon: iconType,

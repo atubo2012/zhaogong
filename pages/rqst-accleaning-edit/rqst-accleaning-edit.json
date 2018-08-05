@@ -6,6 +6,7 @@
     "cc_pay"        :"/components/cc_pay",
     "cc_charging":"/components/cc_charging",
     "cc_nametitle":"/components/cc_nametitle",
-    "cc_uploadpic":"/components/cc_uploadpic"
+    "cc_uploadpic":"/components/cc_uploadpic",
+    "cc_mapshow"  :"/components/cc_mapshow"
   }
 }

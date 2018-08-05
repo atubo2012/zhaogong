@@ -34,9 +34,5 @@ Component({
             });
             this.triggerEvent("timeChangeEvent", this.data);
         },
-
-        // _checkDateAndTime:function (e) {
-        //     if()
-        // }
     }
 });

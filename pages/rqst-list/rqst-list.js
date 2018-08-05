@@ -13,6 +13,15 @@ Page({
         cf:cf,
     },
 
+    checkTarget:function () {
+        if(this.data.target==='findjob' && !app.globalData.userInfo.rolecfm){
+            ut.showModal('友情提示','注册审核通过后即可接单，是否马上注册？',()=>{
+                wx.navigateTo({
+                    url:'../../pages/user-edit/user-edit'
+                });
+            },()=>{})
+        }
+    },
     /**
      * list页面加载的几种场景
      * 1、全量查询
@@ -45,6 +54,7 @@ Page({
             }
         }
 
+
         //TODO，考虑用ut.request替代，将是否设置session3rdKey，以bool类型的参数。
         wx.request({
             url: cf.service.rqstListUrl,
@@ -66,11 +76,13 @@ Page({
 
                 //渲染数据
                 that.setData({
-                    reqList: res.data
+                    reqList: res.data,
+                    target:params.target?params.target:''
                 });
                 ut.hideLoading();
             }
-        })
+        });
+
 
 
     },

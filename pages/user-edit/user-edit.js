@@ -361,13 +361,14 @@ Page({
                         location: res.data.location ? res.data.location : '',
                         mobile: res.data.mobile,//原始手机号
                         oldMobile: res.data.mobile,//原始手机号，用来在提交前比较是否手机号发生了变化，如发生了变化则要求发送短信认证
-                        hideCfm: role==='CLNT',   //若是CLNT角色则隐藏审核状态
                         headImage:res.data.headImage,
                         role: role,             //用户原来的角色
                         rolecfm: res.data.rolecfm ? res.data.rolecfm : false,
+
                         items: ut.getRa(role, _that.data.items),//原来的角色渲染
                         hideSubmitButton: param.type==='ta',//若查看其它的用户信息则隐藏保存按钮
                         hideSC: '' !== res.data.mobile,//如手机号为空，表明当前场景为“注册场景”，应显示验证码输入框，提交时应校验mobile是否有值
+                        hideCfm: role==='CLNT',   //若是CLNT角色则隐藏审核状态
                         //showLborInfo: true,
                     });
 

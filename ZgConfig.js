@@ -74,6 +74,9 @@ function ZgConfig(runtime) {
 
     this.service = {
 
+        // 订单状态推送
+        statPushUrl: `${url}/stat-push`,
+
         // 微信支付
         wxpayUrl: `${url}/wxpay`,
 
@@ -145,7 +148,7 @@ function ZgConfig(runtime) {
     this.vc = {
         swiperItvl: 5000, //每张图片展现的时间。
         swiperDurt: 2000,  //切换一张图片的过程所需要的时间
-        ToastShowDurt: 3000,  //提交后的面包提示框展现持续时间
+        ToastShowDurt: 1500,  //提交后的面包提示框展现持续时间
         PAGE_REFRESH_INTERVAL: 3000,//页面多次刷新之间的最短时间间隔
     };
 
@@ -216,16 +219,16 @@ function ZgConfig(runtime) {
 
 
             //业务状态:BS
-            'wait': '等待接单',
-            'get': '已接单',
-            'start': '已开工',
-            'finish': '已完工',
-            'paid': '已支付',
+            'wait': '等待接单',//通知LBOR群
+            'get': '已接单',  //通知CLNT
+            'start': '已开工',//通知CLNT
+            'finish': '已完工',//通知CLNT
+            'paid': '已支付',//通知LBOR
             'close': '客户关闭',
             'expired': '已过期',
             'delete': '已作废',
-            'lbor-cancel': '非客户取消',
-            'clnt-cancel': '客户取消',
+            'lbor-cancel': '非客户取消',//通知CLNT
+            'clnt-cancel': '客户取消',  //通知LBOR
 
         }
 
@@ -254,24 +257,22 @@ function ZgConfig(runtime) {
             {'type': '开荒保洁', 'uprice': 30, 'unit': '平米', desc: '擦玻璃、地面涂料污渍、全面除尘(扫、吸、擦)'},
         ],
         'changelock': [
-            {'type': 'A级', 'uprice': 120, 'unit': '把', desc: '含6把钥匙'},
-            {'type': 'B级', 'uprice': 280, 'unit': '把'},
-            {'type': 'C级', 'uprice': 380, 'unit': '把'},
+            {'type': 'A级锁芯', 'uprice': 120, 'unit': '把', desc: '含6把钥匙'},
+            {'type': 'B级锁芯', 'uprice': 280, 'unit': '把'},
+            {'type': 'C级锁芯', 'uprice': 380, 'unit': '把'},
         ],
         'broadband': [
-            {'type': '50M长宽', 'uprice': 300, 'unit': '1年', desc: ''},
-            {'type': '100M长宽', 'uprice': 380, 'unit': '3年', desc: ''}
+            {'type': ' 50M长宽', 'uprice': 580, 'unit': '1年', desc: ''},
+            {'type': '100M长宽', 'uprice': 780, 'unit': '1年', desc: ''},
+            {'type': '100M电信', 'uprice': 1200, 'unit': '1年', desc: 'C50'},
+            {'type': '200M电信', 'uprice': 1548, 'unit': '3年', desc: 'C50'},
+            {'type': '300M电信', 'uprice': 2028, 'unit': '1年', desc: 'C60'}
+
         ],
         pipeline: [
             {'type': '疏通', 'uprice': 100, 'unit': '1次', desc: ''},
         ]
     };
-
-
-    //场景：客户呼叫服务，工人上门干活，完工时工人根据实际工作内容增加购物篮内容，更新计费并向客户发送订单。客户支付。鼓励工人自己营销。
-    //工人的路费也应根据规则在goods中生成一个收费项目
-    //
-
 
 }
 

@@ -13,41 +13,22 @@ Page({
         //stUserInfo: wx.getStorageSync('userInfo'),
         code: '',
         app:app,
+
+
+        //forTest
+        locationFrom:{latitude: 31.21037, longitude: 121.4337},
+        locationTo:{latitude: 31.22037, longitude: 121.4237},
         picsList:['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531906460524&di=7e935c5dc2a04eaa8b3b39654e59a8ff&imgtype=0&src=http%3A%2F%2Fwww.cgaeo.com%2Fwp-content%2Fuploads%2F2017%2F06%2FLynda-The-Good-Parts-of-JavaScript-and-the-Web.jpg',
             'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531906461012&di=d38144c6ee2f8a6d57dd48c1727e7500&imgtype=0&src=http%3A%2F%2F120xcyy.com%2Fuploads%2Fallimg%2F171024%2F1-1G024224G52C.jpg'],
     },
 
 
     /**
-     * 获取手机号组件内的数据
-     * @param e
+     * 开发新功能时调试用的函数
      */
-    testcc:function (e) {
-        let ccmb = this.selectComponent("#ccmb");
-        console.log('ccmb',ccmb.data);
-
-    },
-    onChooseAddressEvent:function (e) {
-        console.log(e);
-    },
-    onCheckMobileEvent:function (e) {
-        console.log(e);
-    },
-
-
-    onUploadChangeEvent:function (e) {
-        console.log(e);
-    },
-
-
-
-    /**
-     * 根据场景类别加载页面
-     * 1、用户第一次打开时，没有本地缓存的userInfo，只显示登录按钮
-     * 2、用户因为后台超时，被重定向到本页面，只显示登录按钮
-     */
-    onLoad: function (option) {
-        let that = this;
+    forTest:function(){
+        let cc_mapshow = this.selectComponent("#cc_mapshow");
+        cc_mapshow.initCc(this.data.locationFrom,this.data.locationTo);
 
         console.debug(
             '================',
@@ -63,6 +44,35 @@ Page({
             '\n^^^^^^^^^^^^^^^^'
         );
 
+    },
+    testcc:function (e) {
+        let ccmb = this.selectComponent("#ccmb");
+        console.log('ccmb',ccmb.data);
+    },
+    onChooseAddressEvent:function (e) {
+        console.log(e);
+    },
+    onCheckMobileEvent:function (e) {
+        console.log(e);
+    },
+    onUploadChangeEvent:function (e) {
+        console.log(e);
+    },
+
+
+
+
+    /**
+     * 根据场景类别加载页面
+     * 1、用户第一次打开时，没有本地缓存的userInfo，只显示登录按钮
+     * 2、用户因为后台超时，被重定向到本页面，只显示登录按钮
+     */
+    onLoad: function (option) {
+        let that = this;
+
+
+        //forTest
+        this.forTest();
 
 
         /**
@@ -79,8 +89,8 @@ Page({
         } else {
             /**
              * 使用本地缓存的userInfo向后台发起用户信息查询，刷新app.globalData.userInfo。
-             * 若会话已超时，设置app.globalData.entryType ==='SESSION_TIMEOUT'后重新加载本页面，并只显示登陆按钮
-             * 若会话未超时，则将后台的用户数据拉到本地，更新userInfo。
+             *     若会话已超时，设置app.globalData.entryType ==='SESSION_TIMEOUT'后重新加载本页面，并只显示登陆按钮
+             *     若会话未超时，则将后台的用户数据拉到本地，更新userInfo。
              */
             app.checkUser((res) => {
                 ut.checkSession(res, app, that, function (params2) {
@@ -721,15 +731,13 @@ Page({
 
     //设置用户角色为LBOR
     setRoleLbor: function () {
-        app.globalData.gReqType = 'aaa';//验证app.globalData作为全局参数交换区的例子
-        //app.globalData.role = 'LBOR';
-        wx.navigateTo({
-            url: '../rqst-list/rqst-list?type=all'
-        });
 
-        // wx.switchTab({
-        //     url: '../lbor-main/lbor-main'
-        // })
+
+            wx.navigateTo({
+                url: '../rqst-list/rqst-list?type=all&target=findjob'
+            });
+
+
     },
     //设置用户角色为CLNT
     setRoleClnt: function () {

@@ -2,7 +2,7 @@
 let amapFile = require('../../vendor/amap-wx.js');
 let ut = require('../../utils/utils.js');
 const app = getApp();
-let cfg = app.globalData.cf;
+const cf = app.globalData.cf;
 
 
 Page({
@@ -173,7 +173,7 @@ Page({
 
             //从后台的user中获取被评价人的印象标签数据
             wx.request({
-                url: cfg.service.cmmtListUrl,
+                url: cf.service.cmmtListUrl,
                 data: {
                     openId: option.assesseeOpenId,
                     mode: 'hisimp',
@@ -254,15 +254,21 @@ Page({
             submitButtonDisabled: true
         });
 
+
+
         let rdata = e.detail.value;
         rdata.starAmt = this.data.starAmt;
         rdata.impItems = this.getImpItems(this.data.impItems);
 
         ut.debug('rdata的数据:', rdata);
 
+        if(rdata.comment===''){
+            ut.showTopTips(that,'请填写评价内容','focusComment',cf);
+            return
+        }
 
         wx.request({
-            url: cfg.service.cmmtEditUrl,
+            url: cf.service.cmmtEditUrl,
             data: {
                 /**
                  *前端的参数通过rdata封装，不用在data中按输入域设置参数值，以减少前端代码量。
@@ -282,7 +288,7 @@ Page({
                     wx.showToast({
                         title: retMsg,
                         icon: 'success',
-                        duration: cfg.vc.ToastShowDurt,
+                        duration: cf.vc.ToastShowDurt,
                         success: function (e) {
 
                             ut.debug(e);

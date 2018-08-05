@@ -90,14 +90,19 @@ Page({
 
 
     onLoad: function () {
+        let that = this;
+        // ut.checkSession(null,app,this,()=>{
+        //     if(''===app.globalData.userInfo.role){
+        //         //ut.debug('默认角色尚未设置');
+        //         this.openConfirm();
+        //     }else{
+        //         this.renderData();
+        //     }
+        // });
+
         ut.checkSession(null,app,this,()=>{
-            if(''===app.globalData.userInfo.role){
-                //ut.debug('默认角色尚未设置');
-                this.openConfirm();
-            }else{
-                this.renderData();
-            }
-        });
+            that.renderData();
+        })
     },
     onShow: function () {
         this.onLoad();
@@ -114,8 +119,7 @@ Page({
     },
 
     openConfirm: function () {
-        let that = this;
-        ut.showModal('温馨提示', '用户信息补全后就可以下单或接单了，马上补全？',
+        ut.showModal('温馨提示', '用户信息补全后就可以下单或接单了，马上去补全？',
             () => {
                 wx.navigateTo({
                     url: '../user-edit/user-edit'

@@ -65,11 +65,10 @@ Page({
 
     onLoad: function (option) {
 
-        console.log(option,typeof(option.location),JSON.parse('{"a":111,"b":222}'));
+        this.setData({
+            option:option
+        });
 
-        let t1 = JSON.parse(option.location);
-
-        console.log(t1,typeof(t1));
 
         let that = this;
         let myAmapFun = new amapFile.AMapWX({key: '2d15ece70392d0afd89dae800f78f94d'});
@@ -109,12 +108,12 @@ Page({
                         (Object.assign(markerTo, toObj))
                     ];
 
-                    ut.debug('markers', markers);
+                    //ut.debug('markers', markers);
                     let mapCenter = {
                         longitude: (res.longitude + location.longitude) / 2,
                         latitude: (res.latitude + location.latitude) / 2
                     };
-                    ut.debug('mapCenter', mapCenter);
+                    //ut.debug('mapCenter', mapCenter);
 
 
                     that.setData({
@@ -180,7 +179,7 @@ Page({
                     destination: to,
                     city: '上海',
                     success: function (data) {
-                        console.log('1111111111111111111', data);
+                        //console.log('1111111111111111111', data);
                         let transits = [];
                         if (data && data.transits) {
                             transits = data.transits;
@@ -207,7 +206,7 @@ Page({
 
                     },
                     fail: function (info) {
-                        console.log('000000000000000000000000', info);
+                        console.error('000000000000000000000000', info);
                     }
                 };
 
@@ -218,7 +217,7 @@ Page({
                 } else if (that.data.trafficType === 'walking') {
                     myAmapFun.getWalkingRoute(params)
                 } else if (that.data.trafficType === 'transit') {
-                    console.log('00000000000');
+                    //console.log('00000000000');
                     myAmapFun.getTransitRoute(paramsTransit)
                 }
             }
@@ -227,7 +226,7 @@ Page({
 
     },
     goDetail: function () {
-        console.log(this.data.showDetail);
+        //console.log(this.data.showDetail);
         this.setData({
             showDetail: !this.data.showDetail
         });
@@ -247,28 +246,28 @@ Page({
             trafficType: 'driving'
         });
         this.setTabColors('driving','active');
-        this.onLoad();
+        this.onLoad(this.data.option);
     },
     goToBus: function (e) {
         this.setData({
             trafficType: 'transit'
         });
         this.setTabColors('transit','active');
-        this.onLoad();
+        this.onLoad(this.data.option);
     },
     goToRide: function (e) {
         this.setData({
             trafficType: 'ridding'
         });
         this.setTabColors('ridding','active');
-        this.onLoad();
+        this.onLoad(this.data.option);
     },
     goToWalk: function (e) {
         this.setData({
             trafficType: 'walking'
         });
         this.setTabColors('walking','active');
-        this.onLoad();
+        this.onLoad(this.data.option);
     },
     goBack:function (e) {
         wx.navigateBack({
