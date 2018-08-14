@@ -79,6 +79,7 @@ Component({
                                             url: cf.service.wxpayQueryUrl,
                                             data: {
                                                 out_trade_no: out_trade_no,
+                                                paystat:that.data.cc_rdata.paystat
                                             },
                                             success: function (res3) {
                                                 console.log(res3);

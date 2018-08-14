@@ -161,6 +161,8 @@ Page({
     },
     onPaySuccess: function (e) {
         //console.log('onPaySuccess',e.detail);
+        this.setData({'rdata.stat':'paid'});
+
     },
     // onUpriceChange: function (e) {
     //     console.log('onUpriceChange', e);
@@ -286,6 +288,7 @@ Page({
                                 'cc_rdata_pay.product_id': ret.biz_type,
                                 'cc_rdata_pay.body': cf.hint[ret.biz_type],
                                 'cc_rdata_pay.hide': false,
+                                'cc_rdata_pay.paystat': 'paid',
                             });
                         } else {
                             that.setData({
@@ -315,7 +318,7 @@ Page({
                                     //1-1准备起止点的坐标参数
                                     from = res.longitude + ',' + res.latitude;
                                     let fromObj = {'latitude': res.latitude, 'longitude': res.longitude};
-                                    ut.debug('getLocation', from, fromObj);
+                                    //ut.debug('getLocation', from, fromObj);
 
                                     let location = that.data.rdata.location;
                                     to = location.longitude + ',' + location.latitude;
@@ -323,7 +326,7 @@ Page({
                                         'latitude': location.latitude,
                                         'longitude': location.longitude
                                     };
-                                    ut.debug('toObj', toObj);
+                                    //ut.debug('toObj', toObj);
 
                                     //1-2准备起止点的标记风格参数
                                     let markerFrom = {

@@ -29,7 +29,6 @@
     </view>
     <view class="weui-cell__ft">
         {{item.subtotal}}￥
-        <!--<image id="{{index}}" class="icon1" src="/image/delete.png" bindtap="_delFromCart"/>-->
     </view>
 </view>
 

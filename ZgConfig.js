@@ -207,16 +207,6 @@ function ZgConfig(runtime) {
             'H_SUCCESS': '成功',
             'H_SUBMITING': '处理中',
 
-            //业务种类:BT
-            'accleaning': '空调清洗',
-            'accryogen': '空调充氟',
-            'oilsmoke_cleaning': '油烟机',
-            'changelock': '换修锁',
-            'house_cleaning': '找保洁',
-            pipeline: '通管道',
-            broadband:'装宽带',
-            '': '找工-临时保洁',
-
 
             //业务状态:BS
             'wait': '等待接单',//通知LBOR群
@@ -230,48 +220,174 @@ function ZgConfig(runtime) {
             'lbor-cancel': '非客户取消',//通知CLNT
             'clnt-cancel': '客户取消',  //通知LBOR
 
+            //商品类业务的状态：
+            bs_wait         :'待支付',               //买家显示【支付】，后续状态：完成(无需发货)/已支付待发货
+
+            bs_paid         :'已付款，待卖家发货',  //买家【取消】，点后状态变为：完成(买家配送前取消)；卖家显示【发货】，输入快递单号。(如商品属性需发货)
+            bs_cancel_f     :'已关闭(买家配送前取消)', //买家无按钮。卖家显示无按钮。
+            bs_delivered    :'卖家已发货',           //买家【确认收货】，点后状态为：完成（买家已收货）；卖家显示无按钮；商家发货后的状态
+            bs_received_f   :'完成(买家已收货)',      //买家【退货】(5天内)，输入退货快递单号为：买家退货中；卖家显示无按钮。
+
+            bs_returning    :'买家退货中',           //买家无按钮。卖家显示【收到退货】：点后状态：买家收到退货、已退款
+            bs_returned     :'卖家收到退货',         //买家无按钮。卖家显示【退款】，点后状态为：完成(卖家已退款)
+            bs_unpaid_f     :'已关闭(卖家已退款)',    //卖家无按钮。买家无按钮。显示已退款。
+
+
+            //业务种类:BT
+            hscleaning  : '临时保洁',
+            accleaning  : '空调清洗',
+            accryogen   : '空调充氟',
+            oilsmoke_cleaning: '油烟机',
+            house_cleaning: '找保洁',
+            changelock  : '换修锁',
+            pipeline    : '通管道',
+            broadband   :'装宽带',
+            decodesign  :'装修设计',
+            corpregist  :'公司注册',
+            program:'编程私教'
         }
 
     }[this.language];
 
+    //状态：按钮，按钮按下后的状态
+
+    this.statRules={
+        comdFlow: {
+            bs_returned: {
+                desc: '卖家收到退货',
+                    role: {
+                    'CLNT': {buttons: []},
+                    'LBOR': {buttons: [{buttonDesc: '退款', nextStat: 'bs_unpaid_f'}]
+                    },
+                }
+            },
+            bs_returning: {
+                desc: '买家退货中',
+                    role: {
+                    'CLNT': {buttons: []},
+                    'LBOR': {buttons: [{buttonDesc: '收到退货', nextStat: 'bs_returned'}]},
+                }
+            },
+            bs_received_f: {
+                desc: '完成(买家已收货)',
+                    role: {
+                    'CLNT': {buttons: [{buttonDesc: '申请退货', nextStat: 'bs_returning'}]
+                    },
+                    'LBOR': {
+                        buttons: []
+                    },
+                }
+            },
+
+            bs_delivered: {
+                desc: '卖家已发货',
+                    role: {
+                    'CLNT': {
+                        buttons: [   //当前角色可访问的按钮
+                            {buttonDesc: '确认收货', nextStat: 'bs_received_f'}
+                        ]
+                    },
+                    'LBOR': {
+                        buttons: [
+                            // {buttionDesc: '发货', nextStat: 'bs_delivered'}
+                        ]
+                    },
+                }
+            },
+            bs_paid: {
+                desc: '已付款，待卖家发货',
+                    role: {
+                    'CLNT': {
+                        buttons: [   //当前角色可访问的按钮
+                            {buttonDesc: '取消', nextStat: 'bs_cancel_f'}
+                        ]
+                    },
+                    'LBOR': {
+                        buttons: [
+                            {buttonDesc: '发货', nextStat: 'bs_delivered'}
+                        ]
+                    },
+                }
+            },
+            bs_wait: {
+                desc: '待支付',//订单状态
+                    role: {        //各种角色
+                    'CLNT': {
+                        buttons: [   //当前角色可访问的按钮
+                            {buttonDesc: '修改', nextStat: 'edit'}
+                        ]
+                    },
+                    'LBOR': {
+                        buttons: []
+                    },
+                }
+            },
+        },
+        servFlow:{}
+    };
+
     //地址业务品类选择器CC自定义组件使用的内容
     this.charging_type = {
-        'accleaning': [
+        'program': {
+            subtypes: [
+                {'type': '编程第一课', 'uprice': 300, 'unit': '次'},
+                {'type': '编程入门课', 'uprice': 1999, 'unit': '每期'},
+                {'type': '编程中级课', 'uprice': 3999, 'unit': '每期'},
+            ],
+            ccs: {uploadpic: true, mobile: true, address: true, osdt: false, map: true, nametitle: false},
+            supplier_id:['oCun05dg82cWSz-SiwiJnrAwX7Hs'],
+
+            //TODO:以下三种特性待实现
+            can_be_canceled_by_clnt:true,//不能取消，bs_paid下隐藏【取消】按钮。button4flow_comd中增加判断条件
+            can_be_returned_by_clnt:true,//不能退货，bs_received_f下隐藏【退货】按钮。button4flow_comd中增加判断条件
+            need_delivery:false,         //无需配送，付款后状态直接更新为bs_received_f，不显示【确认收货】。onSubmit()方法中支付前传送bs_received_f状态
+
+        },
+        'decodesign': {subtypes:[
+            {'type': '设计咨询', 'uprice': 300, 'unit': '次'},
+            {'type': '设计装修', 'uprice': 300, 'unit': '平米'},
+        ]},
+        'corpregist': {subtypes:[
+            {'type': '公司注册', 'uprice': 250, 'unit': '次'},
+            {'type': '代理记账(季度)', 'uprice': 1500, 'unit': '季度'},
+            {'type': '代理记账(年度)', 'uprice': 5000, 'unit': '年'},
+        ]},
+        'accleaning': {subtypes:[
             {'type': '壁挂式', 'uprice': 80, 'unit': '台'},
             {'type': '立柜式', 'uprice': 100, 'unit': '台'},
             {'type': '中央式', 'uprice': 120, 'unit': '台'},
-        ],
-        'accryogen': [
+        ]},
+        'accryogen': {subtypes:[
             {'type': '  1P功率', 'uprice': 120, 'unit': '台'},
             {'type': '1.5P功率', 'uprice': 180, 'unit': '台'},
             {'type': '2.0P功率', 'uprice': 200, 'unit': '台'},
-        ],
-        'oilsmoke_cleaning': [
+        ]},
+        'oilsmoke_cleaning': {subtypes:[
             {'type': '一般型', 'uprice': 280, 'unit': '台'},
             {'type': '特殊型', 'uprice': 300, 'unit': '台', desc: '拆、洗、装'}
-        ],
-        'house_cleaning': [
+        ]},
+        'house_cleaning': {subtypes:[
             {'type': '新租保洁', 'uprice': 40, 'unit': '小时', desc: '在约定时间内完成全面保洁，根据客户对洁净度的要求可补时服务'},
             {'type': '代购工具', 'uprice': 65, 'unit': '套', desc: '平拖1、毛巾4(厨卫客备)、清洁球2(厨卫)、扫把、簸箕'},
             {'type': '清洁剂', 'uprice': 30, 'unit': '套', desc: '洁厕灵1、威猛去油1'},
             {'type': '开荒保洁', 'uprice': 30, 'unit': '平米', desc: '擦玻璃、地面涂料污渍、全面除尘(扫、吸、擦)'},
-        ],
-        'changelock': [
+        ]},
+        'changelock': {subtypes:[
             {'type': 'A级锁芯', 'uprice': 120, 'unit': '把', desc: '含6把钥匙'},
             {'type': 'B级锁芯', 'uprice': 280, 'unit': '把'},
             {'type': 'C级锁芯', 'uprice': 380, 'unit': '把'},
-        ],
-        'broadband': [
+        ]},
+        'broadband': {subtypes:[
             {'type': ' 50M长宽', 'uprice': 580, 'unit': '1年', desc: ''},
             {'type': '100M长宽', 'uprice': 780, 'unit': '1年', desc: ''},
             {'type': '100M电信', 'uprice': 1200, 'unit': '1年', desc: 'C50'},
             {'type': '200M电信', 'uprice': 1548, 'unit': '3年', desc: 'C50'},
             {'type': '300M电信', 'uprice': 2028, 'unit': '1年', desc: 'C60'}
 
-        ],
-        pipeline: [
+        ]},
+        pipeline: {subtypes:[
             {'type': '疏通', 'uprice': 100, 'unit': '1次', desc: ''},
-        ]
+        ]}
     };
 
 }

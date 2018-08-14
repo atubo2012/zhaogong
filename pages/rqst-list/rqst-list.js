@@ -11,6 +11,11 @@ Page({
         pageInfo: app.getPageInfo('rqst-list'),
         ut : ut, //如页面需要使用utils的方法，则在这里设置
         cf:cf,
+
+        _bizType2url:{
+            'hscleaning':'-',
+            'program':'-comd-'
+        }
     },
 
     checkTarget:function () {
@@ -51,6 +56,8 @@ Page({
                 } else if (role === 'LBOR') {
                     rdata['lborInfo.openId'] = openId;
                 }
+            }else if(type==='myAsSupplier'){
+                rdata['supplier_id'] = openId;
             }
         }
 
@@ -69,7 +76,7 @@ Page({
                     res.data.map(function (item) {
                         item.address = ut.getHiddenAddr(item.address);
                         //若上门时间早于当前时间，则提示已过期
-                        if(!ut.isLateThanNow(item.osdt+ ' ' +item.ostm))
+                        if(!ut.isLateThanNow(item.osdt+ ' ' +item.ostm) && item.stat==='bs_wait')
                             item.stat = 'expired';
                     });
                 }

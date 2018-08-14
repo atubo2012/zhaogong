@@ -88,7 +88,7 @@ Page({
                     to = location.longitude + ',' + location.latitude;
                     let toObj = {'latitude': location.latitude, 'longitude': location.longitude};
 
-                    ut.debug('toObj', toObj);
+                    //ut.debug('toObj', toObj);
                     let markerFrom = {
                         iconPath: "../../image/navi_start.png",
                         id: 0,

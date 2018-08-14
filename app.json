@@ -21,7 +21,8 @@
     "pages/gdmap/gdmap",
     "pages/user-edit/user-edit",
     "pages/user-list/user-list",
-    "pages/rqst-accleaning-edit/rqst-accleaning-edit"
+    "pages/rqst-accleaning-edit/rqst-accleaning-edit",
+    "pages/rqst-comd-edit/rqst-comd-edit"
   ],
   "window": {
     "backgroundTextStyle": "light",

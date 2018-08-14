@@ -59,7 +59,7 @@ Component({
         chargingTypeList: cf.charging_type.accleaning,
         currentChargingType: Object.keys(cf.charging_type)[0],
         currentChargingTypeDesc: cf.hint[Object.keys(cf.charging_type)[0]],//默认显示的charging_type大类描述
-        currentChargingItem: cf.charging_type.accleaning[0],
+        currentChargingItem: cf.charging_type.accleaning.subtypes[0],
 
         ct: cf.charging_type,
         cf: cf,
@@ -98,9 +98,8 @@ Component({
             that.setData({
                 currentChargingType: charging_type,
                 currentChargingTypeDesc: cf.hint[charging_type],
-
-                chargingTypeList: cf.charging_type[charging_type],
-                currentChargingItem: cf.charging_type[charging_type][0],
+                chargingTypeList: cf.charging_type[charging_type].subtypes,
+                currentChargingItem: cf.charging_type[charging_type].subtypes[0],
             });
         },
 
@@ -116,8 +115,8 @@ Component({
                 currentChargingType: currentChargingType.type,
                 currentChargingTypeDesc: cf.hint[currentChargingType.type],
 
-                chargingTypeList: cf.charging_type[currentChargingType.type],
-                currentChargingItem: cf.charging_type[currentChargingType.type][0],
+                chargingTypeList: cf.charging_type[currentChargingType.type].subtypes,
+                currentChargingItem: cf.charging_type[currentChargingType.type].subtypes[0],
 
             });
 

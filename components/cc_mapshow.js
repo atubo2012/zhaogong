@@ -90,7 +90,7 @@ Component({
 
             to = locationTo.longitude + ',' + locationTo.latitude;
             let toObj = {'latitude': locationTo.latitude, 'longitude': locationTo.longitude};
-            ut.debug('getLocation', from, fromObj, 'toObj', toObj);
+            //ut.debug('getLocation', from, fromObj, 'toObj', toObj);
 
             //1-2准备起止点的标记风格参数
             let markerFrom = {

@@ -4,7 +4,7 @@
 
         <navigator data-item="{{item}}" class="weui-panel"
                    wx:for="{{reqList}}" wx:key="aaa"
-                   url="../rqst-{{item.biz_type ? 'accleaning-' :''}}edit/rqst-{{item.biz_type? 'accleaning-' :''}}edit?reqId={{item.reqId}}&location={{item.location}}"
+                   url="../rqst{{_bizType2url[item.biz_type] ? _bizType2url[item.biz_type] :'-accleaning-'}}edit/rqst{{_bizType2url[item.biz_type] ? _bizType2url[item.biz_type] :'-accleaning-'}}edit?reqId={{item.reqId}}&location={{item.location}}"
 
                    bindtap="checkTarget">
 
@@ -12,10 +12,10 @@
                 <view class="weui-media-box weui-media-box_text">
                     <view class="weui-media-box__title weui-media-box__title_in-text"
                           style="{{(item.stat=='wait' || item.stat=='get') ? '':'color: #999'}}">
-                        <block wx:if="{{item.biz_type===''}}">
+                        <block wx:if="{{item.biz_type==='hscleaning'}}">
                             {{item.uprice*item.dura}}元 (做{{item.dura}}小时 {{item.size}}平米 {{item.hasTool}})
                         </block>
-                        <block wx:if="{{item.biz_type!=''}}">
+                        <block wx:if="{{item.biz_type!='hscleaning'}}">
                             {{item.cart.total_cost}}元 {{cf.hint[item.biz_type]}}
                         </block>
                     </view>

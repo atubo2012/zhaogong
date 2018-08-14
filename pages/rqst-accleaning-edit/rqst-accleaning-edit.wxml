@@ -19,7 +19,6 @@
                              bind:cartChangeEvent="onCartChange"
                 />
 
-
                 <!--联系信息部分-地址、称呼、手机信息-->
                 <view class="weui-cells__title">服务地址</view>
                 <view class="weui-cells weui-cells_after-title">
@@ -54,7 +53,7 @@
             </view>
 
 
-            <!--需求详情部分-->
+            <!--服务类业务的需求详情-->
             <view class="weui-form-preview" hidden="{{!preview}}">
 
                 <view class="weui-form-preview__hd">
@@ -125,28 +124,6 @@
                     </view>
                 </view>
 
-
-
-
-
-                <!--地图控件区-->
-                <!--view wx:if="{{message.type == 'speak'}}" class="user-message {{message.isMe ? 'me' : 'other'}}"-->
-                <!--<view class="flex-style">-->
-                    <!--<view wx:for="{{tabInfo}}" wx:key="ccc" class="flex-item {{item.isActive ? 'active':''}}"-->
-                          <!--bindtouchstart="{{item.method}}">-->
-                        <!--{{item.desc}}{{(item.isActive && item.mode!=='transit') ? durationGd :''}}-->
-                    <!--</view>-->
-                <!--</view>-->
-                <!--<view>-->
-                    <!--<map longitude="{{mapCenter.longitude}}"-->
-                         <!--latitude="{{mapCenter.latitude}}"-->
-                         <!--markers="{{markers}}"-->
-                         <!--polyline="{{polyline}}"-->
-                         <!--scale="10"-->
-                         <!--style="width: 100%; height: 400rpx;"/>-->
-                <!--</view>-->
-
-
                 <cc_mapshow id='cc_mapshow'  bind:mapshowevent="onMapShowEvent"/>
 
 
@@ -156,9 +133,6 @@
 
                 <!--按钮控件区-->
                 <include src="../tplt/button4flow.wxml"/>
-
-
-
 
             </view>
 

@@ -46,7 +46,6 @@ App({
 
         let that = this;
 
-        //this.wsTest();
 
         if(options.scene === 1044){
             console.log('场景1044',options.shareTicket)
@@ -65,12 +64,14 @@ App({
         });
 
 
-        //如未指定运行模式，则默认为生产模式
+        //如未指定运行模式，则默认为生产模式。
         runtime.runmode= options.query.runmode ? options.query.runmode:'prod';
         console.log('runtime',runtime);
 
         //根据小程序运行时环境参数，初始化运行时参数
         this.globalData['cf']=new ZgConfig(runtime);
+
+        //this.wsTest();
 
 
         //使用腾讯地图api获得地理信息获取用户的地理坐标
@@ -230,16 +231,16 @@ App({
     },
 
     /**
-     * 功能：检查用户是否为新用户，如是新用户，则引导客户注册
+     * 功能：检查用户是否为新用户(尚未填写手机号)，如是新用户则引导客户注册
      * 场景：
-     * 1、LBOR上单时
-     * 2、CLNT下单时
+     * 1、LBOR接单时
+     * 2、CLNT提交新订单时
      */
     isNewUser: function () {
         if (this.globalData.newUser) {
             wx.showModal({
                 title: '提示',
-                content: '尚未注册，马上去注册？',
+                content: '您尚未注册，是否马上去注册？',
                 success: function (res) {
                     if (res.confirm) {
                         wx.navigateTo(
@@ -248,7 +249,11 @@ App({
                             }
                         );
                     } else if (res.cancel) {
-                        console.log('用户点击取消')
+                        wx.navigateBack(
+                            {
+                                delta: 1
+                            }
+                        );
                     }
                 }
             });
@@ -341,10 +346,11 @@ App({
      */
     wsTest:function(){
 
+        let that = this;
 
         sendSocketMessage('i will be back')
         wx.connectSocket({
-            url: 'ws://zgreq.qstarxcx.com:8080',
+            url: that.globalData.cf.runtimeConfig.wsurl,
             method: "GET",
             success(e) {
                 console.log('success',e,typeof(e));

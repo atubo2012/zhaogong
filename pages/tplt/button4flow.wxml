@@ -21,7 +21,7 @@
             <button class="weui-btn" hidden="{{rdata.stat!=='wait'}}" data-submitType="close" form-type="submit"   disabled="{{submitButtonDisabled}}">关闭订单</button>
             <button class="weui-btn" hidden="{{rdata.stat!=='get'}}"  data-submitType="clnt-cancel" form-type="submit"   disabled="{{submitButtonDisabled}}">取消订单</button>
             <button class="weui-btn" hidden="{{!(rdata.stat==='paid' || rdata.stat==='finish' || rdata.stat==='close')}}" data-submitType="onemore"  bindtap="changePreview" >再来一单</button>
-            <button hidden="{{!(rdata.stat ==='paid' && !rdata.c2LBOR.comment )}}"  data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价1</button>
+            <button hidden="{{!(rdata.stat ==='paid' && !rdata.c2LBOR.comment )}}"  data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价</button>
         </block>
 
         <!--当前用户是LBOR角色，角色已审核通过，则可接单；对自己接的订单，可以操作-->
@@ -37,7 +37,7 @@
                 <!--在start可完工-->
                 <button hidden="{{!(rdata.stat ==='start')}}" form-type="submit" data-submitType="finish" type="primary" class="weui-btn" disabled="{{submitButtonDisabled}}">完工</button>
                 <!--在finish或paid状态可评价-->
-                <button hidden="{{!( rdata.stat ==='paid' && !rdata.c2CLNT.comment )}}" data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价2</button>
+                <button hidden="{{!( rdata.stat ==='paid' && !rdata.c2CLNT.comment )}}" data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价</button>
 
             </block>
         </block>

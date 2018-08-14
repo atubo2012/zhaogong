@@ -24,29 +24,32 @@
                 <!--<text class="user-motto">{{motto}}</text>-->
                 <button class='weui-btn' bindtap="setRoleLbor" type="primary">我想找工作</button>
                 <button class="weui-btn" bindtap="setRoleClnt" type="primary">我想找帮手</button>
+                <navigator url="../rqst-list/rqst-list?type=my" class="weui-footer__link">我的订单</navigator>
+                <navigator wx:if="{{userInfo.is_supplier}}" url="../rqst-list/rqst-list?type=myAsSupplier" class="weui-footer__link">供应商订单</navigator>
             </block>
 
             <block wx:if="{{!isLogined}}">
                 <button class="weui-btn" open-type="getUserInfo"  bindgetuserinfo="login4" disabled="{{submitButtonDisabled}}" type="primary">
                     微信登录
                 </button>
+
             </block>
+
 
             <!--非生产模式下，显示近期开发的测试连接-->
             <block wx:if="{{cf.runMode==='dev'}}">
 
-                <navigator url="../rqst-list/rqst-list?type=my" class="weui-footer__link">我的订单</navigator>
                 <navigator url="../lbor-list/lbor-list" class="weui-footer__link">组件测试</navigator>
                 <navigator url="../user-list/user-list" class="weui-footer__link">用户列表</navigator>
                 <navigator url="../rqst-accleaning-edit/rqst-accleaning-edit" class="weui-footer__link">空调清洗</navigator>
-                <navigator url="../fdbk-edit/fdbk-edit" class="weui-footer__link">反馈</navigator>
+                <navigator url="../rqst-comd-edit/rqst-comd-edit?charging_type=program" class="weui-footer__link">商品类业务</navigator>
 
-                <!--todo:将这两个CC用于空调清洗订单中-->
-                <mobileinput id='ccmb' title="手机号组件的标题" mobile="{{userInfo.mobile}}" smsCode=""  bind:checkmobileevent="onCheckMobileEvent"  />
-                <button class="weui-btn" bindtap="testcc" type="primary">取得手机号组件中的信息</button>
+                <!--<mobileinput id='ccmb' title="手机号组件的标题" mobile="{{userInfo.mobile}}" smsCode=""  bind:checkmobileevent="onCheckMobileEvent"  />-->
+                <!--<button class="weui-btn" bindtap="testcc" type="primary">取得手机号组件中的信息</button>-->
 
                 <addressinput id='ccmap' title="选择地址" address="哈哈哈1"  bind:chooseaddressevent="onChooseAddressEvent"  />
                 <cc_uploadpic id='uploadpic' picsList="{{picsList}}"  hidden="true" bind:uploadchangeevent="onUploadChangeEvent"/>
+                <cc_mapshow id='cc_mapshow' bind:mapshowevent="onMapShowEvent"/>
 
             </block>
         </view>

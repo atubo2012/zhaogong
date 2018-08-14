@@ -27,8 +27,6 @@ Page({
      * 开发新功能时调试用的函数
      */
     forTest:function(){
-        let cc_mapshow = this.selectComponent("#cc_mapshow");
-        cc_mapshow.initCc(this.data.locationFrom,this.data.locationTo);
 
         console.debug(
             '================',
@@ -73,6 +71,9 @@ Page({
 
         //forTest
         this.forTest();
+        // let cc_mapshow = this.selectComponent("#cc_mapshow");console.log('---------------------',cc_mapshow)
+        // cc_mapshow.initCc(this.data.locationFrom,this.data.locationTo);
+
 
 
         /**
@@ -720,7 +721,6 @@ Page({
     },
 
 
-
     goHome: function () {
         wx.switchTab(
             {
@@ -731,13 +731,9 @@ Page({
 
     //设置用户角色为LBOR
     setRoleLbor: function () {
-
-
             wx.navigateTo({
                 url: '../rqst-list/rqst-list?type=all&target=findjob'
             });
-
-
     },
     //设置用户角色为CLNT
     setRoleClnt: function () {
@@ -758,6 +754,5 @@ Page({
             url: '../lbor-edit/lbor-edit'
         })
     },
-
 
 });
