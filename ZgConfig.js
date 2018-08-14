@@ -314,7 +314,7 @@ function ZgConfig(runtime) {
                     role: {        //各种角色
                     'CLNT': {
                         buttons: [   //当前角色可访问的按钮
-                            {buttonDesc: '修改', nextStat: 'edit'}
+                            //{buttonDesc: '修改', nextStat: 'edit',notSubmit:true}
                         ]
                     },
                     'LBOR': {

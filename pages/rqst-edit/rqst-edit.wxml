@@ -237,7 +237,7 @@
                             </navigator>
                         </view>
                     </view>
-                    <input name="biz_type" value=""  hidden="true"/>
+                    <input name="biz_type" value="hscleaning"  hidden="true"/>
 
                     <!--完工后才显示金额，只在完工和支付后显示金额-->
                     <view class="weui-form-preview__item" hidden="{{!(rdata.stat=='finish' || rdata.stat=='paid')}}">

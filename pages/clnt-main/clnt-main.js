@@ -10,15 +10,14 @@ Page({
 
         imgUrls:[],
         grids: [//某个图标点击后->产品list->蒙层显示详情->reqedit工单页(提交提醒)->提交结果(返回我的订单、返回首页)->电话/短信/邮件通知labor->点击接单后发送通知CLT
-            {img: 'ar.jpg', url: '../rqst-edit/rqst-edit', desc: '入住保洁'},
+            {img: 'ar.jpg', url: '../rqst-edit/rqst-edit?charging_type=hscleaning', desc: '入住保洁'},
             {img: 'ar.jpg', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=accleaning', desc: '空调清洗'},
             {img: 'ar.jpg', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=broadband', desc: '宽带安装'},
             {img: 'ar.jpg', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=changelock', desc: '换锁修锁'},
+            {img: 'ar.jpg', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=decodesign', desc: '装修设计'},
+            {img: 'ar.jpg', url: '../rqst-comd-edit/rqst-comd-edit?charging_type=corpregist', desc: '公司注册'},
+            {img: 'ar.jpg', url: '../rqst-comd-edit/rqst-comd-edit?charging_type=program', desc: '编程私教'},
 
-            // {img: 'ar.jpg', url: 'ar.jpg', desc: '开荒保洁'},
-            // {img: 'ar.jpg', url: 'ar.jpg', desc: '修锁换锁'},
-            // {img: 'ar.jpg', url: 'ar.jpg', desc: '家电清洗'},
-            // {img: 'ar.jpg', url: '', desc: '宽带安装'},
             // {img: 'ar.jpg', url: '../rqst-edit/rqst-edit', desc: '鲜花上门'},
             // {img: 'ar.jpg', url: 'ar.jpg', desc: '问药'},
             // {img: 'ar.jpg', url: 'ar.jpg', desc: '接机送站'},

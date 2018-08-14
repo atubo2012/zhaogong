@@ -1,0 +1,77 @@
+<view class="weui-form-preview__bd">
+    <!--修改、再来一单的功能，实际上是显示编辑表单，在编辑界面中提交；客户关闭、阿姨上单、客户取消、阿姨不去了，则是直接提交，只更新订单的状态-->
+    <view class="weui-btn-area">
+
+
+        <!--尚未登录，提示马上登录-->
+        <block wx:if="{{!app.globalData.userInfo}}">
+            <button class="weui-btn" disabled="{{submitButtonDisabled}}" type="primary" bindtap="goLogin">马上登录</button>
+        </block>
+
+        <!--当前用户是CLNT角色-->
+        <!--<block wx:if="{{app.globalData.userInfo.role==='CLNT'  &&  rdata.clntInfo.openId===app.globalData.userInfo.openId}}">-->
+            <!--&lt;!&ndash;<cc_pay cc_rdata="{{cc_rdata_pay}}"  wx:if="{{rdata.stat==='bs_wait'}}" bind:paySuccessEvent="onPaySuccess" />&ndash;&gt;-->
+            <!--<button class="weui-btn"  disabled="{{submitButtonDisabled}}" hidden="{{rdata.stat!=='bs_wait'}}" data-submitType="edit" bindtap="changePreview">修改</button>-->
+
+            <!--<button class="weui-btn"  disabled="{{submitButtonDisabled}}" hidden="{{rdata.stat!=='bs_paid'}}"  data-submitType="bs_cancel_f" form-type="submit"   >取消订单</button>-->
+            <!--<button class="weui-btn"  disabled="{{submitButtonDisabled}}" hidden="{{rdata.stat!=='bs_paid'}}"  data-submitType="bs_delivered" form-type="submit"  >卖家发货</button>-->
+
+            <!--<button class="weui-btn"  disabled="{{submitButtonDisabled}}" hidden="{{rdata.stat!=='bs_delivered'}}"  data-submitType="bs_received_f" form-type="submit" >确认收货</button>-->
+
+            <!--<button class="weui-btn"  disabled="{{submitButtonDisabled}}" hidden="{{rdata.stat!=='bs_received_f'}}"  data-submitType="bs_returning" form-type="submit" >买家退货</button>-->
+
+
+            <!--<button class="weui-btn"  disabled="{{submitButtonDisabled}}" hidden="{{rdata.stat!=='bs_returning'}}"  data-submitType="bs_returned" form-type="submit"   >收到退货</button>-->
+            <!--<button class="weui-btn"  disabled="{{submitButtonDisabled}}" hidden="{{rdata.stat!=='bs_returned'}}"  data-submitType="bs_unpaid_f" form-type="submit"   >退款</button>-->
+
+            <!--&lt;!&ndash;<button class="weui-btn" hidden="{{rdata.stat!=='bs_delivered'}}" data-submitType="edit" bindtap="changePreview" disabled="{{submitButtonDisabled}}" >确认收获并关闭</button>&ndash;&gt;-->
+            <!--&lt;!&ndash;<button class="weui-btn" hidden="{{rdata.stat!=='bs_received'}}" data-submitType="close" form-type="submit"   disabled="{{submitButtonDisabled}}">退货</button>&ndash;&gt;-->
+            <!--&lt;!&ndash;<button class="weui-btn" hidden="{{rdata.stat!=='bs_returned'}}" data-submitType="close" form-type="submit"   disabled="{{submitButtonDisabled}}">收到退款并关闭</button>&ndash;&gt;-->
+            <!--&lt;!&ndash;<button class="weui-btn" hidden="{{!(rdata.stat==='paid' || rdata.stat==='finish' || rdata.stat==='close')}}" data-submitType="onemore"  bindtap="changePreview" >再来一单</button>&ndash;&gt;-->
+            <!--&lt;!&ndash;<button hidden="{{!(rdata.stat ==='paid' && !rdata.c2LBOR.comment )}}"  data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价</button>&ndash;&gt;-->
+        <!--</block>-->
+
+        <!--当前用户是LBOR角色，角色已审核通过，则可接单；对自己接的订单，可以操作-->
+        <!--<block wx:if="{{app.globalData.userInfo.role==='SELLER'}}">-->
+            <!--<block wx:if="{{app.globalData.userInfo.rolecfm}}">-->
+                <!--<button hidden="{{!(rdata.stat==='wait' && isLateThanNow)}}" form-type="submit" data-submitType="get" type="primary" class="weui-btn" disabled="{{submitButtonDisabled}}">接单</button>-->
+            <!--</block>-->
+            <!--<block wx:if="{{rdata.lborInfo.openId===app.globalData.userInfo.openId}}">-->
+                <!--&lt;!&ndash;在get状态可开工&ndash;&gt;-->
+                <!--<button hidden="{{!(rdata.stat ==='get')}}" form-type="submit" data-submitType="start" type="primary" class="weui-btn" disabled="{{submitButtonDisabled}}">开工</button>-->
+                <!--&lt;!&ndash;在get状态可取消&ndash;&gt;-->
+                <!--<button hidden="{{!(rdata.stat ==='get')}}" form-type="submit" data-submitType="lbor-cancel" class="weui-btn" disabled="{{submitButtonDisabled}}">不去了</button>-->
+                <!--&lt;!&ndash;在start可完工&ndash;&gt;-->
+                <!--<button hidden="{{!(rdata.stat ==='start')}}" form-type="submit" data-submitType="finish" type="primary" class="weui-btn" disabled="{{submitButtonDisabled}}">完工</button>-->
+                <!--&lt;!&ndash;在finish或paid状态可评价&ndash;&gt;-->
+                <!--<button hidden="{{!( rdata.stat ==='paid' && !rdata.c2CLNT.comment )}}" data-submitType="comment" class="weui-btn" disabled="{{submitButtonDisabled}}" bindtap="goComment">评价</button>-->
+
+            <!--</block>-->
+        <!--</block>-->
+
+        <!--任何角色、任何状态下都可以分享订单-->
+
+
+        <!--若是客户本人，则按照当前订单的状态显示相应的按钮-->
+        <block wx:if="{{app.globalData.userInfo.role==='CLNT'  &&  rdata.clntInfo.openId===app.globalData.userInfo.openId}}">
+            <cc_pay cc_rdata="{{cc_rdata_pay}}"  wx:if="{{rdata.stat==='bs_wait'}}" bind:paySuccessEvent="onPaySuccess" />
+            <button class="weui-btn" hidden="{{rdata.stat!=='bs_wait'}}" data-submitType="edit" bindtap="changePreview" disabled="{{submitButtonDisabled}}" >修改</button>
+
+            <block wx:for="{{cf.statRules.comdFlow[rdata.stat].role.CLNT.buttons}}" wx:key="aci">
+                <button class="weui-btn"  disabled="{{submitButtonDisabled}}" data-submitType="{{item.nextStat}}" form-type="submit" >{{item.buttonDesc}}</button>
+            </block>
+
+
+        </block>
+
+        <!--当前用户的openId是商品供应商-->
+        <block wx:if="{{_isSupplier}}">
+            <block wx:for="{{cf.statRules.comdFlow[rdata.stat].role.LBOR.buttons}}" wx:key="aci2">
+                <button class="weui-btn"  disabled="{{submitButtonDisabled}}" data-submitType="{{item.nextStat}}" form-type="submit" >{{item.buttonDesc}}</button>
+            </block>
+        </block>
+
+        <button class="weui-btn" open-type="share" disabled="{{submitButtonDisabled}}" >分享</button>
+
+    </view>
+</view>

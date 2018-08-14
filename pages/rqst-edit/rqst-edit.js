@@ -166,6 +166,7 @@ Page({
                                         url: cf.service.wxpayQueryUrl,
                                         data: {
                                             out_trade_no: out_trade_no,
+                                            paystat:'paid'
                                         },
                                         success: function (res3) {
                                             console.log(res3);
@@ -490,6 +491,7 @@ Page({
                             'rdata.location': JSON.stringify(ret.location),
                             'rdata.clntInfo': ret.clntInfo,
                             'rdata.lborInfo': (ret.lborInfo ? ret.lborInfo : {}),
+                            'rdata.biz_type': ret.biz_type,
                             'addrHidden': ut.getHiddenAddr(ret.address),
                             'items': items,
                             'sexItems': sexItems,
@@ -691,6 +693,7 @@ Page({
                     'rdata.uprice': that.data.upriceList[0],
                     'rdata.dura': that.data.durationList[0],
                     'rdata.clfn': app.globalData.userInfo.name ? app.globalData.userInfo.name:app.globalData.userInfo.nickName, //若用户尚未注册，则默认填写
+                    'rdata.biz_type':option.charging_type
                 });
                 //app.isNewUser();
             })
@@ -804,7 +807,6 @@ Page({
 
             console.log('rdata.uprice before submit', rdata.uprice);
             rdata.cost = 0;
-
         }
         rdata.uprice = Number(rdata.uprice);
         rdata.cost = Number(rdata.cost);
