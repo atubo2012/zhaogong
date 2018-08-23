@@ -12,7 +12,12 @@ Component({
     /**
      * 组件的初始数据
      */
-    data: {},
+    data: {
+        _bizType2url:{
+            'hscleaning':'-',
+            'program':'-comd-'
+        },
+    },
 
 
     attached: function () {

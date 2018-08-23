@@ -142,6 +142,9 @@ function ZgConfig(runtime) {
 
         //评论查询接口，用户印象接口
         cmmtListUrl: `${url}/cmmt-list`,
+
+        tomatoEditUrl:`${url}/tomato-edit`,
+        tomatoListUrl:`${url}/tomato-list`
     };
 
     //视图展现有关的配置参数，在这里统一定义，便于参数化管理。
@@ -163,8 +166,9 @@ function ZgConfig(runtime) {
         {page: 'index', title: '一切皆有可能', desc: '相信美好的事情即将发生！'},
         {page: 'clnt-main', title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
         {page: 'rqst-edit', title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
-        {page: 'lbor-main', title: '成就自己', desc: '靠谱、专业、真诚！'},
-        {page: 'rqst-list', title: '成就自己', desc: '靠谱、专业、真诚！'},
+        {page: 'fdbk-edit', title: '刻意练习', desc: '塑造自己的长板！'},
+        {page: 'lbor-main', title: '成就自己', desc: '靠谱、专业！'},
+        {page: 'rqst-list', title: '成就自己', desc: '靠谱、专业！'},
         {page: 'lbor-edit', title: '耐心', desc: '是一切聪明才智的基础！'},
         {page: 'me', title: '耐心', desc: '是一切聪明才智的基础！'},
         {page: 'addr-list', title: '一切皆有可能', desc: '相信美好的事情即将到来'},
@@ -208,7 +212,7 @@ function ZgConfig(runtime) {
             'H_SUBMITING': '处理中',
 
 
-            //业务状态:BS
+            //服务类业务状态：
             'wait': '等待接单',//通知LBOR群
             'get': '已接单',  //通知CLNT
             'start': '已开工',//通知CLNT
@@ -233,7 +237,7 @@ function ZgConfig(runtime) {
             bs_unpaid_f     :'已关闭(卖家已退款)',    //卖家无按钮。买家无按钮。显示已退款。
 
 
-            //业务种类:BT
+            //业务种类:对应biz_type
             hscleaning  : '临时保洁',
             accleaning  : '空调清洗',
             accryogen   : '空调充氟',
@@ -244,13 +248,15 @@ function ZgConfig(runtime) {
             broadband   :'装宽带',
             decodesign  :'装修设计',
             corpregist  :'公司注册',
-            program:'编程私教'
+            program     :'编程私教'
         }
 
     }[this.language];
 
-    //状态：按钮，按钮按下后的状态
 
+    /**
+     * 特定流程内的按钮状态机
+     */
     this.statRules={
         comdFlow: {
             bs_returned: {
@@ -323,7 +329,79 @@ function ZgConfig(runtime) {
                 }
             },
         },
-        servFlow:{}
+        servFlow:{},
+        tomatoFlow:{
+            bs_wait: {
+                desc: '未开始',
+                role: {
+                    'ANY': {buttons: [{buttonDesc: '开始', nextStat: 'bs_ongoing',type:'primary'}]
+                    },
+                }
+            },
+            bs_ongoing: {
+                desc: '进行中',
+                role: {
+                    'ANY': {
+                        buttons: [
+                            {buttonDesc: '暂停', nextStat: 'bs_pause'},
+                            {buttonDesc: '终止', nextStat: 'bs_summary',type:'warn'},
+                    ]
+                    },
+                }
+            },
+            bs_pause: {
+                desc: '暂停',
+                role: {
+                    'ANY': {
+                        buttons: [
+                            {buttonDesc: '继续', nextStat: 'bs_resume'},
+                            {buttonDesc: '终止', nextStat: 'bs_summary',type:'warn'},
+                        ]
+                    },
+                }
+            },
+            bs_resume: {
+                desc: '恢复',
+                role: {
+                    'ANY': {
+                        buttons: [
+                            {buttonDesc: '暂停', nextStat: 'bs_pause'},
+                            {buttonDesc: '终止', nextStat: 'bs_summary',type:'warn'},
+                        ]
+                    },
+                }
+            },
+            // bs_over: {
+            //     desc: '终止',
+            //     role: {
+            //         'ANY': {
+            //             buttons: [
+            //                 {buttonDesc: '小结', nextStat: 'bs_summary',bindtap:'summary'}
+            //             ]
+            //         },
+            //     }
+            // },
+            bs_summary: {
+                desc: '写小结',
+                role: {
+                    'ANY': {
+                        buttons: [
+                            {buttonDesc: '保存', nextStat: 'bs_finish',type:'primary'}
+                        ]
+                    },
+                }
+            },
+            // bs_finish: {
+            //     desc: '结束',
+            //     role: {
+            //         'ANY': {
+            //             buttons: [
+            //                 {buttonDesc: '修改小结', nextStat: 'bs_summary',type:'primary'}
+            //             ]
+            //         },
+            //     }
+            // },
+        }
     };
 
     //地址业务品类选择器CC自定义组件使用的内容
@@ -389,6 +467,66 @@ function ZgConfig(runtime) {
             {'type': '疏通', 'uprice': 100, 'unit': '1次', desc: ''},
         ]}
     };
+
+
+    /**
+     * 理念是给todo分配固定的时间，符合“虚实篇”，把重要的是做实，做成长板。而工时系统是事后登记。
+     *
+     * 1、每个todo归属于一个target
+     * 2、一个todo可以与多个tomato关联
+     * 3、启动tomato时，在tomatos中创建追加番茄钟对象，将关联的tdid以数组方式作为对象属性，便于日后根据todo汇总工时
+     * 4、每个番茄钟只关联一个todo
+     * 5、番茄钟可提前完成，完成后写小结，可拍照
+     * 6、可根据todo展示所有番茄钟，可以按时间顺序展示所有番茄钟
+     * 7、
+     * @type {{targets: {targetName1: {meta: {cdate: string, desc: string, dl: string}, todos: [null,null]}}, tomatos: {tdid: Array}, ideas: {}}}
+     */
+    this.small_target={
+        targets:{
+            'targetName1':{
+                meta:{cdate:'创建日期',desc:'描述',dl:'截止日期',group:'目标组',
+                    q:[{target_q:'',now_q:''}]//量化目标和目前的量化值
+                },
+                todos:[//
+                    {
+                        tdid:'自动生成',
+                        tdct:'todo的内容',
+                    },
+                    {}
+                ]
+            }
+        },
+        tomatos:[
+            {
+                tdid:'todos的tdid',//yyyymmdd-hhmmss-8位随机数
+                tomato_id:'自动生成',tmct:'描述',start_time:'开始时间',end_time:'',
+                summary:{'心得':'','get技能':'','成果':'','规范':'',}
+            },
+            {}
+        ],
+    };
+
+    //form config
+    this.fc={
+        tomato:{
+            inputs:[
+                {
+                    title:'番茄钟',
+                    fields:[
+                        {name:'task',placeholder:'任务',type:'textarea'},
+                        {name:'achievement',placeholder:'成果',type:'textarea'},
+                        {name:'skill',placeholder:'新技能',type:'textarea',height:6.8},
+                        {name:'experience',type:'textarea',placeholder:'写下你的心得',autoheight:true},
+                        {name:'pics_list',type:'uploadpic'},
+                        //{name:'f2',value:'asfsdfsaf2',type:'input',bindinput:'bindinput',image:true,image_url:'/image/map.png',bindtap:'sdf'},
+
+                    ]
+                },
+
+            ]
+        }
+    }
+
 
 }
 

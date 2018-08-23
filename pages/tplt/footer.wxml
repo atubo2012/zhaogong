@@ -1,8 +1,27 @@
 <view class="weui-footer">
     <view class="weui-footer__links">
-        <navigator url="../about/about" class="weui-footer__link" >找工</navigator>
-        <view wx:if="{{!userInfo.rolecfm && userInfo.role==='LBOR'}}"
-              class="weui-badge weui-badge_dot"  />
+
+
+        <!--将icon化的按钮在一行中显示出来-->
+        <view class="image_button_in_a_line">
+            <navigator url="../about/about">找工</navigator>
+            <view wx:if="{{!userInfo.rolecfm && userInfo.role==='LBOR'}}" class="weui-badge weui-badge_dot"/>
+
+            <!--需要在底部关于区显示更多链接或icon按钮时可以取消下列注释-->
+            <!--<veiw>-->
+                <!--<button open-type='contact' class="image_button">-->
+                    <!--<image src="/image/service.png" class="btnImg"/>-->
+                <!--</button>-->
+            <!--</veiw>-->
+            <!--<veiw>-->
+                <!--<button open-type='share' class="image_button" >-->
+                    <!--<image src="/image/share2.png" class="btnImg"/>-->
+                <!--</button>-->
+            <!--</veiw>-->
+        </view>
+
+
     </view>
     <view class="weui-footer__text">Copyright © 2017</view>
 </view>
+

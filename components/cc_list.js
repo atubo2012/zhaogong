@@ -8,14 +8,31 @@ Component({
      * 组件的属性列表
      */
     properties: {
+        //已查询到前端的数据结果
         list:{
             type:Object,
             value:[]
         },
-        query:{
-            type:Object
+
+        //当数据是从后端获取时，需要指定后端服务的URL和查询条件
+        serviceUrl:String,
+
+        /**
+         * 查询条件，后台收到该参数后，直接将参数设置到find语句中。
+         * find({cond.query}).skip(cond.skip).limit(cond.limit)
+         */
+        cond: {
+            type:Object,
+            value:{
+                query: {},
+                skip: 0,
+                limit: cf.pageSize,
+
+                // project:{}
+            }
         },
-        serviceUrl:String
+
+        itemname:String,
     },
 
     /**
@@ -39,15 +56,7 @@ Component({
          */
         list: [], //onload函数、onReachBottom从后台查询后的列表查询结果
 
-        /**
-         * 查询条件，后台收到该参数后，直接将参数设置到find语句中。
-         * find({cond.query}).skip(cond.skip).limit(cond.limit)
-         */
-        cond: {
-            query: {},
-            skip: 0,
-            limit: cf.pageSize,
-        },
+
 
         /**
          * 翻页控制参数。
@@ -86,6 +95,7 @@ Component({
         onReachBottom: function () {
             let that = this;
             ut.showLoading();
+
             /**
              * 如果还有下一页，则设置新的查询条件(主要是skip的数量要更新)
              */
@@ -94,43 +104,47 @@ Component({
                     cond: {
                         query: that.data.cond.query,//使用上次的查询条件
                         skip: that.data.paging.pageNum * that.data.paging.pageSize, //跳过已经查询过的记录。
-                        limit: cf.pageSize
+                        limit: cf.pageSize,
                     }
                 });
                 ut.debug('本次的查询条件为:', that.data.cond);
 
-                //从后台获取数据
-                wx.request({
-                    url: that.data.serviceUrl,
-                    data: {
-                        cond: that.data.cond
-                    },
-                    success: function (res) {
-                        let list = res.data;
-                        console.log(list);
 
-                        //将返回结果追加到data.list中，并渲染页面，隐藏新增区
-                        let newList = that.data.list.concat(list);
+                if(that.data.serviceUrl) {
+                    //从后台获取数据
+                    console.log('that.data.serviceUrl',that.data.serviceUrl);
+                    wx.request({
+                        url: that.data.serviceUrl,
+                        data: {
+                            cond: that.data.cond
+                        },
+                        success: function (res) {
+                            let list = res.data;
+                            console.log(list);
 
-                        that.setData({
-                            'list': newList,
-                            addHidden: true //隐藏新增区
-                        });
+                            //将返回结果追加到data.list中，并渲染页面，隐藏新增区
+                            let newList = that.data.list.concat(list);
 
-                        //分页处理:判断是否为最后一页，如果返回结果少于一页的记录数，则说明没有新页了
-                        if (list.length < that.data.paging.pageSize) {
                             that.setData({
-                                'paging.hasMore': false,
+                                'list': newList,
+                                addHidden: true //隐藏新增区
                             });
-                        } else {
-                            that.setData({
-                                'paging.pageNum': that.data.paging.pageNum + 1,
-                                'paging.hasMore': true,
-                            });
+
+                            //分页处理:判断是否为最后一页，如果返回结果少于一页的记录数，则说明没有新页了
+                            if (list.length < that.data.paging.pageSize) {
+                                that.setData({
+                                    'paging.hasMore': false,
+                                });
+                            } else {
+                                that.setData({
+                                    'paging.pageNum': that.data.paging.pageNum + 1,
+                                    'paging.hasMore': true,
+                                });
+                            }
+                            ut.hideLoading();
                         }
-                        ut.hideLoading();
-                    }
-                });
+                    });
+                }
             } else {
                 ut.alert(cf.hint.H_NOMORE,'none');
             }
@@ -173,4 +187,4 @@ Component({
         },
 
     }
-})
+});

@@ -1,3 +1,25 @@
+<view class="pagehead">
+    <veiw wx:if="{{_with_music}}">
+        <button  class="image_button" bindtap="toggleMusic">
+            <image src="/image/play{{_play_music?'_stop':''}}.png" class="btnImg"/>
+        </button>
+    </veiw>
+    <veiw>
+        <button open-type='contact' class="image_button">
+            <image src="/image/service.png" class="btnImg"/>
+        </button>
+    </veiw>
+    <veiw>
+        <button open-type='feedback' class="image_button">
+            <image src="/image/feedback.png" class="btnImg"/>
+        </button>
+    </veiw>
+    <veiw>
+        <button open-type='share' class="image_button" >
+            <image src="/image/share2.png" class="btnImg"></image>
+        </button>
+    </veiw>
+</view>
 <view class="page__hd">
     <view class="page__title">{{pageInfo.title}}</view>
     <view class="page__desc">{{pageInfo.desc}}</view>

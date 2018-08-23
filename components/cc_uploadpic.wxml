@@ -31,7 +31,7 @@
                         <!--</view>-->
 
                     </view>
-                    <view class="weui-uploader__input-box" wx:if="{{!onlyShow}}">
+                    <view class="weui-uploader__input-box" >
                         <view class="weui-uploader__input" bindtap="_chooseImage"/>
                     </view>
                 </view>

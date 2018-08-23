@@ -38,7 +38,7 @@ page {
 }
 
 /**
- * 个人头像（小），圆角
+ * 用户头像（小），圆角
  */
 .qs_head_image {
     border-radius: 10px;
@@ -66,14 +66,117 @@ page {
 }
 
 /**
- * 自定义样式表
+ * icon链接（CRUD操作的图标）
  */
 .icon1 {
     width: 18px;
     height: 18px;
+
     text-align: right;
     border-radius: 20%
 }
+
+/**
+ * index页面的主要按钮（登录、找工作、找帮手）
+ * 参考：http://www.szfangwei.cn/news/4260.html
+ */
+.index_button{
+    /*width: 141rpx;*/
+    margin-top: 20rpx;
+    width: 75%;
+    height: 90rpx;
+    /*border: none;*/
+    padding: 0;
+}
+
+/**
+ * index页面中按钮下方的链接
+ */
+.index_link{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+/**
+ * 图片型按钮IB的定义(pagehead.wxml中的小图标)
+ */
+.image_button{
+    /*与上方的间距*/
+    /*margin-top: 20rpx;*/
+
+    /*自身的宽度*/
+    width: 40rpx;
+    background-color: #F8F8F8;
+    /*border-radius: 98rpx;*/
+
+    /*按钮中内容的对齐方式（多行纵向居中横向居中）*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    /*文字的颜色与字号*/
+    font-size: 30rpx;
+    color: burlywood;
+}
+/*使IB圆角周边封闭*/
+.image_button::after {
+    /*border-radius: 98rpx;*/
+    border:0;
+}
+
+/*IB中的图片尺寸*/
+.btnImg {
+    width: 34rpx;
+    height: 34rpx;
+}
+
+/*横向的图片类按钮容器（居中显示）*/
+.image_button_in_a_line{
+    margin-top: 20rpx;
+
+    /*width: 48rpx;*/
+    /*background-color: #F8F8F8;*/
+    /*border-radius: 98rpx;*/
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 30rpx;
+    color: #586c94
+}
+
+/*每页顶部的快捷图片类按钮容器（靠右显示）*/
+.pagehead{
+    position:fixed;
+    top:30px;
+    right:5px;
+
+    margin-top: 5rpx;
+
+    /*width: 48rpx;*/
+    /*background-color: #F8F8F8;*/
+    /*border-radius: 98rpx;*/
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+    /*font-size: 30rpx;*/
+    /*color: #586c94*/
+
+    /*按钮显示放在顶层*/
+    z-index:999;
+}
+
+
 
 /*输入项之间的分割线，试验*/
 .line01old {

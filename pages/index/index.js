@@ -20,9 +20,23 @@ Page({
         locationTo:{latitude: 31.22037, longitude: 121.4237},
         picsList:['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531906460524&di=7e935c5dc2a04eaa8b3b39654e59a8ff&imgtype=0&src=http%3A%2F%2Fwww.cgaeo.com%2Fwp-content%2Fuploads%2F2017%2F06%2FLynda-The-Good-Parts-of-JavaScript-and-the-Web.jpg',
             'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531906461012&di=d38144c6ee2f8a6d57dd48c1727e7500&imgtype=0&src=http%3A%2F%2F120xcyy.com%2Fuploads%2Fallimg%2F171024%2F1-1G024224G52C.jpg'],
+
+        _buttonDisabled:false,
+        _second:10,
+        _initSecond:10,
+        _buttonDesc:'发送',
+
+        _leftTime:'点这里开始倒计时',
+        _then:'2018-11-30 12:00:00',
     },
 
 
+    showlt:function(){
+        ut.showLeftTime(this);
+    },
+    countDown:function(){
+      ut.countDown(this,'发送','剩余');
+    },
     /**
      * 开发新功能时调试用的函数
      */

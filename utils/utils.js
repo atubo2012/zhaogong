@@ -45,6 +45,130 @@ exports.showTopTips = function (that,topTips,focusName,cf) {
 };
 
 /**
+ * 按钮倒计时函数
+ * @param that 主调页面中，需要设置以下属性：
+ *      second      当前的秒数，初始值与initSecond相同
+ *      initSecond  总计时秒数，根据需要设置，如短信发送场景可以设置30秒
+ *      buttonDesc  按钮的初始描述，与btReadyDesc相同。在短信发送场景中可以设置为“发送”
+ *      buttonDisabled 初始为fasle，表示可以按下按钮，
+ *
+ * @param btReadyDesc  倒计时结束时显示的按钮文字
+ * @param btUnRedyDesc 倒计时过程中显示的按钮文字
+ */
+let countDown= function (that,btReadyDesc,btUnRedyDesc) {
+    let second = that.data._second;
+    console.log(second);
+
+    that.setData({_buttonDisabled:true});
+
+    //当倒计时结束，则恢复按钮状态和当前的剩余倒计时读秒数
+    if (second === 0) {
+        that.setData({
+            _second: that.data._initSecond,
+            _buttonDesc: btReadyDesc,
+            _buttonDisabled: false
+        });
+        return;
+    }
+
+    //每隔一秒钟，执行一次倒计期间的动作：刷新剩余计时时间，按钮描述
+    setTimeout(() => {
+            that.setData({
+                _second: second - 1,
+                _buttonDesc: that.data._second + btUnRedyDesc,
+            });
+            countDown(that,btReadyDesc,btUnRedyDesc);
+        }
+        , 1000)
+};
+exports.countDown= function (that,btReadyDesc,btUnRedyDesc) {
+    countDown(that,btReadyDesc,btUnRedyDesc);
+};
+
+/**
+ * 将倒计时结束和到期时过程中的动作由回调函数控制
+ * @param that
+ * @param timeoutCb
+ * @param intervalCb
+ */
+exports.countDown2= function (that,timeoutCb,intervalCb) {
+    let second = that.data.second;
+    if (second === 0) {
+        timeoutCb();
+        return;
+    }
+    setTimeout(() => {
+            that.setData({
+                second: second - 1,
+            });
+            intervalCb();
+            that._countDown(that,timeoutCb,intervalCb);
+        }
+        , 1000)
+};
+
+/**
+ * 按钮倒计时函数
+ * @param that 主调页面中，需要设置以下属性：
+ *        then 计算剩余时间的起止日期格式:yyyy-mm-dd 12:11:23
+ *
+ * @param then  计时截止时间
+ */
+exports.showLeftTime = function (that,then) {
+    showLeftTime(that,then);
+};
+
+let showLeftTime = function (that,then) {
+
+    let date = new Date();
+    let now = date.getTime();
+
+
+    //设置截止时间
+    let endDate = new Date(then);
+    let end = endDate.getTime();
+
+    //时间差
+    let leftTime = end - now;
+    //console.log('leftTime',leftTime,'_hasMoreLeftTime',that.data._hasMoreLeftTime,'now',now,'then',then,'end',end);
+
+    //定义变量 d,h,m,s保存倒计时的时间
+    let d, h, m, s;
+    if (leftTime >= 0 && that.data._hasMoreLeftTime) {
+        d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+        h = Math.floor(leftTime / 1000 / 60 / 60 % 24);
+        m = Math.floor(leftTime / 1000 / 60 % 60);
+        s = Math.floor(leftTime / 1000 % 60);
+
+        //console.log('leftTime2',d,h,m,s);
+        let lt = d>0? d+'天':'';
+        lt = h>0? lt+h+'小时':lt;
+        lt = m>0? lt+m+'分钟':lt;
+        lt = s>=0? lt+s+'秒':lt;
+        //递归每秒调用countTime方法，显示动态时间效果
+        setTimeout(()=>{
+            that.setData({
+                _leftTime:lt
+            });
+            showLeftTime(that,then)
+        }, 1000);
+    }else{
+        that.setData({
+            //_leftTime:'倒计时结束',
+            _hasMoreLeftTime:false
+        });
+
+        //倒计时结束，则调用回调函数
+        if(that._timeOutCb) that._timeOutCb();
+    }
+
+
+
+
+
+};
+
+/**
  * 功能：间隔一定的秒数将显示和隐藏
  * 场景：开工状态显示，动态提示用户需要做某些事项
  * @param that

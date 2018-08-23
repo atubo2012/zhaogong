@@ -5,7 +5,7 @@
             <view class="weui-media-box__title weui-media-box__title_in-text" style="display: flex; align-items: center;">
                 <image src="{{item.headImage}}" mode="scaleToFill"
                              class="qs_head_image float-left" />
-                <text class="listitemtitle">{{item.name}}</text>
+                <text class="listitemtitle">{{item.name}}({{item.nickName}})</text>
             </view>
 
             <view class="weui-media-box__desc">{{item.address}}</view>
@@ -18,3 +18,4 @@
         </view>
     </view>
 </navigator>
+

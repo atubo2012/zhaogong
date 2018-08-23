@@ -1,23 +1,43 @@
-<navigator class="weui-panel"
-           url="../rqst-edit/rqst-edit?reqId={{item.reqId}}&location={{item.location}}">
+<navigator data-item="{{item}}" class="weui-panel"
+           url="../rqst{{_bizType2url[item.biz_type] ? _bizType2url[item.biz_type] :'-accleaning-'}}edit/rqst{{_bizType2url[item.biz_type] ? _bizType2url[item.biz_type] :'-accleaning-'}}edit?reqId={{item.reqId}}&location={{item.location}}"
+>
     <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_text">
             <view class="weui-media-box__title weui-media-box__title_in-text"
                   style="{{(item.stat=='wait' || item.stat=='get') ? '':'color: #999'}}">
-                {{item.uprice*item.dura}}元 (做{{item.dura}}小时 {{item.size}}平米 {{item.hasTool}})
+                <block wx:if="{{item.biz_type==='hscleaning'}}">
+                    {{item.uprice*item.dura}}元 (做{{item.dura}}小时 {{item.size}}平米 {{item.hasTool}})
+                </block>
+                <block wx:if="{{item.biz_type!='hscleaning'}}">
+                    {{item.cart.total_cost}}元 {{cf.hint[item.biz_type]}}
+                </block>
             </view>
-
-            <view class="weui-media-box__desc">{{item.addr}}</view>
+            <view class="weui-media-box__desc">{{item.osdt}} {{item.ostm}}</view>
+            <view class="weui-media-box__desc">{{item.address}}</view>
             <view class="weui-media-box__info">
-                <view class="weui-media-box__info__meta">{{item.osdt}} {{item.ostm}}</view>
-                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.clfn}}{{item.sex}}
+                <view class="weui-media-box__info__meta">{{item.clfn}}{{item.sex}}</view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">
+                    {{cf.hint[item.biz_type]}}
                 </view>
-                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.reqId}}</view>
-                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.stat}}</view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">
+                    {{cf.hint[item.stat]}}
+                </view>
+                <view wx:if="{{item.lborInfo.name}}" class="weui-media-box__info__meta weui-media-box__info__meta_extra">
+                    {{item.lborInfo.name ? item.lborInfo.name : ''}}
+                </view>
             </view>
-            <!--view class="weui-media-box__info__meta weui-media-box__info__meta_extra" wx:if="{{item.rdst==='1'}}">待上单</view>
-            <view class="weui-media-box__info__meta weui-media-box__info__meta_extra" wx:elif="{{item.rdst==='0'}}">已关闭</view-->
+            <view class="weui-media-box__info">
+                <block wx:if="{{item.biz_type!==''}}">
+                    <block wx:for="{{item.cart.goods}}" wx:for-item="aa" wx:key="aba">
+                        {{aa.type}}:({{aa.uprice}}×{{aa.quantity}}{{aa.unit}})
+                    </block>
+                </block>
+            </view>
+            <view class="weui-media-box__info">
+                <view class="weui-media-box__info__meta">
+                    {{item.reqId}}
+                </view>
+            </view>
         </view>
     </view>
 </navigator>
-

@@ -1,9 +1,8 @@
 <view class="weui-cell weui-cell_input">
     <view class="weui-cell__bd">
-        <input name="address" value="{{address}}"  placeholder="地址" bindinput="_setAddress"/>
+        <input name="address" value="{{address}}"  placeholder="地址" bindinput="_setAddress"  class="weui-input" />
     </view>
     <view class="weui-cell__ft" >
-        <!--<button size="mini" type="primary" bindtap="_chooseAddress">{{buttonDesc}}</button>-->
         <image src="/image/map.png" class="icon1" bindtap="_chooseAddress"/>
     </view>
 </view>

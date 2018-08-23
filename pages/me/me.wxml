@@ -15,8 +15,7 @@
 
                     <!--内容仅限管理员才可查看的实现方式-->
                     <navigator url="{{item.url}}" class="weui-cell weui-cell_access"
-                               wx:if="{{ !item.forAdmin ||( item.forAdmin && userInfo.is_admin)}}"
-                    >
+                               wx:if="{{ !item.forAdmin ||( item.forAdmin && userInfo.is_admin)}}">
                         <view class="weui-cell__bd">
                             <view style="display: inline-block; vertical-align: middle">{{item.label}} </view>
                             <view wx:if="{{item.hasNum}}" class="weui-badge" style="margin-left: 5px;">
@@ -35,10 +34,6 @@
 
             </view>
         </block>
-        <view>
-        <button class="weui-btn" size="mini" open-type="feedback">反馈</button>
-        <button class="weui-btn" size="mini" open-type="contact">客服</button>
-        </view>
     </view>
     <include src="../tplt/footer.wxml"/>
 </view>

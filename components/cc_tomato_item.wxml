@@ -1,0 +1,21 @@
+<!--<navigator class="weui-panel"-->
+           <!--url="../user-edit/user-edit?type=ta&openId={{item.openId}}">-->
+    <view class="weui-panel__bd" bindtap="showDetail">
+        <view class="weui-media-box weui-media-box_text">
+            <view class="weui-media-box__title weui-media-box__title_in-text" style="display: flex; align-items: center;">
+                <text class="listitemtitle">{{item.task}}</text>
+                <block wx:for="{{item.pics_list}}"  wx:for-item="itm" wx:key="zzz" wx:for-index="idx">
+                    <image src="{{itm}}" mode="scaleToFill" class="qs_head_image float-left" />
+                </block>
+            </view>
+
+            <view class="weui-media-box__desc">{{item.experience}}</view>
+            <!--<view class="weui-media-box__info">-->
+                <!--<view class="weui-media-box__info__meta">{{item.stat}} {{item.province}}</view>-->
+                <!--<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">-->
+                    <!--{{item.role}} {{item.rolecfm}} <text wx:if="{{(item.role==='LBOR' && !item.rolecfm)}}" style="border :solid 1px red ;border-radius:10px;background:red;color:white;">未审核</text>-->
+                <!--</view>-->
+            <!--</view>-->
+        </view>
+    </view>
+<!--</navigator>-->

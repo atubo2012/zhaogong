@@ -1,0 +1,163 @@
+<view class="page">
+    <!--<include src="../tplt/pagehead.wxml"/>页头标语，需要时可取消注释启用-->
+    <view class="page__bd">
+
+
+        <form bindsubmit="onSubmit" bindreset="formReset" report-submit="true">
+
+            <view class="page__bd page__bd_spacing" hidden="{{preview}}">
+                <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{topTips}}</view>
+
+                <!--业务信息部分-上门服务时间-->
+                <cc_time_picker wx:if="{{_ccs.osdt}}" cc_rdata="{{rdata.cc_rdata}}"
+                                bind:dateChangeEvent="onDateChange" bind:timeChangeEvent="onTimeChange"/>
+
+                <!--费用类别-->
+                <cc_charging id="cc_charging" cart="{{rdata.cart}}"
+                             charging_type="{{charging_type}}"
+                             bind:upriceChangeEvent="onUpriceChange"
+                             bind:duraChangeEvent="onDuraChange"
+                             bind:cartChangeEvent="onCartChange"
+                />
+
+                <!--联系信息部分-地址、称呼、手机信息-->
+                <block wx:if="{{_ccs.address}}">
+                    <view class="weui-cells__title">服务地址</view>
+                    <view class="weui-cells weui-cells_after-title">
+                        <addressinput id='ccmap' title="选择地址"
+                                      location="{{rdata.location}}"
+                                      address="{{rdata.address}}" bind:chooseaddressevent="onChooseAddressEvent"/>
+                    </view>
+                </block>
+
+                <block wx:if="{{_ccs.mobile}}">
+                    <view class="weui-cells__title">联系人</view>
+                    <view class="weui-cells weui-cells_after-title">
+                        <cc_nametitle id='cc_nametitle' name="{{rdata.clfn}}" sex="{{rdata.sex}}"
+                                      bind:inputnametitleevent="onNameTitleChangeEvent"/>
+                        <mobileinput id='ccmb' title="手机号组件的标题" mobile="{{rdata.mobile}}" smsCode=""
+                                     bind:checkmobileevent="onCheckMobileEvent" focusMobile="{{focusMobile}}"/>
+                    </view>
+                </block>
+
+                <!--图片上传-->
+                <cc_uploadpic wx:if="{{_ccs.uploadpic}}" id='uploadpic' picsList="{{rdata.pics_list}}"
+                              bind:uploadchangeevent="onUploadChangeEvent"/>
+
+
+                <!--隐含字段TODO:可不必显示定义在页面中，仅在后台提交时-->
+                <input name="reqId" value="{{rdata.reqId}}" hidden="true"/>
+                <input name="biz_type" value="{{charging_type}}" hidden="true"/>
+                <input name="rdst" value="{{rdata.rdst}}" hidden="true"/>
+                <input name="stat" value="{{rdata.stat}}" hidden="true"/>
+
+
+                <!--表单提交按钮-->
+                <view class="weui-btn-area" >
+                    <button class="weui-btn" form-type="submit" type="primary"
+                            disabled="{{submitButtonDisabled}}">提交
+                    </button>
+                    <button class="weui-btn" form-type="submit" data-submitType="delete" type="warn"
+                            disabled="{{submitButtonDisabled}}">删除
+                    </button>
+                </view>
+
+            </view>
+
+
+            <!--服务类业务的需求详情-->
+            <view class="weui-form-preview" hidden="{{!preview}}">
+
+                <view class="weui-form-preview__hd">
+                    <view class="weui-form-preview__label">金额</view>
+                    <view class="weui-form-preview__value_in-hd">{{rdata.cart.total_cost}}元</view>
+                </view>
+                <view class="weui-form-preview__bd">
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">业务种类</view>
+                        <view class="weui-form-preview__value" wx:for="{{rdata.cart.goods}}" wx:key="ywzl">
+                            {{cf.hint[item.charging]}}-{{item.type}}({{item.quantity}}{{item.unit}}×{{item.uprice}})
+                        </view>
+                    </view>
+                    <view class="weui-form-preview__item" wx:if="{{_ccs.osdt}}">
+                        <view class="weui-form-preview__label">服务时间</view>
+                        <view class="weui-form-preview__value">{{rdata.osdt}} {{rdata.ostm}}</view>
+                    </view>
+
+                    <view class="weui-form-preview__item" >
+                        <view class="weui-form-preview__label">地址</view>
+                        <view class="weui-form-preview__value">{{addrHidden}}</view>
+                    </view>
+
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">用户</view>
+                        <view class="weui-form-preview__value">
+                            <navigator
+                                    url="../cmmt-list/cmmt-list?type=lookta&&mode=tota&&openId={{rdata.clntInfo.openId}}"
+                                    class="weui-footer__link"
+                                    hover-class="weui-cell_active">
+                                <image src="{{rdata.clntInfo.headImage}}" class="icon1"/>
+                                {{rdata.clfn?rdata.clfn:rdata.clntInfo.nickName}}{{rdata.sex}}
+                            </navigator>
+                        </view>
+                    </view>
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">订单状态</view>
+                        <view class="weui-form-preview__value">
+                            <navigator
+                                    url="../user-edit/user-edit?type=ta&&openId={{rdata.lborInfo.openId}}"
+                                    class="weui-footer__link"
+                                    hover-class="weui-cell_active">
+                                <text hidden="{{_crBlink}}">{{cf.hint[rdata.stat]}}</text>
+                                {{rdata.lborInfo.name}}
+
+                            </navigator>
+                            <text bindtap="onCall" data-mobile="{{rdata.lborInfo.mobile}}">{{rdata.lborInfo.mobile}}
+                            </text>
+                        </view>
+                    </view>
+                    <view class="weui-form-preview__item" wx:if="{{_ccs.address}}">
+                        <view class="weui-form-preview__label">交通</view>
+                        <view class="weui-form-preview__value">
+                            <navigator url="../gdmap/gdmap?location={{slocation}}" class="weui-footer__link"
+                                       hover-class="weui-cell_active">
+                                {{traffic.distance}}公里，骑车{{traffic.durationRidding}}分钟/步行{{traffic.durationWalking}}分钟
+                            </navigator>
+                        </view>
+                    </view>
+
+                    <!--完工后才显示金额-->
+                    <view wx:if="{{_ccs.osdt}}"
+                          hidden="{{rdata.stat=='wait' || rdata.stat=='get' || rdata.stat=='start'}}"
+                          class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">实际工时与金额</view>
+                        <view class="weui-form-preview__value">
+                            {{rdata.time_cost}}分钟，{{rdata.cost}}元
+                            <input name="begin_time" value="{{rdata.begin_time}}" hidden="true"/>
+                            <input name="end_time" value="{{rdata.begin_time}}" hidden="true"/>
+                            <input name="time_cost" value="{{rdata.time_cost}}" hidden="true"/>
+                            <input name="cost" value="{{rdata.cost}}" hidden="true"/>
+                        </view>
+                    </view>
+                </view>
+
+                <cc_mapshow wx:if="{{_ccs.map}}" id='cc_mapshow' bind:mapshowevent="onMapShowEvent"/>
+
+
+                <!--图片展现-->
+                <cc_uploadpic id='uploadpic' onlyShow="true" picsList="{{rdata.pics_list}}"
+                              bind:uploadchangeevent="onUploadChangeEvent" wx:if="{{_ccs.uploadpic}}"/>
+
+
+                <!--按钮控件区-->
+                <include src="../tplt/button4flow_comd.wxml"/>
+
+            </view>
+
+        </form>
+
+    </view>
+
+
+    <include src="../tplt/footer.wxml"/>
+</view>

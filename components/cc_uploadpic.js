@@ -38,6 +38,7 @@ Component({
 
         _chooseImage: function (e) {
             let that = this;
+            if(this.data.onlyShow) {ut.showToast('不能上传');return;}
 
             ut.uploadFile(cf.service.uploadUrl, (fn, backEndFilePath, res) => {
                 that.setData({

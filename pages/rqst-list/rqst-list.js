@@ -15,7 +15,16 @@ Page({
         _bizType2url:{
             'hscleaning':'-',
             'program':'-comd-'
-        }
+        },
+
+
+
+        list:[],//列表数据容器
+        _item_name:'rqst',//cc_list中列表项的名字
+        _cond:{
+            'skip': 0,
+            'limit': cf.pageSize,
+        },//onload加载列表时的查询条件
     },
 
     checkTarget:function () {
@@ -42,55 +51,74 @@ Page({
 
         ut.showLoading();
         let type = params.type;
-        let rdata = {};
+        //let rdata = {};
 
         //如果用户曾经登录，则根据本页面的入口参数type，设置后端程序的查询条件。
         if (app.globalData.userInfo) {
             let role = app.globalData.userInfo.role;
             let openId = app.globalData.userInfo.openId;
 
+            let query = {};
+
             //根据角色来设置查询条件。如果是my，则表示我提交的订单
             if (type === 'my') {
                 if (role === 'CLNT') {
-                    rdata['clntInfo.openId'] = openId;
+                    //rdata['clntInfo.openId'] = openId;
+                    query['clntInfo.openId']=openId;
                 } else if (role === 'LBOR') {
-                    rdata['lborInfo.openId'] = openId;
+                    //rdata['lborInfo.openId'] = openId;
+                    query['lborInfo.openId']=openId;
                 }
+
             }else if(type==='myAsSupplier'){
-                rdata['supplier_id'] = openId;
+                //rdata['supplier_id'] = openId;
+                query['supplier_id']=openId;
             }
+
+            this.setData({
+                '_cond.query':query
+            })
         }
 
+        let cclist = this.selectComponent("#cc_list");
+        cclist.onLoad();
 
         //TODO，考虑用ut.request替代，将是否设置session3rdKey，以bool类型的参数。
-        wx.request({
-            url: cf.service.rqstListUrl,
-            data: rdata,
-
-            success: function (res) {
-
-                ut.info("需求信息查询结果如下：", res.data);
-
-                //如果是看全量订单时，会屏蔽；看自己的订单列表时，才会显示具体地址
-                if (type !== 'my') {
-                    res.data.map(function (item) {
-                        item.address = ut.getHiddenAddr(item.address);
-                        //若上门时间早于当前时间，则提示已过期
-                        if(!ut.isLateThanNow(item.osdt+ ' ' +item.ostm) && item.stat==='bs_wait')
-                            item.stat = 'expired';
-                    });
-                }
-
-                //渲染数据
-                that.setData({
-                    reqList: res.data,
-                    target:params.target?params.target:''
-                });
-                ut.hideLoading();
-            }
-        });
-
-
-
+        // wx.request({
+        //     url: cf.service.rqstListUrl,
+        //     data: rdata,
+        //
+        //     success: function (res) {
+        //
+        //         ut.info("需求信息查询结果如下：", res.data);
+        //
+        //         //如果是看全量订单时，会屏蔽；看自己的订单列表时，才会显示具体地址
+        //         if (type !== 'my') {
+        //             res.data.map(function (item) {
+        //                 item.address = ut.getHiddenAddr(item.address);
+        //                 //若上门时间早于当前时间，则提示已过期
+        //                 if(!ut.isLateThanNow(item.osdt+ ' ' +item.ostm) && item.stat==='bs_wait')
+        //                     item.stat = 'expired';
+        //             });
+        //         }
+        //
+        //         //渲染数据
+        //         that.setData({
+        //             reqList: res.data,
+        //             target:params.target?params.target:''
+        //         });
+        //         ut.hideLoading();
+        //     }
+        // });
     },
+    onReachBottom: function () {
+        let cclist = this.selectComponent("#cc_list");
+        cclist.onReachBottom();
+    },
+
+    onPullDownRefresh: function () {
+        let cclist = this.selectComponent("#cc_list");
+        cclist.onPullDownRefresh();
+    },
+
 });
