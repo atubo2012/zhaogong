@@ -1,2 +1,82 @@
-<!--pages/fdbk-edit/fdbk-edit.wxml-->
-<text>pages/fdbk-edit/fdbk-edit.wxml</text>
+<view class="page">
+    <include src="../tplt/pagehead.wxml"/>
+    <view class="page__bd">
+
+        <form bindsubmit="onSubmit" bindreset="formReset" report-submit="true">
+
+            <view class="page__bd page__bd_spacing" hidden="{{preview}}">
+                <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{topTips}}</view>
+
+
+                <block wx:for="{{cf.fc.tomato.inputs}}" wx:key="aaa">
+                    <view class="weui-cells__title">
+                        {{item.title}}
+                        <!--<image src="../../image/add.png" class="icon1" bindtap="addOne"/>-->
+                    </view>
+
+                    <view class="weui-cells weui-cells_after-title">
+
+                        <block wx:for="{{item.fields}}" wx:for-item="itm" wx:key="zzz" wx:for-index="idx">
+
+                            <!--输入项类-->
+                            <!--
+                            若配置中不指定itm的type，默认为input类型的
+                            value值为与this.data.rdata中与配置项同名的属性
+                            bindInput方法中，根据id值来区分设置不同的输入项的值
+                            -->
+                            <view class="weui-cell weui-cell_input" wx:if="{{!itm.type || itm.type==='input'}}">
+                                <view class="weui-cell__bd">
+                                    <input class="weui-input"
+                                           name="{{itm.name}}" id="{{itm.name}}"
+                                           placeholder="{{itm.placeholder}}"
+                                           value="{{rdata[itm.name]}}"
+                                           bindinput="bindInput"/>
+                                </view>
+                                <view class="weui-cell__ft" wx:if="{{itm.image}}">
+                                    <image src="{{itm.image_url}}" class="icon1" bindtap="{{itm.bindimagetap}}"/>
+                                </view>
+                            </view>
+
+                            <view class="weui-cell" wx:if="{{itm.type==='textarea'}}">
+                                <view class="weui-cell__bd">
+                                    <textarea class="weui-textarea"
+                                              name="{{itm.name}}"
+                                              id="{{itm.name}}"
+                                              placeholder="{{itm.placeholder}}"
+                                              value="{{rdata[itm.name]}}"
+                                              bindinput="bindInput"
+                                              style="height: {{itm.height?itm.height:3.8}}em" />
+                                </view>
+                            </view>
+
+
+
+                            <block wx:if="{{itm.type==='uploadpic'}}">
+                                <cc_uploadpic wx:if="{{rdata.tomato.stat==='bs_finish'||rdata.tomato.stat==='bs_summary'||rdata.tomato.stat==='bs_wait'}}"
+                                              id='uploadpic'
+                                              picsList="{{rdata.tomato.pics_list}}"
+                                              onlyShow="{{_showUploadpic}}"
+                                              bind:uploadchangeevent="onUploadChangeEvent"/>
+                            </block>
+
+                        </block>
+                    </view>
+                </block>
+
+                <!--图片上传-->
+                <include src="./button4flow_tomato.wxml"/>
+
+            </view>
+
+
+        </form>
+        <cc_list id="cc_list" list="{{list}}"  generic:listitem="cc_tomato_item" serviceUrl="{{cf.service.tomatoListUrl}}"
+                 cond="{{_cond}}"
+                 bind:showdetailevent="showDetail"
+        />
+
+    </view>
+
+
+    <include src="../tplt/footer.wxml"/>
+</view>

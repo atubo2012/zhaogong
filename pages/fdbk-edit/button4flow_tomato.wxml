@@ -1,0 +1,13 @@
+<view class="weui-form-preview__bd">
+    <!--修改、再来一单的功能，实际上是显示编辑表单，在编辑界面中提交；客户关闭、阿姨上单、客户取消、阿姨不去了，则是直接提交，只更新订单的状态-->
+    <view class="weui-btn-area">
+            <block wx:for="{{cf.statRules.tomatoFlow[rdata.tomato.stat].role.ANY.buttons}}" wx:key="aci">
+                <button class="weui-btn"
+                        disabled="{{submitButtonDisabled}}"
+                        data-submitType="{{item.nextStat}}"
+                        type="{{item.type}}"
+                        form-type="submit" >{{item.buttonDesc}}</button>
+            </block>
+            <text>{{_leftTime}}</text>
+    </view>
+</view>
