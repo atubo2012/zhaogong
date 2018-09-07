@@ -9,7 +9,7 @@ Page({
         /**
          * 页面使用的例行参数
          */
-        pageInfo: app.getPageInfo('rqst-edit'),//
+        pageInfo: cf.motto['rqst-edit'],//
         submitButtonDisabled: false,//提交按钮默认状态，点击提交后设置为true，避免重复提交
         showTips: false,//默认不显示异常信息
         preview: true,  //初始默认为显示，点击修改后，隐藏详情展示信息，只显示编辑表单

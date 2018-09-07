@@ -22,9 +22,12 @@
                 <button class="index_button" bindtap="setRoleLbor" type="primary">找工作</button>
                 <button class="index_button" bindtap="setRoleClnt" type="primary">找帮手</button>
                 <view class="index_link" >
-                <navigator url="../rqst-list/rqst-list?type=my" class="weui-footer__link">我的订单</navigator>
-                <navigator wx:if="{{userInfo.is_supplier}}" url="../rqst-list/rqst-list?type=myAsSupplier" class="weui-footer__link">供应商订单</navigator>
+                <navigator url="../univ-list/univ-list?type=my&itemname=rqst" class="weui-footer__link">我的订单</navigator>
+                <navigator wx:if="{{userInfo.is_supplier}}" url="../univ-list/univ-list?type=myAsSupplier&itemname=rqst" class="weui-footer__link">供应商订单</navigator>
                 <navigator url="../fdbk-edit/fdbk-edit" class="weui-footer__link">番茄钟</navigator>
+                <navigator wx:if="{{userInfo.is_admin}}" url="../univ-list/univ-list?itemname=bamboo" class="weui-footer__link">查笋</navigator>
+
+
                 </view>
             </block>
 

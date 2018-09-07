@@ -22,7 +22,8 @@
     "pages/user-edit/user-edit",
     "pages/user-list/user-list",
     "pages/rqst-accleaning-edit/rqst-accleaning-edit",
-    "pages/rqst-comd-edit/rqst-comd-edit"
+    "pages/rqst-comd-edit/rqst-comd-edit",
+    "pages/univ-list/univ-list"
   ],
   "window": {
     "backgroundTextStyle": "light",

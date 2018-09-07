@@ -9,7 +9,7 @@ Page({
      */
     data: {
 
-        pageInfo: app.getPageInfo('lbor-main'),
+        pageInfo: cf.motto['lbor-main'],
 
         imgUrls: [],
         imgUrls2: [],

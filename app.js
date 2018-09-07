@@ -3,8 +3,8 @@ let ZgConfig = require('ZgConfig.js');
 let ut = require('utils/utils.js');
 const updateManager = wx.getUpdateManager();
 
-let socketOpen = false
-let socketMsgQueue = ['aaa','bbb']
+let socketOpen = false;
+let socketMsgQueue = ['aaa','bbb'];
 
 App({
     //全局参数的顺序：系统信息、用户信息、运行时信息、应用的全局参数。按照从稳定到活跃的顺序安排。
@@ -265,6 +265,7 @@ App({
      * 统一配置各页面中的标题和描述信息
      * @param pageName
      * @returns 页面文件中的标题和说明
+     * //TODO:此函数用的遍历算法效率较低，应考虑重构为对象方式访问，而不是以数组方式访问。
      */
     getPageInfo: function (pageName) {
         let ret = {};
@@ -277,7 +278,7 @@ App({
             }
         }
         return ret;
-        //TODO:此函数用的遍历算法效率较低，应考虑重构为对象方式访问，而不是以数组方式访问。
+
     },
 
     /**

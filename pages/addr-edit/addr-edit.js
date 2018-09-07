@@ -9,7 +9,7 @@ let cfg = app.globalData.cf;
         /**
          * 页面顶端显示的motto和模块标题
          */
-        pageInfo: app.getPageInfo('addr-edit'),
+        pageInfo: cfg.motto['addr-edit'],
         listTitle: '常用地址管理',
 
         /**

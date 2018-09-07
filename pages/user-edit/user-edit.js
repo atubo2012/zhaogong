@@ -6,7 +6,7 @@ let cf = app.globalData.cf;
 Page({
 
     data: {
-        pageInfo: app.getPageInfo('lbor-edit'),
+        pageInfo: cf.motto['lbor-edit'],
         hideCfm: false,     //是否隐藏审核状态，只有当前用户为LBOR时才会显示
         second: cf.runtimeConfig.countDownSecond,     //再次发送验证码按钮前需等待的时间
 

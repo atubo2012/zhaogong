@@ -7,7 +7,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-        pageInfo: app.getPageInfo('me'),
+        pageInfo: cf.motto['me'],
         app: app,
         role: '',//默认的角色
         userInfo: app.globalData.userInfo,
@@ -41,7 +41,7 @@ Page({
                 role: 'CLNT',
 
                 items: [
-                {label: '我的订单', url: '../rqst-list/rqst-list?type=my', desc: '说明'},//日期、业务种类、状态、服务人员、给予评价
+                {label: '我的订单', url: '../univ-list/univ-list?type=my&itemname=rqst', desc: '说明'},//日期、业务种类、状态、服务人员、给予评价
             ]
             },
             {
@@ -49,13 +49,13 @@ Page({
                 role: 'COMM',
 
                 items: [
-                    {label: '我的订单', url: '../rqst-list/rqst-list?type=my', desc: '查看、修改',},
+                    {label: '我的订单', url: '../univ-list/univ-list?type=my&itemname=rqst', desc: '查看',},
                     {label: '我的评价', url: '../cmmt-list/cmmt-list?type=lookme&&mode=tome', desc: '查看'},
                     {label: '个人信息', url: '../user-edit/user-edit', desc: '查看、修改'},
                     {label: '关于'   ,url:'../about/about'        ,desc:'查看'},
 
 
-                    {label: '用户信息', url: '../user-list/user-list', desc: '查看',forAdmin:true},
+                    {label: '用户信息', url: '../univ-list/univ-list?itemname=user', desc: '查看',forAdmin:true},
 
 
 

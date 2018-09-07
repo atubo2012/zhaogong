@@ -70,7 +70,10 @@
 
 
         </form>
-        <cc_list id="cc_list" list="{{list}}"  generic:listitem="cc_tomato_item" serviceUrl="{{cf.service.tomatoListUrl}}"
+        <cc_list id="cc_list"
+                 list="{{list}}"
+                 itemname="tomato"
+                 serviceUrl="{{serviceUrl}}"
                  cond="{{_cond}}"
                  bind:showdetailevent="showDetail"
         />

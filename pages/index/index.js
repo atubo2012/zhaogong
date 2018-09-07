@@ -5,7 +5,7 @@ let cf = app.globalData.cf;
 
 Page({
     data: {
-        pageInfo: app.getPageInfo('index'),
+        pageInfo: cf.motto['index'],
         cf:cf,
         motto: '',
         userInfo: {},
@@ -746,7 +746,8 @@ Page({
     //设置用户角色为LBOR
     setRoleLbor: function () {
             wx.navigateTo({
-                url: '../rqst-list/rqst-list?type=all&target=findjob'
+                //url: '../rqst-list/rqst-list?type=all&target=findjob',
+                url:'../univ-list/univ-list?itemname=rqst&type=all',
             });
     },
     //设置用户角色为CLNT

@@ -5,7 +5,7 @@ let cf = app.globalData.cf;
 Page({
 
     data: {
-        pageInfo: app.getPageInfo('lbor-list'),
+        pageInfo: cf.motto['lbor-list'],
         list: [],
         cf:cf
     },

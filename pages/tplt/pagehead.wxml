@@ -16,7 +16,7 @@
     </veiw>
     <veiw>
         <button open-type='share' class="image_button" >
-            <image src="/image/share2.png" class="btnImg"></image>
+            <image src="/image/share2.png" class="btnImg"/>
         </button>
     </veiw>
 </view>

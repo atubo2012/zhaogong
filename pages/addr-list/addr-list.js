@@ -5,7 +5,7 @@ Page({
 
     data: {
 
-        pageInfo: app.getPageInfo('lbor-edit'),
+        pageInfo: cf.motto['lbor-edit'],
 
         //默认地址列表为空，页面加载时根据用户的地址信息保存。
         addrs:[],

@@ -9,7 +9,7 @@
                     {{item.uprice*item.dura}}元 (做{{item.dura}}小时 {{item.size}}平米 {{item.hasTool}})
                 </block>
                 <block wx:if="{{item.biz_type!='hscleaning'}}">
-                    {{item.cart.total_cost}}元 {{cf.hint[item.biz_type]}}
+                    {{item.cart.total_cost}}元 {{cf.chargin_type[item.biz_type].desc}}
                 </block>
             </view>
             <view class="weui-media-box__desc">{{item.osdt}} {{item.ostm}}</view>
@@ -17,7 +17,7 @@
             <view class="weui-media-box__info">
                 <view class="weui-media-box__info__meta">{{item.clfn}}{{item.sex}}</view>
                 <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">
-                    {{cf.hint[item.biz_type]}}
+                    {{cf.chargin_type[item.biz_type].desc}}
                 </view>
                 <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">
                     {{cf.hint[item.stat]}}

@@ -6,7 +6,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-        pageInfo: app.getPageInfo('clnt-main'),
+        pageInfo: cf.motto['clnt-main'],
 
         imgUrls:[],
         grids: [//某个图标点击后->产品list->蒙层显示详情->reqedit工单页(提交提醒)->提交结果(返回我的订单、返回首页)->电话/短信/邮件通知labor->点击接单后发送通知CLT

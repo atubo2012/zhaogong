@@ -12,7 +12,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-        pageInfo: app.getPageInfo('cmmt-list'),
+        pageInfo: cf.motto['cmmt-list'],
         app:app,
         ut : ut,
 

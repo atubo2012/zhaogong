@@ -30,6 +30,7 @@ function ZgConfig(runtime) {
             sendSms: false,          //是否真正发送短信
             countDownSecond: 10,   //倒计时
             payDisct: 0.01,
+            tomatoTime: 0.1,
             getOutTradeNo: function (tradeNo) {
                 return tradeNo;
                 //return 'dev_'+new Date().getTime();   //开发环境中使用临时生成的交易编号，不必每次都生成新的订单来测试，提升效率
@@ -42,6 +43,7 @@ function ZgConfig(runtime) {
             sendSms: true,
             countDownSecond: 30,
             payDisct: 0.01,
+            tomatoTime: 0.1,
             getOutTradeNo: function (tradeNo) {
                 return tradeNo;
                 //return 'test_'+new Date().getTime();
@@ -54,6 +56,7 @@ function ZgConfig(runtime) {
             sendSms: true,
             countDownSecond: 60,
             payDisct: 1,
+            tomatoTime: 25,
             getOutTradeNo: function (tradeNo) {
                 return tradeNo;
                 //return tradeNo+'_'+new Date().getTime();
@@ -144,7 +147,9 @@ function ZgConfig(runtime) {
         cmmtListUrl: `${url}/cmmt-list`,
 
         tomatoEditUrl:`${url}/tomato-edit`,
-        tomatoListUrl:`${url}/tomato-list`
+        tomatoListUrl:`${url}/tomato-list`,
+
+        bambooListUrl:`${url}/bamboo-list`
     };
 
     //视图展现有关的配置参数，在这里统一定义，便于参数化管理。
@@ -162,25 +167,46 @@ function ZgConfig(runtime) {
      * 面向消费者的话语可以包含些英文的词
      * 面向服务商的文字使用中文，正面、激励
      */
-    this.pageInfo = [
-        {page: 'index', title: '一切皆有可能', desc: '相信美好的事情即将发生！'},
-        {page: 'clnt-main', title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
-        {page: 'rqst-edit', title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
-        {page: 'fdbk-edit', title: '刻意练习', desc: '塑造自己的长板！'},
-        {page: 'lbor-main', title: '成就自己', desc: '靠谱、专业！'},
-        {page: 'rqst-list', title: '成就自己', desc: '靠谱、专业！'},
-        {page: 'lbor-edit', title: '耐心', desc: '是一切聪明才智的基础！'},
-        {page: 'me', title: '耐心', desc: '是一切聪明才智的基础！'},
-        {page: 'addr-list', title: '一切皆有可能', desc: '相信美好的事情即将到来'},
-        {page: 'addr-edit', title: '一切皆有可能', desc: '相信美好的事情即将到来'},
-        {page: 'about', title: '成就自己', desc: '影响他人'},
-        {page: '', title: '靠谱比聪明更重要', desc: '《靠谱》，大石哲之'},
-        {page: '', title: '容忍比自由更重要', desc: '《容忍与自由》，胡适'},
-        {page: '', title: '向内求', desc: '成就自己'},
-        {page: '', title: '以终为始', desc: ''},
-        {page: '', title: '', desc: ''},
-        {page: '', title: '', desc: ''},
-    ];
+    // this.pageInfo = [
+    //     {page: 'index', title: '一切皆有可能', desc: '相信美好的事情即将发生！'},
+    //     {page: 'clnt-main', title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
+    //     {page: 'rqst-edit', title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
+    //     {page: 'fdbk-edit', title: '刻意练习', desc: '塑造自己的长板！'},
+    //     {page: 'lbor-main', title: '成就自己', desc: '靠谱、专业！'},
+    //     {page: 'rqst-list', title: '成就自己', desc: '靠谱、专业！'},
+    //     {page: 'lbor-edit', title: '耐心', desc: '是一切聪明才智的基础！'},
+    //     {page: 'me', title: '耐心', desc: '是一切聪明才智的基础！'},
+    //     {page: 'addr-list', title: '一切皆有可能', desc: '相信美好的事情即将到来'},
+    //     {page: 'addr-edit', title: '一切皆有可能', desc: '相信美好的事情即将到来'},
+    //     {page: 'about', title: '成就自己', desc: '影响他人'},
+    //     {page: '', title: '靠谱比聪明更重要', desc: '《靠谱》，大石哲之'},
+    //     {page: '', title: '容忍比自由更重要', desc: '《容忍与自由》，胡适'},
+    //     {page: '', title: '向内求', desc: '成就自己'},
+    //     {page: '', title: '以终为始', desc: ''},
+    //     {page: '', title: '', desc: ''},
+    //     {page: '', title: '', desc: ''},
+    // ];
+
+    /**
+     * motto用来取代pageInfo
+     */
+    this.motto = {
+        index: {title: '一切皆有可能', desc: '相信美好的事情即将发生！'},
+        'clnt-main': {title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
+        'rqst-edit': {title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
+        'fdbk-edit': {title: '刻意练习', desc: '塑造长板！'},
+        'lbor-main': {title: '成就自己', desc: '靠谱、专业！'},
+        'rqst-list': {title: '成就自己', desc: '靠谱、专业！'},
+        'lbor-edit': {title: '耐心', desc: '是一切聪明才智的基础，苏格拉底'},
+        'me': {itle: '耐心', desc: '是一切聪明才智的基础，苏格拉底'},
+        'addr-list': {title: '一切皆有可能', desc: '相信美好的事情即将到来'},
+        'addr-edit': {title: '一切皆有可能', desc: '相信美好的事情即将到来'},
+        'about': {title: '成就自己', desc: '影响他人'},
+        '1': {title: '靠谱比聪明更重要', desc: '大石哲之'},
+        '2': {title: '容忍比自由更重要', desc: '胡适'},
+        '3': {title: '向内求', desc: '成就自己'},
+        '4': {title: '以终为始', desc: ''}
+    };
 
     this.pageSize = 10;//每次查询返回的记录数
 
@@ -255,81 +281,11 @@ function ZgConfig(runtime) {
 
 
     /**
-     * 特定流程内的按钮状态机
+     * 特定业务模块的流程状态机定义
+     * 状态迁移、按钮显示、按钮风格等可在此定义
      */
     this.statRules={
-        comdFlow: {
-            bs_returned: {
-                desc: '卖家收到退货',
-                    role: {
-                    'CLNT': {buttons: []},
-                    'LBOR': {buttons: [{buttonDesc: '退款', nextStat: 'bs_unpaid_f'}]
-                    },
-                }
-            },
-            bs_returning: {
-                desc: '买家退货中',
-                    role: {
-                    'CLNT': {buttons: []},
-                    'LBOR': {buttons: [{buttonDesc: '收到退货', nextStat: 'bs_returned'}]},
-                }
-            },
-            bs_received_f: {
-                desc: '完成(买家已收货)',
-                    role: {
-                    'CLNT': {buttons: [{buttonDesc: '申请退货', nextStat: 'bs_returning'}]
-                    },
-                    'LBOR': {
-                        buttons: []
-                    },
-                }
-            },
-
-            bs_delivered: {
-                desc: '卖家已发货',
-                    role: {
-                    'CLNT': {
-                        buttons: [   //当前角色可访问的按钮
-                            {buttonDesc: '确认收货', nextStat: 'bs_received_f'}
-                        ]
-                    },
-                    'LBOR': {
-                        buttons: [
-                            // {buttionDesc: '发货', nextStat: 'bs_delivered'}
-                        ]
-                    },
-                }
-            },
-            bs_paid: {
-                desc: '已付款，待卖家发货',
-                    role: {
-                    'CLNT': {
-                        buttons: [   //当前角色可访问的按钮
-                            {buttonDesc: '取消', nextStat: 'bs_cancel_f'}
-                        ]
-                    },
-                    'LBOR': {
-                        buttons: [
-                            {buttonDesc: '发货', nextStat: 'bs_delivered'}
-                        ]
-                    },
-                }
-            },
-            bs_wait: {
-                desc: '待支付',//订单状态
-                    role: {        //各种角色
-                    'CLNT': {
-                        buttons: [   //当前角色可访问的按钮
-                            //{buttonDesc: '修改', nextStat: 'edit',notSubmit:true}
-                        ]
-                    },
-                    'LBOR': {
-                        buttons: []
-                    },
-                }
-            },
-        },
-        servFlow:{},
+        //番茄闹钟的业务状态机
         tomatoFlow:{
             bs_wait: {
                 desc: '未开始',
@@ -343,7 +299,7 @@ function ZgConfig(runtime) {
                 role: {
                     'ANY': {
                         buttons: [
-                            {buttonDesc: '暂停', nextStat: 'bs_pause'},
+                            // {buttonDesc: '暂停', nextStat: 'bs_pause'},
                             {buttonDesc: '终止', nextStat: 'bs_summary',type:'warn'},
                     ]
                     },
@@ -401,71 +357,177 @@ function ZgConfig(runtime) {
             //         },
             //     }
             // },
-        }
+        },
+
+        //商品类业务的状态机，通过rqst-comd-edit动态实现
+        comdFlow: {
+            bs_returned: {
+                desc: '卖家收到退货',
+                role: {
+                    'CLNT': {buttons: []},
+                    'LBOR': {buttons: [{buttonDesc: '退款', nextStat: 'bs_unpaid_f'}]
+                    },
+                }
+            },
+            bs_returning: {
+                desc: '买家退货中',
+                role: {
+                    'CLNT': {buttons: []},
+                    'LBOR': {buttons: [{buttonDesc: '收到退货', nextStat: 'bs_returned'}]},
+                }
+            },
+            bs_received_f: {
+                desc: '完成(买家已收货)',
+                role: {
+                    'CLNT': {buttons: [{buttonDesc: '申请退货', nextStat: 'bs_returning'}]
+                    },
+                    'LBOR': {
+                        buttons: []
+                    },
+                }
+            },
+
+            bs_delivered: {
+                desc: '卖家已发货',
+                role: {
+                    'CLNT': {
+                        buttons: [   //当前角色可访问的按钮
+                            {buttonDesc: '确认收货', nextStat: 'bs_received_f'}
+                        ]
+                    },
+                    'LBOR': {
+                        buttons: [
+                            // {buttionDesc: '发货', nextStat: 'bs_delivered'}
+                        ]
+                    },
+                }
+            },
+            bs_paid: {
+                desc: '已付款，待卖家发货',
+                role: {
+                    'CLNT': {
+                        buttons: [   //当前角色可访问的按钮
+                            {buttonDesc: '取消', nextStat: 'bs_cancel_f'}
+                        ]
+                    },
+                    'LBOR': {
+                        buttons: [
+                            {buttonDesc: '发货', nextStat: 'bs_delivered'}
+                        ]
+                    },
+                }
+            },
+            bs_wait: {
+                desc: '待支付',//订单状态
+                role: {        //各种角色
+                    'CLNT': {
+                        buttons: [   //当前角色可访问的按钮
+                            //{buttonDesc: '修改', nextStat: 'edit',notSubmit:true}
+                        ]
+                    },
+                    'LBOR': {
+                        buttons: []
+                    },
+                }
+            },
+        },
+
+        //服务类业务的状态机，未在此定义是因为已通过rqst-accleaning-rqst硬编码实现
+        servFlow:{},
+
     };
 
-    //地址业务品类选择器CC自定义组件使用的内容
+    /**
+     * 业务种类
+     * 
+     */
     this.charging_type = {
-        'program': {
-            subtypes: [
-                {'type': '编程第一课', 'uprice': 300, 'unit': '次'},
-                {'type': '编程入门课', 'uprice': 1999, 'unit': '每期'},
-                {'type': '编程中级课', 'uprice': 3999, 'unit': '每期'},
-            ],
+        program: {
+            url:'rqst-comd-edit',//对应的详情页面
             ccs: {uploadpic: true, mobile: true, address: true, osdt: false, map: true, nametitle: false},
-            supplier_id:['oCun05dg82cWSz-SiwiJnrAwX7Hs'],
+            supplier_id: ['oCun05dg82cWSz-SiwiJnrAwX7Hs'],
+            subtypes: [
+                {'type': '编程101', 'uprice': 300, 'unit': '次'},
+                {'type': '入门课(编程语言)', 'uprice': 1999, 'unit': '每期'},
+                {'type': '中级课(功能开发)', 'uprice': 3999, 'unit': '每期'},
+                {'type': '高级课(框架设计)', 'uprice': 7999, 'unit': '每期'},
+            ],
 
             //TODO:以下三种特性待实现
-            can_be_canceled_by_clnt:true,//不能取消，bs_paid下隐藏【取消】按钮。button4flow_comd中增加判断条件
-            can_be_returned_by_clnt:true,//不能退货，bs_received_f下隐藏【退货】按钮。button4flow_comd中增加判断条件
-            need_delivery:false,         //无需配送，付款后状态直接更新为bs_received_f，不显示【确认收货】。onSubmit()方法中支付前传送bs_received_f状态
+            can_be_canceled_by_clnt: true,//不能取消，bs_paid下隐藏【取消】按钮。button4flow_comd中增加判断条件
+            can_be_returned_by_clnt: true,//不能退货，bs_received_f下隐藏【退货】按钮。button4flow_comd中增加判断条件
+            need_delivery: false,         //无需配送，付款后状态直接更新为bs_received_f，不显示【确认收货】。onSubmit()方法中支付前传送bs_received_f状态
+        },
+        decodesign: {
+            url:'rqst-comd-edit',//对应的详情页面
+            ccs: {mobile: true, address: true, osdt: false, map: true, nametitle: false},
+            supplier_id: ['oCun05dg82cWSz-SiwiJnrAwX7Hs'],
+            subtypes: [
+                {'type': '设计咨询', 'uprice': 300, 'unit': '次'},
+                {'type': '设计装修', 'uprice': 300, 'unit': '平米'},
+            ],
 
         },
-        'decodesign': {subtypes:[
-            {'type': '设计咨询', 'uprice': 300, 'unit': '次'},
-            {'type': '设计装修', 'uprice': 300, 'unit': '平米'},
-        ]},
-        'corpregist': {subtypes:[
-            {'type': '公司注册', 'uprice': 250, 'unit': '次'},
-            {'type': '代理记账(季度)', 'uprice': 1500, 'unit': '季度'},
-            {'type': '代理记账(年度)', 'uprice': 5000, 'unit': '年'},
-        ]},
-        'accleaning': {subtypes:[
+        corpregist: {
+            url:'rqst-comd-edit',//对应的详情页面
+            ccs: {mobile: true, address: true, osdt: false, map: true, nametitle: false},
+            supplier_id: ['oCun05dg82cWSz-SiwiJnrAwX7Hs'],
+            subtypes: [
+                {'type': '公司注册', 'uprice': 250, 'unit': '次'},
+                {'type': '代理记账(季度)', 'uprice': 1500, 'unit': '季度'},
+                {'type': '代理记账(年度)', 'uprice': 5000, 'unit': '年'},
+            ],
+
+        },
+        accleaning: {
+            url:'rqst-accleaning-edit',//对应的详情页面
+            subtypes:[
             {'type': '壁挂式', 'uprice': 80, 'unit': '台'},
             {'type': '立柜式', 'uprice': 100, 'unit': '台'},
             {'type': '中央式', 'uprice': 120, 'unit': '台'},
         ]},
-        'accryogen': {subtypes:[
+        accryogen: {
+            url:'rqst-accleaning-edit',
+            subtypes:[
             {'type': '  1P功率', 'uprice': 120, 'unit': '台'},
             {'type': '1.5P功率', 'uprice': 180, 'unit': '台'},
             {'type': '2.0P功率', 'uprice': 200, 'unit': '台'},
         ]},
-        'oilsmoke_cleaning': {subtypes:[
+        oilsmoke_cleaning: {
+            url:'rqst-accleaning-edit',
+            subtypes:[
             {'type': '一般型', 'uprice': 280, 'unit': '台'},
             {'type': '特殊型', 'uprice': 300, 'unit': '台', desc: '拆、洗、装'}
         ]},
-        'house_cleaning': {subtypes:[
-            {'type': '新租保洁', 'uprice': 40, 'unit': '小时', desc: '在约定时间内完成全面保洁，根据客户对洁净度的要求可补时服务'},
-            {'type': '代购工具', 'uprice': 65, 'unit': '套', desc: '平拖1、毛巾4(厨卫客备)、清洁球2(厨卫)、扫把、簸箕'},
-            {'type': '清洁剂', 'uprice': 30, 'unit': '套', desc: '洁厕灵1、威猛去油1'},
-            {'type': '开荒保洁', 'uprice': 30, 'unit': '平米', desc: '擦玻璃、地面涂料污渍、全面除尘(扫、吸、擦)'},
-        ]},
-        'changelock': {subtypes:[
+        changelock: {
+            url:'rqst-accleaning-edit',
+            subtypes:[
             {'type': 'A级锁芯', 'uprice': 120, 'unit': '把', desc: '含6把钥匙'},
             {'type': 'B级锁芯', 'uprice': 280, 'unit': '把'},
             {'type': 'C级锁芯', 'uprice': 380, 'unit': '把'},
         ]},
-        'broadband': {subtypes:[
+        broadband: {
+            url:'rqst-accleaning-edit',
+            subtypes:[
             {'type': ' 50M长宽', 'uprice': 580, 'unit': '1年', desc: ''},
             {'type': '100M长宽', 'uprice': 780, 'unit': '1年', desc: ''},
             {'type': '100M电信', 'uprice': 1200, 'unit': '1年', desc: 'C50'},
             {'type': '200M电信', 'uprice': 1548, 'unit': '3年', desc: 'C50'},
             {'type': '300M电信', 'uprice': 2028, 'unit': '1年', desc: 'C60'}
-
         ]},
-        pipeline: {subtypes:[
+        pipeline: {
+            url:'rqst-accleaning-edit',
+            subtypes:[
             {'type': '疏通', 'uprice': 100, 'unit': '1次', desc: ''},
-        ]}
+        ]},
+        hscleaning: {
+            url:'rqst-edit',
+            subtypes:[
+                {'type': '新租保洁', 'uprice': 40, 'unit': '小时', desc: '在约定时间内完成全面保洁，根据客户对洁净度的要求可补时服务'},
+                {'type': '代购工具', 'uprice': 65, 'unit': '套', desc: '平拖1、毛巾4(厨卫客备)、清洁球2(厨卫)、扫把、簸箕'},
+                {'type': '清洁剂', 'uprice': 30, 'unit': '套', desc: '洁厕灵1、威猛去油1'},
+                {'type': '开荒保洁', 'uprice': 30, 'unit': '平米', desc: '擦玻璃、地面涂料污渍、全面除尘(扫、吸、擦)'},
+            ]},
     };
 
 
@@ -506,7 +568,11 @@ function ZgConfig(runtime) {
         ],
     };
 
-    //form config
+    /**
+     * 动态表单DF配置属性
+     * 根据业务模块名字识别，通过再此预先配置，动态生成用户需要填写的表单
+     * @type {{tomato: {inputs: [null]}}}
+     */
     this.fc={
         tomato:{
             inputs:[
@@ -519,7 +585,6 @@ function ZgConfig(runtime) {
                         {name:'experience',type:'textarea',placeholder:'写下你的心得',autoheight:true},
                         {name:'pics_list',type:'uploadpic'},
                         //{name:'f2',value:'asfsdfsaf2',type:'input',bindinput:'bindinput',image:true,image_url:'/image/map.png',bindtap:'sdf'},
-
                     ]
                 },
 

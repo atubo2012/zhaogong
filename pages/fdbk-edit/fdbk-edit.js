@@ -10,7 +10,7 @@ Page({
         /**
          * 页面使用的例行参数
          */
-        pageInfo: app.getPageInfo('fdbk-edit'),//
+        pageInfo: cf.motto['fdbk-edit'],//
         submitButtonDisabled: false,//提交按钮默认状态，点击提交后设置为true，避免重复提交
         showTips: false,//默认不显示异常信息
         preview: true,  //初始默认为显示，点击修改后，隐藏详情展示信息，只显示编辑表单
@@ -113,6 +113,9 @@ Page({
                 '_cond.skip': 0,
                 '_cond.limit': cf.pageSize,
 
+                itemname:'tomato',
+                serviceUrl:cf.service['tomatoListUrl']
+
             });
 
             console.log('this.data', this.data);
@@ -136,6 +139,9 @@ Page({
     _timeOutCb:function () {
         console.log('计时结束回调');
 
+        this.setData({
+            'rstat.tomato.stat':'bs_summary'
+        });
 
         //点亮屏幕到最亮，并震动10次,停止播放搞音乐。
         wx.setScreenBrightness({
@@ -172,7 +178,7 @@ Page({
          * 根据不同的状态操作
          */
         if (st === 'bs_ongoing') {//开始计时
-            let then = new Date().getTime()+1000*60*0.1;
+            let then = new Date().getTime()+1000*60*cf.runtimeConfig.tomatoTime;
 
             //初始化需要保存的数据和
             this.setData({
@@ -262,13 +268,19 @@ Page({
      * @param swch true：播放；false：关闭
      */
     playMusic:function(swch){
-        if(swch){
-        innerAudioContext.autoplay = true;
-        innerAudioContext.src = 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220&vkey=6292F51E1E384E061FF02C31F716658E5C81F5594D561F2E88B854E81CAAB7806D5E4F103E55D33C16F3FAC506D1AB172DE8600B37E43FAD&fromtag=46'
-        }else{
+
+        if (swch) {
+            innerAudioContext.autoplay = true;
+            innerAudioContext.src = 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220&vkey=6292F51E1E384E061FF02C31F716658E5C81F5594D561F2E88B854E81CAAB7806D5E4F103E55D33C16F3FAC506D1AB172DE8600B37E43FAD&fromtag=46'
+        } else {
             console.log('stop musice');
             innerAudioContext.stop();
         }
+
+        //设置图标
+        this.setData({
+            _play_music:swch
+        });
 
         innerAudioContext.onPlay(() => {
             console.log('开始播放')

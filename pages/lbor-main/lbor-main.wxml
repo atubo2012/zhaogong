@@ -19,14 +19,14 @@
         <view class="weui-cells__title">----------------------</view>
 
         <view class="weui-cells weui-cells_after-title">
-            <navigator url="../rqst-list/rqst-list?type=all" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <!--<navigator url="../rqst-list/rqst-list?type=all" class="weui-cell weui-cell_access" hover-class="weui-cell_active">-->
+                <!--<view class="weui-cell__bd">客户需求</view>-->
+                <!--<view class="weui-cell__ft weui-cell__ft_in-access">零活、家政、企业用工</view>-->
+            <!--</navigator>-->
+            <navigator url="../univ-list/univ-list?itemname=rqst&type=all" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
                 <view class="weui-cell__bd">客户需求</view>
                 <view class="weui-cell__ft weui-cell__ft_in-access">零活、家政、企业用工</view>
             </navigator>
-            <!--<navigator url="../lbor-edit/lbor-edit" class="weui-cell weui-cell_access" hover-class="weui-cell_active">-->
-                <!--<view class="weui-cell__bd">个人信息</view>-->
-                <!--<view class="weui-cell__ft weui-cell__ft_in-access">联系信息、空闲档期</view>-->
-            <!--</navigator>-->
             <navigator url="../lbor-edit/lbor-edit" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
                 <view class="weui-cell__bd">提升技能</view>
                 <view class="weui-cell__ft weui-cell__ft_in-access">参加培训、认证技能</view>

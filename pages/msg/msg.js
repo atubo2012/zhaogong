@@ -9,7 +9,7 @@ Page({
     },
     goMyRqst:function () {
         wx.redirectTo({
-            url:'../../pages/rqst-list/rqst-list?type=my'
+            url:'../../pages/univ-list/univ-list?type=my&itemname=rqst'
         });
     },
 

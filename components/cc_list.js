@@ -23,15 +23,11 @@ Component({
          */
         cond: {
             type:Object,
-            value:{
-                query: {},
-                skip: 0,
-                limit: cf.pageSize,
-
-                // project:{}
-            }
         },
 
+        /**
+         * 指定使用哪一类详情页面文件
+         */
         itemname:String,
     },
 
@@ -42,7 +38,7 @@ Component({
         /**
          * 页面顶端显示的motto和模块标题
          */
-        pageInfo: app.getPageInfo('addr-edit'),
+        pageInfo: cf.motto['addr-edit'],
         listTitle: '常用地址管理',
 
         /**
@@ -55,6 +51,8 @@ Component({
          * 查询数据结果
          */
         list: [], //onload函数、onReachBottom从后台查询后的列表查询结果
+
+        cf:cf,
 
 
 
@@ -86,13 +84,34 @@ Component({
      * 组件的方法列表
      */
     methods: {
-        onLoad:function () {
-            this.onReachBottom()
+
+        /**
+         * 在detail记录中，可以绑定数据和事件，当用户触发
+         * 用户点击某条记录后，可以向主调模块发送冒泡事件，通知
+         * @param e
+         */
+        showDetail:function (e) {
+            let _that = this;
+            console.log('cc_list.showDetail():触发冒泡事件',e);
+            this.triggerEvent(
+                e.currentTarget.dataset.event,  //冒泡事件，触发univ-list.wxml中的通知事件，激活univ-list.js中的showDetail
+                {
+                    'detaildata':e.currentTarget.dataset.detaildata,//item对应的detail数据
+                    'eventtype':e.currentTarget.dataset.eventtype,//事件类别，在univ-list.js.showDetail()中用于区分事件来自哪个组件
+                    // 'thisdata':_that.data
+                },
+                { bubbles: true ,composed:true}
+            );
+        },
+
+
+        onLoad:function (cb) {
+            this.onReachBottom(cb)
         },
         /**
          * 上拉时查询新一页的内容
          */
-        onReachBottom: function () {
+        onReachBottom: function (cb) {
             let that = this;
             ut.showLoading();
 
@@ -102,11 +121,16 @@ Component({
             if (that.data.paging.hasMore) {
                 this.setData({
                     cond: {
-                        query: that.data.cond.query,//使用上次的查询条件
                         skip: that.data.paging.pageNum * that.data.paging.pageSize, //跳过已经查询过的记录。
-                        limit: cf.pageSize,
+                        query: that.data.cond.query,//使用上次的查询条件
+                        limit: that.data.cond.limit,
+                        coll: that.data.cond.coll,
+                        sort:that.data.cond.sort,
                     }
                 });
+
+
+
                 ut.debug('本次的查询条件为:', that.data.cond);
 
 
@@ -122,13 +146,20 @@ Component({
                             let list = res.data;
                             console.log(list);
 
+                            //如指定了数据预处理函数，则执行预处理。
+                            if(cb && typeof(cb)==='function'){
+                                cb(list);
+                            }
+
+
                             //将返回结果追加到data.list中，并渲染页面，隐藏新增区
                             let newList = that.data.list.concat(list);
-
                             that.setData({
                                 'list': newList,
                                 addHidden: true //隐藏新增区
                             });
+
+
 
                             //分页处理:判断是否为最后一页，如果返回结果少于一页的记录数，则说明没有新页了
                             if (list.length < that.data.paging.pageSize) {
@@ -173,9 +204,11 @@ Component({
                         hasMore: true,   //是否有下一页，后台返回的记录数如果小于pageSize（res.data.length<pageSize），则将hasMore设置为false，表示没有记录了。
                     },
                     cond: {
-                        query: {},
-                        skip: 0,
-                        limit: cf.pageSize,
+                        skip: that.data.paging.pageNum * that.data.paging.pageSize, //跳过已经查询过的记录。
+                        query: that.data.cond.query,//使用上次的查询条件
+                        limit: that.data.cond.limit,
+                        coll: that.data.cond.coll,
+                        sort:that.data.cond.sort,
                     }
                 });
                 this.onLoad();

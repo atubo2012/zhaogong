@@ -9,7 +9,7 @@ Page({
      */
     data: {
 
-        pageInfo: app.getPageInfo('lbor-edit'),
+        pageInfo: cf.motto['lbor-edit'],
 
         hideimg:true,//是否显示图片
 

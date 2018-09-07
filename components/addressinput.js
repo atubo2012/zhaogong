@@ -63,14 +63,22 @@ Component({
                 }
             })}
         },
+
         //手动修改地址内容时，设置data中的address
         _setAddress: function (e) {
             this.setData({
                 address: e.detail.value
             });
-            console.log('setAddress:',e)
+            console.log('setAddress:',e);
             //向主调组件发出事件，通知其更新address
             this.triggerEvent("chooseaddressevent", this.data);
         },
+
+        //焦点移动到地址栏时，校验是否地址栏内容为空，如为空，则自动打开地图让用户显示
+        _hasAddress:function (e) {
+            if(this.data.address.trim()===''){
+                this._chooseAddress();
+            }
+        }
     }
 });
