@@ -3,6 +3,7 @@
     "mobileinput":"/components/mobileinput",
     "addressinput":"/components/addressinput",
     "cc_uploadpic":"/components/cc_uploadpic",
-    "cc_mapshow"  :"/components/cc_mapshow"
+    "cc_mapshow"  :"/components/cc_mapshow",
+    "cc_dop":"/components/cc_dop"
   }
 }

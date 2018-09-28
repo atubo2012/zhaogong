@@ -19,6 +19,11 @@
                         <view class="weui-cell__bd">
                             <input name="name" class="weui-input" value="{{userInfo.name}}" placeholder="真实姓名" focus="{{nameFocus}}" disabled="{{hideSubmitButton}}"/>
                         </view>
+                        <!--<view class="weui-cell__ft">-->
+                            <!--<image src="{{qrcodeurl}}" mode="aspecFill"-->
+                                   <!--class="qs_head_image"-->
+                                   <!--/>-->
+                        <!--</view>-->
                     </view>
                     <view class="weui-cell weui-cell_input">
                         <view class="weui-cell__bd">
@@ -66,6 +71,19 @@
                     </view>
 
                     <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__hd">我的ID：</view>
+                        <view class="weui-cell__bd">
+                            <text class="weui-input">{{uid}}</text>
+                        </view>
+                    </view>
+                    <view class="weui-cell weui-cell_input">
+                        <view class="weui-cell__hd">推荐ID：</view>
+                        <view class="weui-cell__bd">
+                            <text class="weui-input">{{ouid}}</text>
+                        </view>
+                    </view>
+
+                    <view class="weui-cell weui-cell_input">
                         <view class="weui-cell__hd">角色</view>
                         <view class="weui-cell__bd">
                             <radio-group bindchange="roleChange" class="weui-input" >
@@ -78,9 +96,8 @@
                         <view hidden="{{hideCfm}}" class="weui-cell__ft" style="color:{{rolecfm?'green':'red'}}">
                             ({{rolecfm ? '审核通过':'待审核'}})
                         </view>
-
-
                     </view>
+
 
 
                     <!--服务人员的信息-->

@@ -77,6 +77,9 @@ function ZgConfig(runtime) {
 
     this.service = {
 
+        //生成二维码
+        genQrCodeUrl: `${url}/gen-qrcode`,
+
         // 订单状态推送
         statPushUrl: `${url}/stat-push`,
 
@@ -447,10 +450,10 @@ function ZgConfig(runtime) {
             ccs: {uploadpic: true, mobile: true, address: true, osdt: false, map: true, nametitle: false},
             supplier_id: ['oCun05dg82cWSz-SiwiJnrAwX7Hs'],
             subtypes: [
-                {'type': '编程101', 'uprice': 300, 'unit': '次'},
-                {'type': '入门课(编程语言)', 'uprice': 1999, 'unit': '每期'},
-                {'type': '中级课(功能开发)', 'uprice': 3999, 'unit': '每期'},
-                {'type': '高级课(框架设计)', 'uprice': 7999, 'unit': '每期'},
+                {'type': '第一课', 'uprice': 300, 'unit': '次'},
+                {'type': '初级(编程语言)', 'uprice': 1999, 'unit': '每期'},
+                {'type': '中级(功能开发)', 'uprice': 3999, 'unit': '每期'},
+                {'type': '高级(框架设计)', 'uprice': 7999, 'unit': '每期'},
             ],
 
             //TODO:以下三种特性待实现

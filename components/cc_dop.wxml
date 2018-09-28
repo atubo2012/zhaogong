@@ -1,0 +1,21 @@
+<view>
+    <button class="image_button"
+            bindtap="_getMyQr">
+        <image src="/image/QRCode.png" class="btnImg"/>
+    </button>
+</view>
+<!--<view>-->
+<!--<image class="image_button"-->
+    <!--src="/image/QRCode.png" />-->
+<!--</view>-->
+<!--<view>-->
+<!--<button class="image_button"-->
+        <!--data-page="{{page}}"-->
+        <!--data-type="{{type}}"-->
+        <!--data-biz_type="{{biz_type}}"-->
+        <!--data-userinfo="{{userInfo}}"-->
+        <!--bindtap="_getMyQr">-->
+    <!--<image src="/image/QRCode.png" class="btnImg"/>-->
+<!--</button>-->
+<!--</view>-->
+<!--<view><image src="{{qrcodeUrl}}"  class="btnImg"/></view>-->

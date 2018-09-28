@@ -29,6 +29,7 @@ Component({
 
     data: {
 
+        cf:cf,
         mobile: '',   //手机号栏位
         smsCode: '',   //动态口令栏位
 

@@ -277,7 +277,7 @@ Page({
 
         let rdata = {
             name: fd.name, mobile: fd.mobile, address: fd.address, location: this.data.location,
-            sign: fd.sign,
+            sign: fd.sign,uid:this.data.uid,
             certNumber: fd.certNumber, servDist: fd.servDist, role: this.data.role,
             bizList: this.data.bizListValues,
             rolecfm: false, //只要保存过用户信息，角色审核状态就被重置为false，需要管理员审核
@@ -369,6 +369,12 @@ Page({
                         hideSubmitButton: param.type==='ta',//若查看其它的用户信息则隐藏保存按钮
                         hideSC: '' !== res.data.mobile,//如手机号为空，表明当前场景为“注册场景”，应显示验证码输入框，提交时应校验mobile是否有值
                         hideCfm: role==='CLNT',   //若是CLNT角色则隐藏审核状态
+                        uid:res.data.uid?res.data.uid:'',//后端生成的uid，无无此值，则默认为''
+                        ouid:res.data.ouid?res.data.ouid:'',
+                        qrcode:res.data.qrcode?res.data.qrcode:'',
+
+                        qrcodeurl:cf.runtimeConfig.url+'/upload/'+res.data.qrcode
+
                         //showLborInfo: true,
                     });
 

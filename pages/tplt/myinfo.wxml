@@ -10,5 +10,10 @@
         <view>{{(userInfo.name==='')?userInfo.nickName:userInfo.name}}</view>
         <view class="qs_motto">个人签名：{{userInfo.sign}}</view>
     </view>
+
+    <view class="weui-cell__ft">
+        <image src="{{qrcodeurl}}" mode="aspecFill"
+               class="qs_head_image"/>
+    </view>
 </view>
 </view>

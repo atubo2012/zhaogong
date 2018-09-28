@@ -72,6 +72,58 @@ Page({
     },
 
 
+    /**
+     * 获得包指定pages路径与参数的二维码
+     * 参数可以是：
+     * 1、用户的openId(28位)，用于引流
+     * 2、用户的openId，段指令（3个字符）
+     *
+     * 由于scene的最大长度限制为32个字符，超过长度参数就会无效，所以应按照如下规则来设计传给page的参数：
+     * 例子：A-uid
+     * 格式：参数类别，分隔符-号，参数内容
+     * 类别含义：
+     *      A：用户引流用户。参数为老用户的uid。适用于老用户引流新用户，在user表中增加引流用户的uid
+     *      B：机构引流用户。参数为机构的编号。适用于利用线下场所渠道的贴纸。
+     *      C：商品分销。参数为uid|biz_type|子类描述，着陆页为index，scene参数中的biz_type会在登录后跳转到相关页面
+     * @param e
+     */
+    getMyQr:function (e) {
+        let that = this;
+        console.log('生成二维码',e);
+        let ds = e.target.dataset;
+
+
+        wx.request({
+            url: cf.service.genQrCodeUrl,
+            data: {
+                rdata: {
+                    'userInfo':that.data.userInfo,
+                    page:'pages/'+ds.page+'/'+ds.page,//?runmode=dev&charging_type=program',
+                    scene:ds.type+'&'+that.data.userInfo.uid+'&'+(ds.biz_type||'')+'&'+cf.runMode,
+                    width:430,
+                    auto_color:false
+                }
+            },
+            header: {
+                'session3rdKey': wx.getStorageSync('session3rdKey'),
+            },
+            success: function (res) {
+                ut.checkSession(res, app, that, function (option) {
+                    let retMsg = res.data;
+                    let url = cf.runtimeConfig.url+'/upload/'+retMsg;
+                    console.log('res:',res,url);
+
+
+                    that.setData({
+                        qrcodeUrl:url
+                    })
+                });
+            },
+            complete: function (res) {
+                ut.info("生成二维码完成");
+            }
+        });
+    },
 
 
     /**
@@ -135,6 +187,17 @@ Page({
                     ut.debug('userInfo', app.globalData.userInfo);
                 });
             });
+
+
+            //将启动参数作为全局变量保存，以便登录后根据参数内容跳转到特定的页面
+            console.log('首页参数',option);
+            //app.globalData['init_param']=option;
+
+            //TODO：验证登录后跳转到商品页面
+
+            //for test of generate qrcode
+            //ut.request('https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=',{},()=>{},()=>{})
+
         }
         /**
          * 检查本地是否存在曾经缓存的sessionData，如已存在说明曾经使用过小程序，直接显示业务功能按钮，否则显示微信登录按钮
@@ -623,8 +686,9 @@ Page({
 
         let that = this;
 
-        //取得非敏感的userInfo后，保存到共享数据区
+        //取得非敏感的userInfo后，保存到全局数据区，并将转介用户uid保存
         app.globalData.userInfo = e.detail.userInfo;
+        app.globalData.userInfo.ouid=app.globalData['init_param'][1]||'';
 
         //登录取得code->获取openId->检查是否为新用户，如果为新用户则提示
         wx.login({
@@ -638,7 +702,7 @@ Page({
                         let _iv = res2.iv;
                         //3)准备参数用来获取openId和生成会话
                         let reqdata = {'code': _code, 'encryptedData': _encryptedData, 'iv': _iv};
-                        ut.debug('reqdata:', reqdata);
+                        //ut.debug('reqdata:', reqdata);
 
                         //调用后端的登录校验服务，获得session，缓存到本地
                         wx.request({
@@ -673,18 +737,17 @@ Page({
                                     wx.request({
                                         url: cf.service.userCheckUrl,
                                         data: {
-                                            userInfo: app.globalData.userInfo
+                                            userInfo: app.globalData.userInfo,
+                                            runmode:cf.runMode,//后端会根据该参数设置
+                                            ouid: app.globalData['init_param'][3]
                                         },
                                         header: {
                                             'session3rdKey': wx.getStorageSync('session3rdKey'),
                                         },
                                         success: function (res2) {
-
                                             let ret = JSON.stringify(res2.data);
-
                                             app.globalData.userInfo = res2.data;
 
-                                            ut.debug('userCheckUrl：',app.globalData.userInfo)
                                             that.setData({
                                                 userInfo: app.globalData.userInfo
                                             });
@@ -708,8 +771,28 @@ Page({
                                             //检查用户是否已注册，本条语句是为测试。应在需要保留用户信息的时候调用以下语句，引导用户去注册。
                                             //app.isNewUser();
                                             ut.hideLoading();
+
+
+                                            console.log('after login app.globaData',app.globalData);
+                                            //登录成功后，根据初始化参数跳转到参数对应的页面
+                                            if(app.globalData.init_param){
+                                                let biz_type=app.globalData.init_param[2];
+                                                let uid = app.globalData.init_param[1];
+                                                console.log('biz_type',biz_type,'app.globalData.init_param',app.globalData.init_param);
+                                                let page = biz_type==='' ? 'index':cf.charging_type[biz_type].url;
+                                                console.log('page',page);
+                                                if(biz_type){
+                                                    wx.navigateTo({
+                                                        url: '/pages/'+page+'/'+page+'?charging_type='+biz_type+'&uid='+uid
+                                                    })
+                                                }
+                                            }
                                         }
                                     });
+
+
+                                    //根据场景值重定向到某个页面
+
                                 }
                             },
                             fail: function (res) {

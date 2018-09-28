@@ -3,7 +3,6 @@
     <view class="page__bd"><!--框架头与页面内容空3行-->
 
 
-
         <!--显示微信昵称和头像-->
         <view class="acenter2">
             <view class="avatar2" >
@@ -27,7 +26,39 @@
                 <navigator url="../fdbk-edit/fdbk-edit" class="weui-footer__link">番茄钟</navigator>
                 <navigator wx:if="{{userInfo.is_admin}}" url="../univ-list/univ-list?itemname=bamboo" class="weui-footer__link">查笋</navigator>
 
+                    <block wx:if="{{cf.runMode==='dev'}}">
+                    <!--<veiw>-->
+                        <!--<button class="image_button"-->
+                                <!--data-page="index"-->
+                                <!--data-type="A"-->
+                                <!--bindtap="getMyQr">-->
+                            <!--<image src="/image/share2.png" class="btnImg"/>-->
+                        <!--</button>-->
+                    <!--</veiw>-->
+                    <!--<veiw>-->
+                        <!--<button class="image_button"-->
+                                <!--data-page="index"-->
+                                <!--data-type="C"-->
+                                <!--data-biz_type="program"-->
+                                <!--bindtap="getMyQr">-->
+                            <!--<image src="/image/share2.png" class="btnImg"/>-->
+                        <!--</button>-->
+                    <!--</veiw>-->
 
+                        <cc_dop id='cc_dop'
+                                userInfo="{{userInfo}}"
+                                type="C"
+                                biz_type="program"
+                                page="index"
+                                runmode="{{cf.runMode}}" bind:dopevent="onDopEvent"/>
+
+                        <cc_dop id='cc_dop'
+                                userInfo="{{userInfo}}"
+                                type="A"
+                                biz_type=""
+                                page="index"
+                                runmode="{{cf.runMode}}" bind:dopevent="onDopEvent"/>
+                    </block>
                 </view>
             </block>
 
@@ -36,9 +67,12 @@
                         open-type="getUserInfo"
                         bindgetuserinfo="login4" disabled="{{submitButtonDisabled}}" type="primary">
                     微信登录
-                    <!--<image src="/image/login"/>-->
+
                 </button>
             </block>
+
+            <image src="{{qrcodeUrl}}"/>
+
 
 
             <!--非生产模式下，显示近期开发的测试连接-->
@@ -55,8 +89,10 @@
                 <!--<cc_uploadpic id='uploadpic' picsList="{{picsList}}"  hidden="true" bind:uploadchangeevent="onUploadChangeEvent"/>-->
                 <!--<cc_mapshow id='cc_mapshow' bind:mapshowevent="onMapShowEvent"/>-->
 
+
             </block>
         </view>
+
 
 
 

@@ -18,10 +18,15 @@
                     <!--<image src="/image/share2.png" class="btnImg"/>-->
                 <!--</button>-->
             <!--</veiw>-->
+
         </view>
 
 
     </view>
     <view class="weui-footer__text">Copyright © 2017</view>
+    <view wx:if="{{qrcodeurl}}" >
+        <image src="{{qrcodeurl}}" style="width: 20%" mode="widthFix"/>
+    </view>
+
 </view>
 

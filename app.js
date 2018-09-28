@@ -41,20 +41,12 @@ App({
      * 应用程序启动例行操作：
      * 1、获取手机系统信息、地理坐标和地点
      * 2、获取系统信息、用户地理信息
+     * options参数的官方说明：https://developers.weixin.qq.com/ebook?action=get_post_info&volumn=1&lang=zh_CN&book=miniprogram&docid=0004eec99acc808b00861a5bd5280a
      */
     onLaunch: function (options) {
-
         let that = this;
-
-
-        if(options.scene === 1044){
-            console.log('场景1044',options.shareTicket)
-        }
-
-
-        //运行时环境参数
+        //运行模式参数
         let runtime = {};
-
         //获取用户手机的系统信息，设置获得语言环境。
         wx.getSystemInfo({
             success: function (res) {
@@ -64,14 +56,54 @@ App({
         });
 
 
-        //如未指定运行模式，则默认为生产模式。
-        runtime.runmode= options.query.runmode ? options.query.runmode:'prod';
+
+        console.log('options',options);
+
+        /**
+         * 如为扫码模式访问MP，则获取参数，并设置为全局变量和runmode
+         * init_param的内容格式：类别&uid&charging_type&runmode
+         * 场景值的官方参考：https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/scene.html
+         */
+        if(
+            options.scene===1047 || //扫描小程序码
+            options.scene===1048|| //长按图片识别小程序码
+            options.scene===1049   //手机相册选取小程序码
+        ){
+            this.globalData['init_param'] = decodeURIComponent(options.query.scene).split('&');
+            runtime.runmode = this.globalData['init_param'][3];
+            console.log('runmode1:'+runtime.runmode)
+        }else
+        //     if(
+        //     options.scene===1001||  //发现栏小程序主入口
+        //     options.scene===1203||  //安卓系统桌面图标
+        //
+        //     options.scene===1011||  //扫描二维码
+        //     options.scene===1012||  //长按图片识别二维码
+        //     options.scene===1013||  //手机相册选取二维码
+        //
+        //     options.scene===1017    //体验版入口
+        // )
+            {   //扫描MP码或二维码
+            //如未指定运行模式，则默认为生产模式。
+            runtime.runmode= options.query.runmode ? options.query.runmode:'prod';
+
+            //设置init_param便于index.js.login4()函数在登录成功后跳转到参数中的页面
+            this.globalData['init_param'] = ('&&&'+runtime.runmode).split('&');
+            console.log('runmode2:'+runtime.runmode)
+        }
+
+        // else{
+        //     ut.showToast('请补充预处理逻辑，目前的场景值:'+options.scene+'，参数:'+options.query);
+        // }
         console.log('runtime',runtime);
+        console.log('this.globalData',this.globalData);
 
         //根据小程序运行时环境参数，初始化运行时参数
         this.globalData['cf']=new ZgConfig(runtime);
 
-        //this.wsTest();
+
+
+        //测试wxs的连通性this.wsTest();
 
 
         //使用腾讯地图api获得地理信息获取用户的地理坐标
@@ -219,7 +251,8 @@ App({
         wx.request({
             url: that.globalData.cf.service.userCheckUrl,
             data: {
-                userInfo: wx.getStorageSync('userInfo') //that.globalData.userInfo
+                userInfo: wx.getStorageSync('userInfo'), //that.globalData.userInfo
+                runmode: that.globalData['cf'].runMode ,//在APP启动时初始化的带入的参数
             },
             header: {
                 'session3rdKey': wx.getStorageSync('session3rdKey'),
@@ -321,7 +354,6 @@ App({
             }
         });
     },
-
     /**
      * 获取全局参数的值
      * 场景：在自定义组件中使用该方法获取主调程序设置的全局参数

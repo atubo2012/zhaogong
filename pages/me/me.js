@@ -11,7 +11,7 @@ Page({
         app: app,
         role: '',//默认的角色
         userInfo: app.globalData.userInfo,
-
+        cf:cf,
         items: [
             {name: 'CLNT', value: '找帮手'},
             {name: 'COMM', value: '普通', checked: true},
@@ -102,6 +102,9 @@ Page({
 
         ut.checkSession(null,app,this,()=>{
             that.renderData();
+            that.setData({
+                qrcodeurl:cf.runtimeConfig.url+'/upload/'+that.data.userInfo.qrcode
+            })
         })
     },
     onShow: function () {

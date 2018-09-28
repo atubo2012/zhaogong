@@ -15,7 +15,7 @@ Component({
     data: {},
 
     attached() {
-        //console.log(this.data.item);
+        console.log('in tomato_item this is ',this);
     },
     /**
      * 组件的方法列表

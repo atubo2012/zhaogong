@@ -1,6 +1,6 @@
 <!--<navigator class="weui-panel"-->
            <!--url="../user-edit/user-edit?type=ta&openId={{item.openId}}">-->
-    <view class="weui-panel__bd" bindtap="showDetail">
+    <view class="weui-panel__bd" bindtap="showDetail" wx:if="{{item.pics_list}}">
         <view class="weui-media-box weui-media-box_text">
             <view class="weui-media-box__title weui-media-box__title_in-text" style="display: flex; align-items: center;">
                 <text class="listitemtitle">{{item.task}}</text>
@@ -18,4 +18,9 @@
             <!--</view>-->
         </view>
     </view>
+
+
+
+
+
 <!--</navigator>-->

@@ -361,6 +361,7 @@ exports.showToast = function (title) {
     });
 };
 
+
 /**
  * 功能：先提示信息，然后调用回到函数
  * @param title
@@ -398,9 +399,15 @@ let alert2=function(title, iconType) {
 };
 
 //onLoad()中调用
-exports.showLoading = function () {
+// exports.showLoading = function () {
+//     wx.showLoading({
+//         title: getApp().globalData.cf.hint.H_LOADING,
+//     });
+// };
+//onLoad()中调用
+exports.showLoading = function (msg) {
     wx.showLoading({
-        title: getApp().globalData.cf.hint.H_LOADING,
+        title: msg || getApp().globalData.cf.hint.H_LOADING,
     });
 };
 //onLoad()中调用

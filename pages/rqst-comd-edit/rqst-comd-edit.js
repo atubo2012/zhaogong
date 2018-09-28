@@ -141,6 +141,11 @@ Page({
      */
     onLoad: function (option) {
         let that = this;
+        this.setData({
+            userInfo:app.globalData.userInfo
+        });
+        console.log('comd.onLoad():',option,this.data,);
+
 
         //ut.checkSession(app, that, function (params2) {
         //I：如果id字段不为空，则进入编辑模式，从后台获取数据，然后用setData(rdata:res.data[0])，渲染页面数据。
@@ -149,7 +154,7 @@ Page({
 
             //便于地图行程切换时使用参数
             that.setData({
-                reqId: option.reqId
+                reqId: option.reqId,
             });
 
             //从后台获取数据
@@ -262,6 +267,7 @@ Page({
             ut.checkSession(null, app, that, () => {
                 that.setData({
                     preview: false,
+                    'rdata.uid': option.uid||'',
                     'rdata.mobile': app.globalData.userInfo.mobile,
                     'rdata.save_userinfo': app.globalData.userInfo.mobile==='', //若当前用户的手机号尚未设置，则告知后台将手机号自动保存到用户信息表中
                     'rdata.clfn': app.globalData.userInfo.name ? app.globalData.userInfo.name:app.globalData.userInfo.nickName, //若用户尚未注册，则默认填写
@@ -366,6 +372,7 @@ Page({
         rdata.clntInfo = that.data.rdata.clntInfo;
         rdata.cost = Number(that.data.rdata.cost);    //数值类数据要转换
         rdata.supplier_id = that.data.rdata.supplier_id;
+        rdata.uid = that.data.rdata.uid;
 
 
         //设置订单的状态
