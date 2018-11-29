@@ -10,13 +10,15 @@ Page({
 
         imgUrls:[],
         grids: [//某个图标点击后->产品list->蒙层显示详情->reqedit工单页(提交提醒)->提交结果(返回我的订单、返回首页)->电话/短信/邮件通知labor->点击接单后发送通知CLT
-            {img: 'ar.jpg', url: '../rqst-edit/rqst-edit?charging_type=hscleaning', desc: '入住保洁'},
-            {img: 'ar.jpg', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=accleaning', desc: '空调清洗'},
-            {img: 'ar.jpg', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=broadband', desc: '宽带安装'},
-            {img: 'ar.jpg', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=changelock', desc: '换锁修锁'},
-            {img: 'ar.jpg', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=decodesign', desc: '装修设计'},
-            {img: 'ar.jpg', url: '../rqst-comd-edit/rqst-comd-edit?charging_type=corpregist', desc: '公司注册'},
-            {img: 'ar.jpg', url: '../rqst-comd-edit/rqst-comd-edit?charging_type=program', desc: '编程私教'},
+            {img: 'hscleaning.png', url: '../rqst-edit/rqst-edit?charging_type=hscleaning', desc: '入住保洁'},
+            {img: 'accleaning.png', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=accleaning', desc: '空调清洗'},
+            {img: 'broadband.png', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=broadband', desc: '宽带安装'},
+            {img: 'changelock.png', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=changelock', desc: '换锁修锁'},
+            {img: 'decodesign.png', url: '../rqst-accleaning-edit/rqst-accleaning-edit?charging_type=decodesign', desc: '装修设计'},
+            {img: 'corpregist.png', url: '../rqst-comd-edit/rqst-comd-edit?charging_type=corpregist', desc: '公司注册'},
+            {img: 'program.png', url: '../rqst-comd-edit/rqst-comd-edit?charging_type=program', desc: '编程私教'},
+            {img: 'shoepad.png', url: '../rqst-comd-edit/rqst-comd-edit?charging_type=shoepad', desc: '米萌智暖'},
+            {img: 'photo.png', url: '../rqst-comd-edit/rqst-comd-edit?charging_type=photo', desc: '子平摄影'},
 
             // {img: 'ar.jpg', url: '../rqst-edit/rqst-edit', desc: '鲜花上门'},
             // {img: 'ar.jpg', url: 'ar.jpg', desc: '问药'},
@@ -46,6 +48,8 @@ Page({
                 'http://www.wxapp-union.com/template/win8_2_zuk/src/logo.png'
             ]
         });
+
+        //TODO:从后台加载完整商品类别信息,补充到this.data.grids中
     },
 
     /**
