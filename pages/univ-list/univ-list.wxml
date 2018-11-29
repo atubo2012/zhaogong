@@ -1,0 +1,24 @@
+<view class="page">
+
+    <include src="../tplt/pagehead.wxml"/>
+    <view class="page__bd">
+
+        <view wx:if="{{itemname==='bamboo'}}">
+            <text bindtap="_reSetCondition">笋度</text> |
+            <text data-query="刚刚发布" bindtap="_showJustNow">刚刚</text> |
+            <text data-query="1天" bindtap="_showJustNow">1天</text>
+        </view>
+        <cc_list id="cc_list" list="{{list}}"
+                 itemname="{{itemname}}"
+                 serviceUrl="{{serviceUrl}}"
+                 cond="{{_cond}}"
+                bind:showdetailevent="showDetail"
+        />
+
+
+
+
+    </view>
+
+    <include src="../tplt/footer.wxml"/>
+</view>
