@@ -1,0 +1,58 @@
+<view class="slide" wx:if="{{pics.length>0}}"><!--可以定义每个页面的-->
+    <swiper indicator-dots="true"
+            autoplay="true" interval="{{cf.vc.swiperItvl}}"
+            duration="{{cf.vc.swiperDurt}}">
+        <block wx:for="{{pics}}" wx:key="aa">
+            <swiper-item><!--mode一般选择aspectFill，以较短边来填充，图片不会变形。-->
+                <image src="{{item}}" class="slide-image" width="355" height="150" mode="aspectFill"/>
+            </swiper-item>
+        </block>
+    </swiper>
+</view>
+
+<view class="weui-cells__title">服务类别</view>
+<view class="weui-cells weui-cells_after-title">
+
+
+<view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+        <view class="weui-label">{{biz_name}}</view>
+    </view>
+    <view class="weui-cell__bd">
+        <picker bindchange="_bindChargingTypeChange" value="{{index}}" range="{{sub_types}}" range-key="type">
+            <view class="weui-input">
+                {{currentSubType.type}}-{{currentSubType.price}}/{{currentSubType.unit}}
+            </view>
+        </picker>
+    </view>
+    <view class="weui-cell__ft">
+         <image id="{{index}}" class="icon1" data-index="abc" src="/image/add.png" bindtap="_add2Cart"/>
+    </view>
+</view>
+
+<!--动态添加费用种类-->
+<view class="weui-cell weui-cell_input" wx:for="{{cart.goods}}" wx:key="aab" >
+    <view class="weui-cell__hd">
+        {{item.type}} ：
+    </view>
+    <view class="weui-cell__bd">
+        <image id="{{index}}" class="icon1" src="/image/reduce_b.png" bindtap="_delOne"/>
+        {{item.quantity}}
+        <image id="{{index}}" class="icon1" src="/image/add_b.png" bindtap="_addOne"/>
+    </view>
+    <view class="weui-cell__ft">
+        {{item.subtotal}}￥
+    </view>
+</view>
+
+<!--商品数量大于1时，显示总计金额-->
+<view  class="weui-cell weui-cell_input" wx:if="{{cart.goods.length>0}}">
+    <view class="weui-cell__hd">
+    </view>
+    <view class="weui-cell__bd">
+    </view>
+    <view class="weui-cell__ft">
+        总计{{cart.total_cost}}￥
+    </view>
+</view>
+</view>
