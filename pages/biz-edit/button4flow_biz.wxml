@@ -1,0 +1,13 @@
+<view class="weui-form-preview__bd">
+
+    <view class="weui-btn-area">
+            <block wx:for="{{cf.statRules.bizFlow[rdata.tomato.stat].role.ANY.buttons}}" wx:key="aci">
+                <button class="weui-btn"
+                        disabled="{{submitButtonDisabled}}"
+                        data-submitType="{{item.nextStat}}"
+                        type="{{item.type}}"
+                        form-type="submit" >{{item.buttonDesc}}</button>
+            </block>
+            <text>{{_leftTime}}</text>
+    </view>
+</view>

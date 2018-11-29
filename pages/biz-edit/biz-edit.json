@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "mobileinput": "/components/mobileinput",
+    "addressinput": "/components/addressinput",
+    "cc_time_picker": "/components/cc_time_picker",
+    "cc_charging": "/components/cc_charging",
+    "cc_nametitle": "/components/cc_nametitle",
+    "cc_uploadpic": "/components/cc_uploadpic",
+    "cc_mapshow": "/components/cc_mapshow",
+    "cc_list": "/components/cc_list"
+  }
+}

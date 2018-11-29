@@ -1,0 +1,35 @@
+<!--可以通过data-set来给form或表单传递详情页面-->
+<view class="weui-panel">
+<view class="weui-panel__bd" bindtap="showDetail"
+      data-detaildata="{{item}}"
+      data-event="showdetailevent"
+      data-eventtype="onbizclick"
+      data-detailindex="{{index}}"
+
+>
+    <view class="weui-media-box weui-media-box_text">
+        <view class="weui-media-box__title weui-media-box__title_in-text" style="display: flex; align-items: center;">
+            <block wx:for="{{item.pics_list}}"  wx:for-item="itm" wx:key="zzz" wx:for-index="idx">
+                <image src="{{itm}}" mode="scaleToFill" class="qs_head_image float-left" />
+            </block>
+        </view>
+
+        <text class="listitemtitle">{{item.id}}</text>
+        <view class="weui-media-box__desc">{{item.name}}</view>
+        <view class="weui-media-box__desc">{{item.post_title}}</view>
+        <view class="weui-media-box__desc">{{item.biz_desc}}</view>
+        <view class="weui-media-box__desc">{{item.stat}}</view>
+        <view class="weui-media-box__desc">
+            <block wx:for="{{item.sub_types}}" wx:for-item="stitm" wx:key="zzy" wx:for-index="stidx">
+                [{{stitm.desc}} {{stitm.price}}元 {{stitm.inventory}}{{stitm.unit}}]
+            </block>
+        </view>
+        <view class="weui-media-box__info">
+            <view class="weui-media-box__info__meta">
+                {{item.updt}}
+            </view>
+        </view>
+    </view>
+
+</view>
+</view>
