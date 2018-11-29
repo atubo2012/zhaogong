@@ -11,6 +11,7 @@ Component({
             type:Object,
             value:[]
         },
+        //是否只显示图片而不能上传图片
         onlyShow:{
             type:Boolean,
             value:false
