@@ -1,0 +1,41 @@
+<view>
+    <button class="image_button"
+            bindtap="setShow">
+        <image src="/image/QRCode.png" class="btnImg"/>
+    </button>
+</view>
+
+
+<view wx:if="{{showPost}}">
+    <!--<image src="{{img_template}}" class='bgImg'/>&lt;!&ndash;海报背景图片&ndash;&gt;-->
+
+    <!--海报中央的文字说明-->
+    <!--<text class='mine'>我的邀请码</text>-->
+    <!--<text class='code'>{{code}}</text>-->
+    <!--<text class='who'>谁邀请你一起吃面?</text>-->
+    <!--<view class='inputBox'>-->
+        <!--<input placeholder='输入朋友的验证码' class='input' bindinput='bindKeyInput'/>-->
+        <!--<button bindtap='btnclick' class='btn'>提交</button>-->
+    <!--</view>-->
+    <!--<text class='tishi'>输入朋友的邀请码，朋友和你各自获得通用优惠券1张</text>-->
+    <!--<text class='shareText'>生成我的海报</text>-->
+    <!--<view class='imgBox'>-->
+        <!--&lt;!&ndash;<button open-type="share" class='zfbtn'>&ndash;&gt;-->
+            <!--&lt;!&ndash;<image src="{{img_wechat}}" class='img'/>&ndash;&gt;-->
+        <!--&lt;!&ndash;</button>&ndash;&gt;-->
+        <!--<button class='zfbtn' bindtap='formSubmit'>-->
+            <!--<image src="{{img_quan}}" class='img'/>-->
+        <!--</button>-->
+    <!--</view>-->
+
+
+    <!--点击生成海报时的蒙层，点击生成按钮后展现生成图片-->
+    <view class='imagePathBox' hidden="{{maskHidden == false}}">
+        <image src="{{imagePath}}" class='shengcheng' bindtap="hiddePost"/>
+        <button class='baocun' bindtap='baocun'>保存到相册，然后分享</button>
+    </view>
+    <view class="mask" hidden="{{maskHidden == false}}" /><!--蒙层-->
+    <view class="canvas-box">
+        <canvas  style="width: 375px;height: 667px;position:fixed;top:9999px" canvas-id="mycanvas"/>
+    </view>
+</view>
