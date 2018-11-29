@@ -8,6 +8,7 @@
     "cc_nametitle":"/components/cc_nametitle",
     "cc_uploadpic":"/components/cc_uploadpic",
     "cc_mapshow"  :"/components/cc_mapshow",
-    "cc_dop":"/components/cc_dop"
+    "cc_dop":"/components/cc_dop",
+    "cc_poster" :"/components/cc_poster"
   }
 }

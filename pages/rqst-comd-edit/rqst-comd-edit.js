@@ -50,7 +50,9 @@ Page({
         trafficType: 'walking',  //页面加载时默认选中的交通方式
 
         _crBlink:false,
-        _isSupplier:false           //默认不显示供应商
+        _isSupplier:false,          //默认不显示供应商
+
+        showPost:false,             //默认不显示海报生成面板
     },
 
     /**
@@ -278,6 +280,7 @@ Page({
                     'charging_type': option.charging_type,
                     'rdata.pics_list': [],
                     '_ccs': cf.charging_type[option.charging_type].ccs,
+                    'backGroundImagUrl':cf.charging_type[option.charging_type].pics[0],
                     'rdata.supplier_id':cf.charging_type[option.charging_type].supplier_id
                 });
                 console.log('_ccs',that.data._ccs);
@@ -291,6 +294,9 @@ Page({
             });
 
         }
+
+        let cc_poster = this.selectComponent("#cc_poster");
+        cc_poster.onLoad();
 
 
 
@@ -459,7 +465,14 @@ Page({
                             duration: cf.vc.ToastShowDurt,
                             success: function () {
                                 //准备msg文件中所需要的内容TODO:将链接也作为参数传到下一页，或将下面的代码封装成一个函数。
-                                app.globalData['result'] = {rtype: 'success', rdesc: '操作成功', ndesc: '查看我的订单'};
+                                app.globalData['result'] = {rtype: 'success', rdesc: '操作成功', ndesc: '查看我的订单',
+                                    msg_desc:'内容详情，可根据实际需要安排，如果换行则不超过规定长度，居中展现',
+                                    links:[
+                                        {link_desc:'我的订单',link:'../univ-list/univ-list?type=my&itemname=rqst'},
+                                    ]
+                                };
+
+
 
                                 setTimeout(function () {
                                     //要延时执行的代码

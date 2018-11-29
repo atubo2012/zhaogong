@@ -62,12 +62,22 @@
                     </button>
                 </view>
 
-                <cc_dop id='cc_dop'
-                        userInfo="{{userInfo}}"
-                        type="C"
-                        biz_type="{{charging_type}}"
-                        page="index"
-                        runmode="{{cf.runMode}}" bind:dopevent="onDopEvent"/>
+                <!--<cc_dop id='cc_dop'-->
+                        <!--userInfo="{{userInfo}}"-->
+                        <!--type="C"-->
+                        <!--biz_type="{{charging_type}}"-->
+                        <!--page="index"-->
+                        <!--runmode="{{cf.runMode}}" bind:dopevent="onDopEvent"/>-->
+
+                <cc_poster id='cc_poster'
+                           userInfo="{{userInfo}}"
+                           type="C"
+                           biz_type="{{charging_type}}"
+                           page="index"
+                           runmode="{{cf.runMode}}"
+                           backGroundImagUrl="{{backGroundImagUrl}}"
+
+                           bind:mapshowevent="onMapShowEvent" showPost="{{showPost}}"/>
 
             </view>
 
