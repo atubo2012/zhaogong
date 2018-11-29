@@ -1,0 +1,33 @@
+<!--可以通过data-set来给form或表单传递详情页面-->
+<view class="weui-panel">
+<view class="weui-panel__bd" bindtap="showDetail" data-detaildata="{{item}}"  data-event="showdetailevent" >
+    <view class="weui-media-box weui-media-box_text">
+        <view class="weui-media-box__title weui-media-box__title_in-text" style="display: flex; align-items: center;">
+            <text class="listitemtitle">{{item.task}}</text>
+            <block wx:for="{{item.pics_list}}"  wx:for-item="itm" wx:key="zzz" wx:for-index="idx">
+                <image src="{{itm}}" mode="scaleToFill" class="qs_head_image float-left" />
+            </block>
+        </view>
+
+        <view class="weui-media-box__desc">{{item.experience}}</view>
+        <view class="weui-media-box__desc">{{item.skill}}</view>
+        <view class="weui-media-box__desc">{{item.achievement}}</view>
+        <view class="weui-media-box__info">
+            <view class="weui-media-box__info__meta">
+                {{item.begin_time}}-{{item.end_time}}
+            </view>
+        </view>
+    </view>
+
+    <!--<navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">-->
+        <!--<view class="weui-media-box__hd weui-media-box__hd_in-appmsg">-->
+            <!--<image class="weui-media-box__thumb" src="{{icon60}}" />-->
+        <!--</view>-->
+        <!--<view class="weui-media-box__bd weui-media-box__bd_in-appmsg">-->
+            <!--<view class="weui-media-box__title">标题一</view>-->
+            <!--<view class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</view>-->
+        <!--</view>-->
+    <!--</navigator>-->
+
+</view>
+</view>
