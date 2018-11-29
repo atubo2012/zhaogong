@@ -286,7 +286,7 @@ Page({
                                 'cc_rdata_pay.reqId': option.reqId,
                                 'cc_rdata_pay.cost': that.data.rdata.cost,
                                 'cc_rdata_pay.product_id': ret.biz_type,
-                                'cc_rdata_pay.body': cf.chargin_type[item.biz_type].desc,
+                                'cc_rdata_pay.body': cf.hint[ret.biz_type],
                                 'cc_rdata_pay.hide': false,
                                 'cc_rdata_pay.paystat': 'paid',
                             });
@@ -452,7 +452,7 @@ Page({
 
                                     },
                                     fail: function (info) {
-                                        console.log('000000000000000000000000', info);
+                                        console.error('000000000000000000000000', info);
                                     }
                                 };
 
@@ -617,32 +617,6 @@ Page({
             rdata.stat = 'get';
             rdata.lborInfo = app.globalData.userInfo;//上单用户的信息
 
-            /**
-             * 校验用户的角色，如果不是LBOR角色，则提示是否进行认证，如同意，则跳转到用户信息管理界面
-             * LBOR录入专有信息提交（服务类别、居住地址、服务范围、身份证），短信通知审核人请审核。
-             * 审核通过后，通知LBOR审核已通过。
-             * 登录后默认进入LBOR对应类别的单子列表。 TODO:以下的IF else可以尝试在wxml中根据用户角色和审核状态来控制是否显示按钮，用文字描述+链接的方式给用户提示
-             */
-            // if ('LBOR' !== app.globalData.userInfo.role) {
-            //     goOne = false;
-            //     ut.showModal('温馨提示', '亲！请补充服务人员相关信息，10分钟内通过审核后就可以接单了，马上去？', () => {
-            //         wx.navigateTo({
-            //             url: '../user-edit/user-edit?type=LBOR&reqId=' + that.data.reqId
-            //         });
-            //     }, () => {
-            //         console.log('选择不补充服务人员信息，应停留在本页，不继续提交');
-            //     });
-            //     return;
-            // } else if ('LBOR' === app.globalData.userInfo.role && !app.globalData.userInfo.rolecfm) {
-            //     ut.showModal('温馨提示', '角色尚未审核通过，请稍后再试。再看看别的单子？', () => {
-            //         wx.navigateTo({
-            //             url: '../rqst-list/rqst-list'
-            //         });
-            //     }, () => {
-            //         console.log('呆在这不动');
-            //     });
-            //     return;
-            // }
         }  else if (st === 'finish') {      //阿姨完工
             rdata.stat = 'finish';
 
@@ -868,7 +842,7 @@ Page({
             title: '',
             path: '/pages/rqst-accleaning-edit/rqst-accleaning-edit?reqId=' + this.data.rdata.reqId,
             success: (res) => {
-                //console.log(res);
+                console.log(res);
                 // wx.getShareInfo({
                 //     shareTicket: res.shareTickets[0],
                 //     success: function (res) {
