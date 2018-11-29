@@ -1,74 +1,16 @@
 <block  wx:for="{{list}}" wx:key="aaa"  >
 
-    <!--根据itemname，引入不同的detail.wxml文件-->
-    <include wx:if="{{itemname==='bamboo'}}"    src="../pages/tplt/bamboo-detail.wxml"/>
-    <include wx:if="{{itemname==='tomato'}}"    src="../pages/fdbk-edit/tomato-detail.wxml"/>
-    <include wx:if="{{itemname==='rqst'}}"      src="../pages/rqst-edit/rqst-detail.wxml"/>
-    <include wx:if="{{itemname==='user'}}"      src="../pages/user-edit/user-detail.wxml"/>
-
-    <!--&lt;!&ndash;可以通过data-set来给form或表单传递详情页面&ndash;&gt;-->
-    <!--<view class="weui-panel__bd" bindtap="showDetail" data-detaildata="{{item}}"  data-event="showdetailevent" wx:if="{{itemname==='tomato'}}">-->
-        <!--<view class="weui-media-box weui-media-box_text">-->
-            <!--<view class="weui-media-box__title weui-media-box__title_in-text" style="display: flex; align-items: center;">-->
-                <!--<text class="listitemtitle">{{item.task}}</text>-->
-                <!--<block wx:for="{{item.pics_list}}"  wx:for-item="itm" wx:key="zzz" wx:for-index="idx">-->
-                    <!--<image src="{{itm}}" mode="scaleToFill" class="qs_head_image float-left" />-->
-                <!--</block>-->
-            <!--</view>-->
-
-            <!--<view class="weui-media-box__desc">{{item.experience}}</view>-->
-            <!--&lt;!&ndash;<view class="weui-media-box__info">&ndash;&gt;-->
-            <!--&lt;!&ndash;<view class="weui-media-box__info__meta">{{item.stat}} {{item.province}}</view>&ndash;&gt;-->
-            <!--&lt;!&ndash;<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">&ndash;&gt;-->
-            <!--&lt;!&ndash;{{item.role}} {{item.rolecfm}} <text wx:if="{{(item.role==='LBOR' && !item.rolecfm)}}" style="border :solid 1px red ;border-radius:10px;background:red;color:white;">未审核</text>&ndash;&gt;-->
-            <!--&lt;!&ndash;</view>&ndash;&gt;-->
-            <!--&lt;!&ndash;</view>&ndash;&gt;-->
-        <!--</view>-->
-    <!--</view>-->
-
-
-    <!--<navigator data-item="{{item}}" class="weui-panel" wx:if="{{itemname==='rqst'}}"-->
-               <!--url="../rqst{{_bizType2url[item.biz_type] ? _bizType2url[item.biz_type] :'-accleaning-'}}edit/rqst{{_bizType2url[item.biz_type] ? _bizType2url[item.biz_type] :'-accleaning-'}}edit?reqId={{item.reqId}}&location={{item.location}}"-->
-    <!--&gt;-->
-        <!--<view class="weui-panel__bd">-->
-            <!--<view class="weui-media-box weui-media-box_text">-->
-                <!--<view class="weui-media-box__title weui-media-box__title_in-text"-->
-                      <!--style="{{(item.stat=='wait' || item.stat=='get') ? '':'color: #999'}}">-->
-                    <!--<block wx:if="{{item.biz_type==='hscleaning'}}">-->
-                        <!--{{item.uprice*item.dura}}元 (做{{item.dura}}小时 {{item.size}}平米 {{item.hasTool}})-->
-                    <!--</block>-->
-                    <!--<block wx:if="{{item.biz_type!='hscleaning'}}">-->
-                        <!--{{item.cart.total_cost}}元 {{cf.hint[item.biz_type]}}-->
-                    <!--</block>-->
-                <!--</view>-->
-                <!--<view class="weui-media-box__desc">{{item.osdt}} {{item.ostm}}</view>-->
-                <!--<view class="weui-media-box__desc">{{item.address}}</view>-->
-                <!--<view class="weui-media-box__info">-->
-                    <!--<view class="weui-media-box__info__meta">{{item.clfn}}{{item.sex}}</view>-->
-                    <!--<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">-->
-                        <!--{{cf.hint[item.biz_type]}}-->
-                    <!--</view>-->
-                    <!--<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">-->
-                        <!--{{cf.hint[item.stat]}}-->
-                    <!--</view>-->
-                    <!--<view wx:if="{{item.lborInfo.name}}" class="weui-media-box__info__meta weui-media-box__info__meta_extra">-->
-                        <!--{{item.lborInfo.name ? item.lborInfo.name : ''}}-->
-                    <!--</view>-->
-                <!--</view>-->
-                <!--<view class="weui-media-box__info">-->
-                    <!--<block wx:if="{{item.biz_type!==''}}">-->
-                        <!--<block wx:for="{{item.cart.goods}}" wx:for-item="aa" wx:key="aba">-->
-                            <!--{{aa.type}}:({{aa.uprice}}×{{aa.quantity}}{{aa.unit}})-->
-                        <!--</block>-->
-                    <!--</block>-->
-                <!--</view>-->
-                <!--<view class="weui-media-box__info">-->
-                    <!--<view class="weui-media-box__info__meta">-->
-                        <!--{{item.reqId}}-->
-                    <!--</view>-->
-                <!--</view>-->
-            <!--</view>-->
-        <!--</view>-->
-    <!--</navigator>-->
-
+    <!--
+    功能      ：根据itemname，引入不同的detail.wxml文件
+    命名规范   ：xxx-detail.wxml
+    保存路径   ：xxx-edit/xxx-detail.wxml
+    //TODO:将fdbk-edit与tomato-detail命名保持一致
+    -->
+    <include wx:if="{{itemname==='bamboo'}}"   src="../pages/tplt/bamboo-detail.wxml"/>
+    <include wx:if="{{itemname==='tomato'}}"   src="../pages/fdbk-edit/tomato-detail.wxml"/>
+    <include wx:if="{{itemname==='rqst'}}"     src="../pages/rqst-edit/rqst-detail.wxml"/>
+    <include wx:if="{{itemname==='user'}}"     src="../pages/user-edit/user-detail.wxml"/>
+    <include wx:if="{{itemname==='biz'}}"      src="../pages/biz-edit/biz-detail.wxml"/>
+    <include wx:if="{{itemname==='bizcatalog'}}"     src="../pages/biz-edit/bizcatalog-detail.wxml"/>
+    <include wx:if="{{itemname==='order'}}"      src="../pages/order-edit/order-detail.wxml"/>
 </block>
