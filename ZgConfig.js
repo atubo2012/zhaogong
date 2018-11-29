@@ -6,12 +6,16 @@ function ZgConfig(runtime) {
 
     this.runMode = runtime.runmode;
 
-    this.language = '';
+    //默认的语言为中文，
     if (!runtime.sysinfo || !runtime.sysinfo.language || runtime.sysinfo.language === '') {
-        this.language = 'zh_CN';
+        this.language = 'zh';
+        console.warn('语言环境为中文：zh')
     } else {
         this.language = runtime.sysinfo.language;
+        console.warn('语言环境为中文：',this.language)
     }
+
+
 
     /**
      * 域名命名规范：
@@ -76,6 +80,14 @@ function ZgConfig(runtime) {
     let url = this.url; //此处定义的url局部变量，是供service引用
 
     this.service = {
+
+        //bizMgmtUrl
+        bizEditUrl: `${url}/biz-edit`,
+        bizListUrl: `${url}/biz-list`,
+        bizcatalogListUrl: `${url}/bizcatalog-list`,
+        bizQueryUrl: `${url}/biz-query`,
+        orderListUrl:`${url}/order-list`,
+
 
         //生成二维码
         genQrCodeUrl: `${url}/gen-qrcode`,
@@ -194,6 +206,7 @@ function ZgConfig(runtime) {
      * motto用来取代pageInfo
      */
     this.motto = {
+        'biz-edit':{title: '一切皆有可能', desc: '相信美好的事情即将发生！'},
         index: {title: '一切皆有可能', desc: '相信美好的事情即将发生！'},
         'clnt-main': {title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
         'rqst-edit': {title: '找个好帮手', desc: '把时间浪费在美好的事情上！'},
@@ -211,7 +224,7 @@ function ZgConfig(runtime) {
         '4': {title: '以终为始', desc: ''}
     };
 
-    this.pageSize = 10;//每次查询返回的记录数
+    this.pageSize = 20;//每次查询返回的记录数
 
     /**
      * 异常信息常量定义
@@ -231,54 +244,60 @@ function ZgConfig(runtime) {
         OT_0001: {desc: '显示给用户的异常描述', sugt: '给用户的下一步行动建议'},
     };
 
+
+    const lang_zh = {
+        'H_LOADING': '加载中',
+        'H_LOADED': '加载完成',
+        'H_NOMORE': '没有数据了',
+        'H_SUCCESS': '成功',
+        'H_SUBMITING': '处理中',
+
+
+        //服务类业务状态：
+        'wait': '等待接单',//通知LBOR群
+        'get': '已接单',  //通知CLNT
+        'start': '已开工',//通知CLNT
+        'finish': '已完工',//通知CLNT
+        'paid': '已支付',//通知LBOR
+        'close': '客户关闭',
+        'expired': '已过期',
+        'delete': '已作废',
+        'lbor-cancel': '非客户取消',//通知CLNT
+        'clnt-cancel': '客户取消',  //通知LBOR
+
+        //商品类业务的状态：
+        bs_wait         :'待支付',               //买家显示【支付】，后续状态：完成(无需发货)/已支付待发货
+
+        bs_paid         :'已付款，待卖家发货',  //买家【取消】，点后状态变为：完成(买家配送前取消)；卖家显示【发货】，输入快递单号。(如商品属性需发货)
+        bs_cancel_f     :'已关闭(买家配送前取消)', //买家无按钮。卖家显示无按钮。
+        bs_delivered    :'卖家已发货',           //买家【确认收货】，点后状态为：完成（买家已收货）；卖家显示无按钮；商家发货后的状态
+        bs_received_f   :'完成(买家已收货)',      //买家【退货】(5天内)，输入退货快递单号为：买家退货中；卖家显示无按钮。
+
+        bs_returning    :'买家退货中',           //买家无按钮。卖家显示【收到退货】：点后状态：买家收到退货、已退款
+        bs_returned     :'卖家收到退货',         //买家无按钮。卖家显示【退款】，点后状态为：完成(卖家已退款)
+        bs_unpaid_f     :'已关闭(卖家已退款)',    //卖家无按钮。买家无按钮。显示已退款。
+
+
+        //业务种类:对应biz_type
+        hscleaning  : '临时保洁',
+        accleaning  : '空调清洗',
+        accryogen   : '空调充氟',
+        oilsmoke_cleaning: '油烟机',
+        house_cleaning: '找保洁',
+        changelock  : '换修锁',
+        pipeline    : '通管道',
+        broadband   :'装宽带',
+        decodesign  :'装修设计',
+        corpregist  :'公司注册',
+        program     :'编程私教',
+        shoepad :'米萌智暖',
+        photo   :'子平摄影',
+
+    };
     //提示类的信息
     this.hint = {
-        'zh_CN': {
-            'H_LOADING': '加载中',
-            'H_LOADED': '加载完成',
-            'H_NOMORE': '没有数据了',
-            'H_SUCCESS': '成功',
-            'H_SUBMITING': '处理中',
-
-
-            //服务类业务状态：
-            'wait': '等待接单',//通知LBOR群
-            'get': '已接单',  //通知CLNT
-            'start': '已开工',//通知CLNT
-            'finish': '已完工',//通知CLNT
-            'paid': '已支付',//通知LBOR
-            'close': '客户关闭',
-            'expired': '已过期',
-            'delete': '已作废',
-            'lbor-cancel': '非客户取消',//通知CLNT
-            'clnt-cancel': '客户取消',  //通知LBOR
-
-            //商品类业务的状态：
-            bs_wait         :'待支付',               //买家显示【支付】，后续状态：完成(无需发货)/已支付待发货
-
-            bs_paid         :'已付款，待卖家发货',  //买家【取消】，点后状态变为：完成(买家配送前取消)；卖家显示【发货】，输入快递单号。(如商品属性需发货)
-            bs_cancel_f     :'已关闭(买家配送前取消)', //买家无按钮。卖家显示无按钮。
-            bs_delivered    :'卖家已发货',           //买家【确认收货】，点后状态为：完成（买家已收货）；卖家显示无按钮；商家发货后的状态
-            bs_received_f   :'完成(买家已收货)',      //买家【退货】(5天内)，输入退货快递单号为：买家退货中；卖家显示无按钮。
-
-            bs_returning    :'买家退货中',           //买家无按钮。卖家显示【收到退货】：点后状态：买家收到退货、已退款
-            bs_returned     :'卖家收到退货',         //买家无按钮。卖家显示【退款】，点后状态为：完成(卖家已退款)
-            bs_unpaid_f     :'已关闭(卖家已退款)',    //卖家无按钮。买家无按钮。显示已退款。
-
-
-            //业务种类:对应biz_type
-            hscleaning  : '临时保洁',
-            accleaning  : '空调清洗',
-            accryogen   : '空调充氟',
-            oilsmoke_cleaning: '油烟机',
-            house_cleaning: '找保洁',
-            changelock  : '换修锁',
-            pipeline    : '通管道',
-            broadband   :'装宽带',
-            decodesign  :'装修设计',
-            corpregist  :'公司注册',
-            program     :'编程私教'
-        }
+        'zh': lang_zh,
+        'zh_CN':lang_zh
 
     }[this.language];
 
@@ -288,6 +307,78 @@ function ZgConfig(runtime) {
      * 状态迁移、按钮显示、按钮风格等可在此定义
      */
     this.statRules={
+
+        //商品发布审核
+        bizFlow:{
+            bs_scratch: {
+                desc: '草稿',
+                role: {
+                    'ANY': {
+                        buttons: [
+                            {buttonDesc: '提交审核', nextStat: 'bs_waitprv',type:'primary'},
+                            {buttonDesc: '存为草稿', nextStat: 'bs_scratch'}
+                        ]
+                    },
+                }
+            },
+            bs_waitprv: {
+                desc: '待审核',
+                role: {
+                    'ANY': {
+                        buttons: [
+                            {buttonDesc: '审核通过', nextStat: 'bs_pass',type:'primary'},
+                            {buttonDesc: '审核不通过', nextStat: 'bs_nopass',type:'warn'},
+                        ]
+                    },
+                }
+            },
+            bs_pass: {
+                desc: '审核通过',
+                role: {
+                    'ANY': {
+                        buttons: [
+                            {buttonDesc: '上架', nextStat: 'bs_publish',type:'primary'},
+                            {buttonDesc: '存为草稿', nextStat: 'bs_scratch'},
+                        ]
+                    },
+                }
+            },
+            bs_nopass: {
+                desc: '审核不通过',
+                role: {
+                    'ANY': {
+                        buttons: [
+                            {buttonDesc: '提交审核', nextStat: 'bs_waitprv',type:'primary'},
+                            {buttonDesc: '存为草稿', nextStat: 'bs_scratch'},
+                        ]
+                    },
+                }
+            },
+            bs_publish: {
+                desc: '已上架',
+                role: {
+                    'ANY': {
+                        buttons: [
+                            {buttonDesc: '下架', nextStat: 'bs_unpublish',type:'primary'},
+                            {buttonDesc: '存为草稿', nextStat: 'bs_scratch'}
+                        ]
+                    },
+                }
+            },
+            bs_unpublish: {
+                desc: '下架',
+                role: {
+                    'ANY': {
+                        buttons: [
+                            {buttonDesc: '上架', nextStat: 'bs_publish',type:'primary'},
+                            {buttonDesc: '存为草稿', nextStat: 'bs_scratch',type:'primary'},
+                            {buttonDesc: '删除', nextStat: 'bs_delete',type:'warn'},
+                        ]
+                    },
+                }
+            }
+        },
+
         //番茄闹钟的业务状态机
         tomatoFlow:{
             bs_wait: {
@@ -441,13 +532,46 @@ function ZgConfig(runtime) {
     };
 
     /**
-     * 业务种类
-     * 
+     * 业务种类     *
      */
     this.charging_type = {
+        photo: {
+            url:'rqst-comd-edit',//对应的详情页面
+            ccs: {uploadpic: true, mobile: true, address: true, osdt: false, map: true, nametitle: true},
+            supplier_id: ['oCun05dg82cWSz-SiwiJnrAwX7Hs'],
+            subtypes: [
+                {'type': '室内摄影(1房)', 'uprice': 500, 'unit': '次'},
+                {'type': '室内摄影(2房)', 'uprice': 650, 'unit': '次'},
+                {'type': '室内摄影(3房)', 'uprice': 800, 'unit': '次'},
+                {'type': '室内摄影(4房)', 'uprice': 900, 'unit': '次'},
+                {'type': '活动跟拍', 'uprice': 700, 'unit': '次'},
+            ],
+            pics: ['biz_program.png'],
+            //TODO:以下三种特性待实现
+            can_be_canceled_by_clnt: true,//不能取消，bs_paid下隐藏【取消】按钮。button4flow_comd中增加判断条件
+            can_be_returned_by_clnt: true,//不能退货，bs_received_f下隐藏【退货】按钮。button4flow_comd中增加判断条件
+            need_delivery: false,         //无需配送，付款后状态直接更新为bs_received_f，不显示【确认收货】。onSubmit()方法中支付前传送bs_received_f状态
+        },
+        shoepad: {
+            url:'rqst-comd-edit',//对应的详情页面
+            ccs: {uploadpic: false, mobile: true, address: true, osdt: false, map: true, nametitle: true},
+            supplier_id: ['oCun05dg82cWSz-SiwiJnrAwX7Hs'],
+            subtypes: [
+                {'type': '无线调温版', 'uprice': 550, 'unit': '双'},
+                {'type': '有线调温版', 'uprice': 250, 'unit': '双'},
+                {'type': '有线恒温版', 'uprice': 150, 'unit': '双'}
+            ],
+            pics:['shoepad3.png'],//商品图片，第一张为海报图片
+            postTitle:'天气再凉，冷却不了我对您的思念重重，距离再远，相隔不断我对您的关心重重。重阳节快到了，马上扫码登录，送一份温暖给最爱的亲人！',
+
+            //TODO:以下三种特性待实现
+            can_be_canceled_by_clnt: true,//不能取消，bs_paid下隐藏【取消】按钮。button4flow_comd中增加判断条件
+            can_be_returned_by_clnt: true,//不能退货，bs_received_f下隐藏【退货】按钮。button4flow_comd中增加判断条件
+            need_delivery: false,         //无需配送，付款后状态直接更新为bs_received_f，不显示【确认收货】。onSubmit()方法中支付前传送bs_received_f状态
+        },
         program: {
             url:'rqst-comd-edit',//对应的详情页面
-            ccs: {uploadpic: true, mobile: true, address: true, osdt: false, map: true, nametitle: false},
+            ccs: {uploadpic: false, mobile: true, address: true, osdt: false, map: true, nametitle: false},
             supplier_id: ['oCun05dg82cWSz-SiwiJnrAwX7Hs'],
             subtypes: [
                 {'type': '第一课', 'uprice': 300, 'unit': '次'},
@@ -455,6 +579,9 @@ function ZgConfig(runtime) {
                 {'type': '中级(功能开发)', 'uprice': 3999, 'unit': '每期'},
                 {'type': '高级(框架设计)', 'uprice': 7999, 'unit': '每期'},
             ],
+            pics:['biz_program.png'],
+            postTitle:'尤瓦尔.赫拉利在《未来简史》中指出：人类正在从人文主义，迈向数据主义！万事万物皆由数据和算法构成，马上扫码登录，开启个人数字化转型之旅！',
+
 
             //TODO:以下三种特性待实现
             can_be_canceled_by_clnt: true,//不能取消，bs_paid下隐藏【取消】按钮。button4flow_comd中增加判断条件
@@ -469,6 +596,7 @@ function ZgConfig(runtime) {
                 {'type': '设计咨询', 'uprice': 300, 'unit': '次'},
                 {'type': '设计装修', 'uprice': 300, 'unit': '平米'},
             ],
+            pics:['biz_program.png'],
 
         },
         corpregist: {
@@ -480,35 +608,38 @@ function ZgConfig(runtime) {
                 {'type': '代理记账(季度)', 'uprice': 1500, 'unit': '季度'},
                 {'type': '代理记账(年度)', 'uprice': 5000, 'unit': '年'},
             ],
+            pics:['biz_program.png'],
 
         },
         accleaning: {
-            url:'rqst-accleaning-edit',//对应的详情页面
-            subtypes:[
-            {'type': '壁挂式', 'uprice': 80, 'unit': '台'},
-            {'type': '立柜式', 'uprice': 100, 'unit': '台'},
-            {'type': '中央式', 'uprice': 120, 'unit': '台'},
-        ]},
+            url: 'rqst-accleaning-edit',//对应的详情页面
+            subtypes: [
+                {'type': '壁挂式', 'uprice': 80, 'unit': '台'},
+                {'type': '立柜式', 'uprice': 100, 'unit': '台'},
+                {'type': '中央式', 'uprice': 120, 'unit': '台'},
+            ], pics: ['biz_program.png'],
+        },
         accryogen: {
             url:'rqst-accleaning-edit',
             subtypes:[
             {'type': '  1P功率', 'uprice': 120, 'unit': '台'},
             {'type': '1.5P功率', 'uprice': 180, 'unit': '台'},
             {'type': '2.0P功率', 'uprice': 200, 'unit': '台'},
-        ]},
+        ], pics: ['biz_program.png'],
+        },
         oilsmoke_cleaning: {
             url:'rqst-accleaning-edit',
             subtypes:[
             {'type': '一般型', 'uprice': 280, 'unit': '台'},
             {'type': '特殊型', 'uprice': 300, 'unit': '台', desc: '拆、洗、装'}
-        ]},
+        ], pics: ['biz_program.png'],},
         changelock: {
             url:'rqst-accleaning-edit',
             subtypes:[
             {'type': 'A级锁芯', 'uprice': 120, 'unit': '把', desc: '含6把钥匙'},
             {'type': 'B级锁芯', 'uprice': 280, 'unit': '把'},
             {'type': 'C级锁芯', 'uprice': 380, 'unit': '把'},
-        ]},
+        ], pics: ['biz_program.png'],},
         broadband: {
             url:'rqst-accleaning-edit',
             subtypes:[
@@ -517,12 +648,12 @@ function ZgConfig(runtime) {
             {'type': '100M电信', 'uprice': 1200, 'unit': '1年', desc: 'C50'},
             {'type': '200M电信', 'uprice': 1548, 'unit': '3年', desc: 'C50'},
             {'type': '300M电信', 'uprice': 2028, 'unit': '1年', desc: 'C60'}
-        ]},
+        ], pics: ['biz_program.png'],},
         pipeline: {
             url:'rqst-accleaning-edit',
             subtypes:[
             {'type': '疏通', 'uprice': 100, 'unit': '1次', desc: ''},
-        ]},
+        ], pics: ['biz_program.png'],},
         hscleaning: {
             url:'rqst-edit',
             subtypes:[
@@ -530,8 +661,9 @@ function ZgConfig(runtime) {
                 {'type': '代购工具', 'uprice': 65, 'unit': '套', desc: '平拖1、毛巾4(厨卫客备)、清洁球2(厨卫)、扫把、簸箕'},
                 {'type': '清洁剂', 'uprice': 30, 'unit': '套', desc: '洁厕灵1、威猛去油1'},
                 {'type': '开荒保洁', 'uprice': 30, 'unit': '平米', desc: '擦玻璃、地面涂料污渍、全面除尘(扫、吸、擦)'},
-            ]},
+            ], pics: ['biz_program.png'],},
     };
+    this.default_ccs={uploadpic: false, mobile: true, address: true, osdt: false, map: true, nametitle: true};
 
 
     /**
@@ -592,7 +724,34 @@ function ZgConfig(runtime) {
                 },
 
             ]
-        }
+        },
+        bizmgmt:{
+            inputs:[
+                {
+                    title:'商品管理',
+                    fields:[
+                        {name:'biz_name',placeholder:'商品名称'},
+                        {name:'biz_desc',placeholder:'商品描述'},
+                        {name:'post_title',placeholder:'海报标题',type:'textarea'},
+                        {name:'biz_subtype',type:'array',show:'selector',
+                            item_types:[
+                                {name:'type',placeholder:'类别'},
+                                {name:'desc',placeholder:'描述'},
+                                {name:'unit',placeholder:'单位'},
+                                {name:'price',placeholder:'单价'},
+                                {name:'inventory',placeholder:'库存'},
+                                {name:'roc4a',placeholder:'代理佣率'},
+                                {name:'roc4p',placeholder:'平台费率'},
+                            ]
+                        },//todo:itemtype在.js中定义
+                        {name:'pics_list',type:'uploadpic'},
+
+                        //{name:'f2',value:'asfsdfsaf2',type:'input',bindinput:'bindinput',image:true,image_url:'/image/map.png',bindtap:'sdf'},
+                    ]
+                },
+
+            ]
+        },
     }
 
 

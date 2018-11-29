@@ -2,6 +2,10 @@
 
 const MAP_KEY_TX = 'ZOUBZ-HID6G-SCPQS-I6A4Q-BHPKT-L2BIC';
 
+
+
+
+
 //也可使用第三方模块获得随机数 https://github.com/chancejs/chancejs
 let randomString = function(len) {
     len = len || 32;    //这个默认复制的方式很帅

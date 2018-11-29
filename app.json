@@ -1,5 +1,6 @@
 {
   "pages": [
+
     "pages/index/index",
     "pages/lbor-main/lbor-main",
     "pages/rqst-list/rqst-list",
@@ -13,7 +14,8 @@
     "pages/cert-list/cert-list",
     "pages/cmmt-list/cmmt-list",
     "pages/cmmt-edit/cmmt-edit",
-    "pages/brws-list/brws-list",
+    "pages/biz-edit/biz-edit",
+    "pages/order-edit/order-edit",
     "pages/about/about",
     "pages/fdbk-edit/fdbk-edit",
     "pages/msg/msg",
