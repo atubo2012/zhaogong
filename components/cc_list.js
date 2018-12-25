@@ -102,6 +102,19 @@ Component({
             );
         },
 
+        omitEvent:function (e) {
+            console.log('cc_list.omitEvent():触发冒泡事件,dataset:',e.currentTarget.dataset);
+            this.triggerEvent(
+                e.currentTarget.dataset.event,  //冒泡事件，触发univ-list.wxml中的通知事件，激活univ-list.js中的showDetail
+                {
+                    'detaildata':e.currentTarget.dataset.detaildata,        //item对应的detail数据
+                    'eventtype':e.currentTarget.dataset.eventtype,          //事件类别，在univ-list.js.showDetail()中用于区分事件来自哪个组件
+                    'method':e.currentTarget.dataset.method,  //univ-list.js中处理该事件的方法
+                },
+                { bubbles: true ,composed:true}
+            );
+        },
+
 
         onLoad:function (cb) {
             this.onReachBottom(cb)

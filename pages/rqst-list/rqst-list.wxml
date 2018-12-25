@@ -2,9 +2,9 @@
     <include src="../tplt/pagehead.wxml"/>
     <view class="page__bd page__bd_spacing"><!--框架头与页面内容空3行-->
 
-        <cc_list id="cc_list" list="{{list}}"  generic:listitem="cc_rqst_item" serviceUrl="{{cf.service.rqstListUrl}}"
+        <cc_list id="cc_list" list="{{list}}"   serviceUrl="{{cf.service.rqstListUrl}}"
                  cond="{{_cond}}"
-                 itemname="rqst"/>
+                 />
 
         <!--<navigator data-item="{{item}}" class="weui-panel"-->
                    <!--wx:for="{{reqList}}" wx:key="aaa"-->

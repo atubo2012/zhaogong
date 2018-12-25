@@ -128,3 +128,19 @@
 .weui-cell:first-child:before {
     display: none
 }
+
+
+/**
+图片轮播区的样式
+ */
+
+/**广告轮播区**/
+.slide swiper {
+    height: 500rpx;
+}
+
+/**广告轮播去的图片**/
+.slide-image {
+    width: 100%;
+    height: 100%;
+}

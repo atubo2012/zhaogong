@@ -13,51 +13,44 @@
             <open-data type="userNickName"/>
         </view>
 
+
         <!--显示功能区-->
         <view>
             <block wx:if="{{isLogined}}">
                 <!--<text class="userinfo-nickname">{{userInfo.nickName}}|{{userInfo.openId}}</text>-->
                 <!--<text class="user-motto">{{motto}}</text>-->
-                <button class="index_button" bindtap="setRoleLbor" type="primary">找工作</button>
-                <button class="index_button" bindtap="setRoleClnt" type="primary">找帮手</button>
-                <view class="index_link" >
-                <navigator url="../univ-list/univ-list?type=my&itemname=rqst" class="weui-footer__link">我的订单</navigator>
-                <navigator wx:if="{{userInfo.is_supplier}}" url="../univ-list/univ-list?type=myAsSupplier&itemname=rqst" class="weui-footer__link">供应商订单</navigator>
-                <navigator url="../fdbk-edit/fdbk-edit" class="weui-footer__link">番茄钟</navigator>
-                <navigator wx:if="{{userInfo.is_admin}}" url="../univ-list/univ-list?itemname=bamboo" class="weui-footer__link">查笋</navigator>
+                <button class="index_button" bindtap="setRoleLbor" type="primary">接单</button>
+                <button class="index_button" bindtap="setRoleClnt" type="primary">有料</button>
+                <view class="index_link">
+                    <navigator url="../univ-list/univ-list?itemname=rqst&type=my" class="weui-footer__link">服务订单
+                    </navigator>
+                    <navigator url="../univ-list/univ-list?itemname=order&type=my" class="weui-footer__link">商品订单
+                    </navigator>
+                    <!--<navigator wx:if="{{userInfo.is_supplier}}"-->
+                               <!--url="../univ-list/univ-list?type=myAsSupplier&itemname=rqst" class="weui-footer__link">-->
+                        <!--供应商订单-->
+                    <!--</navigator>-->
+                    <navigator wx:if="{{userInfo.is_admin}}" url="../univ-list/univ-list?itemname=bamboo"
+                               class="weui-footer__link">查笋
+                    </navigator>
+                    <navigator wx:if="{{userInfo.is_admin}}" url="../univ-list/univ-list?itemname=rentrsr"
+                               class="weui-footer__link">租售比
+                    </navigator>
+                    <navigator url="../fdbk-edit/fdbk-edit" class="weui-footer__link">番茄钟</navigator>
+
+                </view>
+                <view class="index_link">
+                    <navigator wx:if="{{userInfo.is_admin}}" url="../biz-edit/biz-edit" class="weui-footer__link">商管
+                    </navigator>
+                    <navigator wx:if="{{userInfo.is_admin}}" url="../univ-list/univ-list?itemname=order&type=all" class="weui-footer__link">订单A
+                    </navigator>
+                    <navigator wx:if="{{userInfo.is_admin}}" url="../univ-list/univ-list?itemname=order&type=myAsSupplier"
+                               class="weui-footer__link">订单S
+                    </navigator>
 
                     <block wx:if="{{cf.runMode==='dev'}}">
-                    <!--<veiw>-->
-                        <!--<button class="image_button"-->
-                                <!--data-page="index"-->
-                                <!--data-type="A"-->
-                                <!--bindtap="getMyQr">-->
-                            <!--<image src="/image/share2.png" class="btnImg"/>-->
-                        <!--</button>-->
-                    <!--</veiw>-->
-                    <!--<veiw>-->
-                        <!--<button class="image_button"-->
-                                <!--data-page="index"-->
-                                <!--data-type="C"-->
-                                <!--data-biz_type="program"-->
-                                <!--bindtap="getMyQr">-->
-                            <!--<image src="/image/share2.png" class="btnImg"/>-->
-                        <!--</button>-->
-                    <!--</veiw>-->
-
-                        <cc_dop id='cc_dop'
-                                userInfo="{{userInfo}}"
-                                type="C"
-                                biz_type="program"
-                                page="index"
-                                runmode="{{cf.runMode}}" bind:dopevent="onDopEvent"/>
-
-                        <cc_dop id='cc_dop'
-                                userInfo="{{userInfo}}"
-                                type="A"
-                                biz_type=""
-                                page="index"
-                                runmode="{{cf.runMode}}" bind:dopevent="onDopEvent"/>
+                        <navigator url="../univ-list/univ-list?itemname=bizcatalog" class="weui-footer__link">商目
+                        </navigator>
                     </block>
                 </view>
             </block>
@@ -71,12 +64,12 @@
                 </button>
             </block>
 
-            <image src="{{qrcodeUrl}}"/>
 
 
 
             <!--非生产模式下，显示近期开发的测试连接-->
             <block wx:if="{{cf.runMode==='dev'}}">
+                <image src="{{qrcodeUrl}}"/>
 
                 <!--<navigator url="../user-list/user-list" class="weui-footer__link">user-list组件</navigator>-->
                 <!--<navigator url="../rqst-accleaning-edit/rqst-accleaning-edit" class="weui-footer__link">空调清洗</navigator>-->
@@ -89,14 +82,23 @@
                 <!--<cc_uploadpic id='uploadpic' picsList="{{picsList}}"  hidden="true" bind:uploadchangeevent="onUploadChangeEvent"/>-->
                 <!--<cc_mapshow id='cc_mapshow' bind:mapshowevent="onMapShowEvent"/>-->
 
+                <cc_poster id='cc_poster'
+                           userInfo="{{userInfo}}"
+                           type="C"
+                           biz_type="program"
+                           page="index"
+                           runmode="{{cf.runMode}}"
+                           bind:mapshowevent="onMapShowEvent" showPost="{{showPost}}"/>
 
+                <cc_bizcart id="cc_bizcart"
+                            biz_id="1CT7ELUQM"
+                            bind:upriceChangeEvent="onUpriceChange"
+                            bind:duraChangeEvent="onDuraChange"
+                            bind:cartChangeEvent="onCartChange"
+                />
             </block>
         </view>
-
-
-
-
-
+        <!--<button bindtap="setShow">test</button>-->
 
 
 

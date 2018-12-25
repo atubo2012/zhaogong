@@ -7,6 +7,7 @@
     //TODO:将fdbk-edit与tomato-detail命名保持一致
     -->
     <include wx:if="{{itemname==='bamboo'}}"   src="../pages/tplt/bamboo-detail.wxml"/>
+    <include wx:if="{{itemname==='rentrsr'}}"   src="../pages/tplt/rentrsr-detail.wxml"/>
     <include wx:if="{{itemname==='tomato'}}"   src="../pages/fdbk-edit/tomato-detail.wxml"/>
     <include wx:if="{{itemname==='rqst'}}"     src="../pages/rqst-edit/rqst-detail.wxml"/>
     <include wx:if="{{itemname==='user'}}"     src="../pages/user-edit/user-detail.wxml"/>

@@ -95,11 +95,26 @@ Component({
             let that = this;
             console.log('this is in _initCharging', this.data.charging_type);//组件中初始化设置的业务类型
 
+            let normalLisePics = cf.charging_type[charging_type].pics.map(
+                (item, index, arr) => {
+                    if(item.indexOf('http')<0){
+                        return cf.url+'/upload/'+item;
+                    }else
+                        return item;
+                }
+            );
+
+            console.log('normalLisePics',normalLisePics);
+
+
+
             that.setData({
                 currentChargingType: charging_type,
                 currentChargingTypeDesc: cf.hint[charging_type],
                 chargingTypeList: cf.charging_type[charging_type].subtypes,
                 currentChargingItem: cf.charging_type[charging_type].subtypes[0],
+                //pics:cf.charging_type[charging_type].pics?cf.charging_type[charging_type].pics:false,//加载轮播照片
+                pics: normalLisePics ? normalLisePics : false,//加载轮播照片
             });
         },
 

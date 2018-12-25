@@ -99,6 +99,8 @@ Component({
                     //let url = cf.charging_type[that.data.biz_type].pics ?cf.charging_type[that.data.biz_type].pics[0] : that.data.backGroundImagUrl;
                     let url = that.data.backGroundImagUrl;//海报背景页面从cc调用的页面中指定
                     if(url.indexOf('http')<0) url=cf.url+"/upload/"+url;
+
+                    console.log(url);
                     wx.downloadFile({
                         //TODO:海报照片应根据商品类别代码生成，商品类别代码是创建商品类别时生成的32进制4位。
                         //url: cf.url+"/upload/"+cf.charging_type[that.data.biz_type].pics[0],

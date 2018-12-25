@@ -164,7 +164,9 @@ function ZgConfig(runtime) {
         tomatoEditUrl:`${url}/tomato-edit`,
         tomatoListUrl:`${url}/tomato-list`,
 
-        bambooListUrl:`${url}/bamboo-list`
+        bambooListUrl:`${url}/bamboo-list`,
+        rentrsrListUrl:`${url}/bamboo-list`,
+
     };
 
     //视图展现有关的配置参数，在这里统一定义，便于参数化管理。

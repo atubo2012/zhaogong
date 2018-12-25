@@ -3,16 +3,51 @@
     <include src="../tplt/pagehead.wxml"/>
     <view class="page__bd">
 
+        <!--
+           【查询条件扩展点】：针对不同的itemname，设置不同的输入查询条件
+        -->
+        <!--笋盘查询-->
         <view wx:if="{{itemname==='bamboo'}}">
             <text bindtap="_reSetCondition">笋度</text> |
             <text data-query="刚刚发布" bindtap="_showJustNow">刚刚</text> |
             <text data-query="1天" bindtap="_showJustNow">1天</text>
+            <picker  range="{{cities}}" mode="selector"
+                    bindchange="bindCityChange">
+                <view class="weui-input">{{currentCity}}</view>
+            </picker>
         </view>
+
+        <!--租售比查询-->
+        <view wx:if="{{itemname==='rentrsr'}}">
+            <text bindtap="_reSetConditionRsr" data-by="rsr">租售比</text> |
+            <text bindtap="_reSetConditionRsr" data-by="ruprice">租金</text> |
+                <!--<block wx:for="{{cities}}" wx:key="adfaf">-->
+                    <!--<text bindtap="_reSetConditionRsr"-->
+                          <!--data-city="{{item}}"-->
+                          <!--data-by="city">-->
+                        <!--{{item}}-->
+                    <!--</text>-->
+                    <!--{{index!==cities.length-1?'|':''}}-->
+                <!--</block>-->
+            <picker  range="{{cities}}" mode="selector"
+                     bindchange="_reSetConditionRsr" data-by="city">
+                <view class="weui-input">{{currentCity}}</view>
+            </picker>
+        </view>
+
+
+        <!--
+            【事件扩展点】：针对不同的itemname模块，设置不同的处理事件
+            showdetailevent：跳转到指定页面
+            copyurlevent：   复制url
+        -->
         <cc_list id="cc_list" list="{{list}}"
                  itemname="{{itemname}}"
                  serviceUrl="{{serviceUrl}}"
                  cond="{{_cond}}"
-                bind:showdetailevent="showDetail"
+
+                 bind:showdetailevent="showDetail"
+                 bind:copyurlevent="copyUrl"
         />
 
 

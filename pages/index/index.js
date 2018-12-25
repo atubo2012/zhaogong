@@ -14,7 +14,7 @@ Page({
         code: '',
         app:app,
 
-
+        showPost:false,
         //forTest
         locationFrom:{latitude: 31.21037, longitude: 121.4337},
         locationTo:{latitude: 31.22037, longitude: 121.4237},
@@ -29,7 +29,12 @@ Page({
         _leftTime:'点这里开始倒计时',
         _then:'2018-11-30 12:00:00',
     },
-
+    // setShow:function (e) {
+    //     console.log(e);
+    //   this.setData({
+    //       showPost:true
+    //   });
+    // },
 
     showlt:function(){
         ut.showLeftTime(this);
@@ -307,6 +312,21 @@ Page({
         //     });
         // });
 
+
+        //开发调试专用区
+        if (option.runmode === 'dev') {
+            let cc_poster = this.selectComponent("#cc_poster");
+            cc_poster.onLoad();
+
+            // let cc_bizCart =this.selectComponent("#cc_bizcart");
+            // cc_bizCart._initBizCart();
+        }
+    },
+
+    onCartChange:function (e) {
+        this.setData({
+            'rdata.cart':e.detail.cart
+        })
     },
 
     /**
@@ -775,15 +795,46 @@ Page({
 
                                             console.log('after login app.globaData',app.globalData);
                                             //登录成功后，根据初始化参数跳转到参数对应的页面
-                                            if(app.globalData.init_param){
-                                                let biz_type=app.globalData.init_param[2];
+                                            if(app.globalData.init_param) {
+                                                let biz_type = app.globalData.init_param[2];//TODO：这里要根据cf.charging_type[biz_type]是否为null，从后端加载biz_type对应的商品类别的url
                                                 let uid = app.globalData.init_param[1];
-                                                console.log('biz_type',biz_type,'app.globalData.init_param',app.globalData.init_param);
-                                                let page = biz_type==='' ? 'index':cf.charging_type[biz_type].url;
-                                                console.log('page',page);
-                                                if(biz_type){
+                                                console.log('biz_type', biz_type, 'app.globalData.init_param', app.globalData.init_param);
+
+                                                /**
+                                                 * 若cf.charging_type[biz_type]有值，说明是静态业务品类，按照常规方式进入页面；
+                                                 * 否则指定page=order-edit，加载商品信息后更新app.globalData.param，以便于order-edit.js获取该参数
+                                                 * @type {string}
+                                                 */
+                                                if (biz_type !== '') {
+                                                    if (cf.charging_type[biz_type]) {
+                                                        let page = cf.charging_type[biz_type].url;
+                                                        console.log('page1', page);
+                                                        if (biz_type) {
+                                                            wx.navigateTo({
+                                                                url: '/pages/' + page + '/' + page + '?charging_type=' + biz_type + '&uid=' + uid
+                                                            })
+                                                        }
+                                                    } else {
+                                                        ut.debug('cf.charging_type[biz_type] is false,不是在cf中静态配置的商品，则先从后端获取业务类别的id，然后，再根据应答数据中的biz_type跳转到order-edit页面');
+                                                        ut.request(cf.service.bizQueryUrl,
+                                                            {cond: {'id': biz_type}},
+                                                            false,
+                                                            (res) => {
+                                                                ut.debug('full biz_type', res.data);
+                                                                app.globalData['param'] = res.data;
+                                                                wx.navigateTo({
+                                                                    url: '../order-edit/order-edit?charging_type=' + biz_type
+                                                                })
+                                                            }, (res) => {
+                                                                ut.showToast(res.data);
+                                                            });
+                                                    }
+
+                                                }else{
+                                                    let page = 'index';
+                                                    console.log('page2', page);
                                                     wx.navigateTo({
-                                                        url: '/pages/'+page+'/'+page+'?charging_type='+biz_type+'&uid='+uid
+                                                        url: '/pages/' + page + '/' + page + '?charging_type=' + biz_type + '&uid=' + uid
                                                     })
                                                 }
                                             }
@@ -833,12 +884,12 @@ Page({
                 url:'../univ-list/univ-list?itemname=rqst&type=all',
             });
     },
-    //设置用户角色为CLNT
+    //设置用户角色为
     setRoleClnt: function () {
         app.globalData.gReqType = 'bbb';
         //app.globalData.role = 'CLNT';
-        wx.switchTab({
-            url: '../clnt-main/clnt-main'
+        wx.navigateTo({
+            url: '../univ-list/univ-list?itemname=bizcatalog'
         })
     },
 

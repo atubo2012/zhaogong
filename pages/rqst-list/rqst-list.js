@@ -8,7 +8,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-        pageInfo: app.getPageInfo('rqst-list'),
+        pageInfo: cf.motto['rqst-list'],
         ut : ut, //如页面需要使用utils的方法，则在这里设置
         cf:cf,
 
@@ -63,15 +63,15 @@ Page({
             //根据角色来设置查询条件。如果是my，则表示我提交的订单
             if (type === 'my') {
                 if (role === 'CLNT') {
-                    //rdata['clntInfo.openId'] = openId;
+                    rdata['clntInfo.openId'] = openId;
                     query['clntInfo.openId']=openId;
                 } else if (role === 'LBOR') {
-                    //rdata['lborInfo.openId'] = openId;
+                    rdata['lborInfo.openId'] = openId;
                     query['lborInfo.openId']=openId;
                 }
 
             }else if(type==='myAsSupplier'){
-                //rdata['supplier_id'] = openId;
+                rdata['supplier_id'] = openId;
                 query['supplier_id']=openId;
             }
 

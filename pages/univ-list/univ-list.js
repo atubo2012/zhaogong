@@ -34,6 +34,35 @@ Page({
         },
 
         cb: null,
+
+        cities:['sh','qd','cd','wh','tj','cq','hz'],
+        currentCity:'sh',
+
+
+    },
+
+    bindCityChange:function (e) {
+        let that = this;
+        console.log('bindCityChange',e);
+        that.setData({
+            //currentCity: that.data.cities[e.detail.value],
+            currentCity: e.currentTarget.dataset.city,
+            list:[]
+        });
+        console.log(this.data.currentCity);
+        that.onLoad(that.data.option);
+    },
+
+    copyUrl:function (e) {
+        console.log('copyUrl',e);
+        wx.setClipboardData({
+            data: e.detail.detaildata,
+            success: function (res) {
+                wx.showToast({
+                    title: '打开浏览器查看'
+                });
+            }
+        });
     },
 
     /**
@@ -62,6 +91,15 @@ Page({
                     })
                 }
             });
+        }else if (event_type==='rentrsrurlcopy') {
+            wx.setClipboardData({
+                data: item.url,
+                success: function (res) {
+                    wx.showToast({
+                        title: '请打开浏览器查看'
+                    });
+                }
+            });
         }
         else if (cf.charging_type[event_type]) //修改、查看（ZgConfig中静态配置的商品）
         {
@@ -76,6 +114,11 @@ Page({
                 url: '../order-edit/order-edit?reqId=' + e.detail.detaildata.reqId
             })
         }else if (event_type === 'onbizclick') {//新增商品（动态配置的商品）
+            app.globalData['param'] = e.detail.detaildata;
+            wx.navigateTo({
+                url: '../order-edit/order-edit?biz_type=' + e.detail.detaildata.id
+            })
+        }else if (event_type === 'rentrsrurlcopy') {//新增商品（动态配置的商品）
             app.globalData['param'] = e.detail.detaildata;
             wx.navigateTo({
                 url: '../order-edit/order-edit?biz_type=' + e.detail.detaildata.id
@@ -102,6 +145,7 @@ Page({
 
         //根据入参设置后端服务名和详情页面的识别名
         that.setData({
+            option:option,
             itemname: option.itemname,
             serviceUrl: cf.service[option.itemname + 'ListUrl']
         });
@@ -184,17 +228,16 @@ Page({
             query['biz_type'] = {$in:Object.keys(cf.charging_type)};
 
         } else if (option.itemname === 'bamboo') {
-            coll = 'ljshesf_result';
+            //coll = 'ljshesf_result';
+            coll = 'lj'+that.data.currentCity+'esf_result';
             sort = {bsr: 1,asktime: -1};
-            query = {asktime: {$regex: '刚刚发布|天', $options: 'i'}}
-
+            query = {asktime: {$regex: '刚刚发布|天|年', $options: 'i'}}
         }
-        // else if (option.itemname === 'bizcataloglist') {
-        //     coll = 'biz';
-        //     sort = {updt:-1};
-        //     query = {}
-        //
-        // }
+        else if (option.itemname === 'rentrsr') {
+            coll = 'lj'+that.data.currentCity+'_rentrsr';
+            sort = {rsr: -1,ruprice:1};
+            //todo：根据当前用户已购商品的权限，加载城市列表
+        }
         else if (option.itemname === 'bizcatalog') {
             coll = 'bizcatalog';
             sort = {updt: -1};
@@ -241,12 +284,12 @@ Page({
      */
     _reSetCondition:function(){
         let that = this;
-        ut.debug('_reSetCondition：', this.data.itemname);
 
         cclist.data.paging.pageNum = 0;
         cclist.data.paging.hasMore =true;
 
         this.data._cond.sort.bsr = 0-this.data._cond.sort.bsr;
+
         that.setData({
             list:[],
             '_cond.sort': that.data._cond.sort,
@@ -259,9 +302,49 @@ Page({
         cclist.onLoad(this.data.cb);
     },
 
+
+    _reSetConditionRsr:function (e) {
+        let that = this;
+        console.log('_reSetConditionRsr',e);
+        let data = {};
+
+        let by  = e.currentTarget.dataset.by;
+        if (by === 'ruprice') {
+            data = {
+                '_cond.sort': {
+                    ruprice:0-that.data._cond.sort.ruprice,
+                    rsr:that.data._cond.sort.rsr
+                },
+            };
+
+        } else if (by === 'rsr') {
+            data = {
+                '_cond.sort': {
+                    rsr:0-that.data._cond.sort.rsr,
+                    ruprice:that.data._cond.sort.ruprice,
+                },
+            };
+        }else if (by === 'city') {
+            let city = that.data.cities[e.detail.value];
+            data = {
+                currentCity: city,
+                '_cond.sort': {
+                    rsr:that.data._cond.sort.rsr,
+                    ruprice:that.data._cond.sort.ruprice,
+                },
+                '_cond.coll':'lj'+city+'_rentrsr'
+            };
+        }
+
+
+        that.setData(data);
+
+
+        this._reQuery();
+    },
+
     _showJustNow:function (option) {
         let that = this;
-
         console.log('_showJustNow',option);
 
         that.setData({

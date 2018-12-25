@@ -65,7 +65,7 @@ Page({
                  {label:'收藏'   ,url:'../clct-list/clct-list',desc:'',num:'你好',hasNum:true},
                  {label:'关注'   ,url:'../fcus-list/clct-list',desc:''},
                  {label:'分享有礼',url:'../share/share'        ,desc:''},
-                 {label:'浏览记录',url:'../brws-list/brws-list',desc:'',hasDot:true},
+                 {label:'商品管理',url:'../bizbiz-editedit/bizbiz-editedit',desc:'',hasDot:true},
 
                  */
             ]
