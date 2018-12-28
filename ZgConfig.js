@@ -161,11 +161,12 @@ function ZgConfig(runtime) {
         //评论查询接口，用户印象接口
         cmmtListUrl: `${url}/cmmt-list`,
 
-        tomatoEditUrl:`${url}/tomato-edit`,
-        tomatoListUrl:`${url}/tomato-list`,
+        tomatoEditUrl   :`${url}/tomato-edit`,
+        tomatoListUrl   :`${url}/tomato-list`,
 
-        bambooListUrl:`${url}/bamboo-list`,
-        rentrsrListUrl:`${url}/bamboo-list`,
+        bambooListUrl   :`${url}/bamboo-list`,
+        rentrsrListUrl  :`${url}/bamboo-list`,
+        cityListUrl     :`${url}/city-list`,
 
     };
 

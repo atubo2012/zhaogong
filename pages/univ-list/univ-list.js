@@ -35,8 +35,17 @@ Page({
 
         cb: null,
 
-        cities:['sh','qd','cd','wh','tj','cq','hz'],
+        cities:['sh','qd','cd','wh','tj','cq','hz','zz'],
         currentCity:'sh',
+        //TODO:试用阶段，从后台拉取全量城市列表；商用阶段，从产品账户余额中拉取数据；
+        //获客类产品：免费，有价值、高粘性
+        //收入类产品：深度适用、按额度时间收费、信息管理
+        //传播类产品：分享传播达到限额后，就可获得免费的额度（使用时间或访问额度）
+        //提醒客户续费。
+
+        //收费版可以从用户已付的账户中拉取数据
+        //TODO:收藏
+
 
 
     },
@@ -45,8 +54,7 @@ Page({
         let that = this;
         console.log('bindCityChange',e);
         that.setData({
-            //currentCity: that.data.cities[e.detail.value],
-            currentCity: e.currentTarget.dataset.city,
+            currentCity: that.data.cities[e.detail.value],
             list:[]
         });
         console.log(this.data.currentCity);
@@ -237,6 +245,7 @@ Page({
             coll = 'lj'+that.data.currentCity+'_rentrsr';
             sort = {rsr: -1,ruprice:1};
             //todo：根据当前用户已购商品的权限，加载城市列表
+            this.getCity();
         }
         else if (option.itemname === 'bizcatalog') {
             coll = 'bizcatalog';
@@ -273,6 +282,98 @@ Page({
         });
     },
 
+
+    getCity:function () {
+        let that = this;
+        wx.request({
+            url: cf.service.cityListUrl,
+            data: {
+                cond: {aa:'1',bb:2}
+            },
+            success: function (res) {
+                let ret = res.data; //后端返回的是一个数组。
+                that.setData({
+                    cities:ret
+                });
+
+                console.log(ret);
+
+
+                //如果后台返回的数据为空说明尚未建立用户信息
+                // if ("0" === ret) {
+                //     ut.debug('后台无数据。');
+                // } else {
+                //     ut.debug('后台有数据，将应答结果设置到rdata中', res);
+                //     that.setData({
+                //         'rdata': ret,//渲染表单中各个输入项的数据
+                //     });
+                //
+                //     if(that.data._ccs.address){
+                //         that.setData({
+                //             'addrHidden': ut.getHiddenAddr(ret.address),
+                //             'rdata.location': ret.location,
+                //             'slocation': JSON.stringify(ret.location),
+                //             'rdata.address': ret.address,
+                //         });
+                //         that.selectComponent("#cc_mapshow").initCc(app.globalData.location,that.data.rdata.location);
+                //         //动态渲染当前地址到客户地址的距离
+                //         ut.getTraffic4tx(app.globalData.address.address, ret.address, function (ret) {
+                //             that.setData({
+                //                 'traffic': ret,
+                //             });
+                //         });
+                //     }
+                //
+                //     //初始化费用类别选择器CC
+                //     that.selectComponent("#cc_charging")._initCharging(ret.biz_type);
+                //
+                //
+                //     //根据DB数据渲染称呼CC
+                //     if(that.data._ccs.mobile){
+                //         that.setData({
+                //             'rdata.mobile': ret.mobile,
+                //         });
+                //         that.selectComponent("#cc_nametitle").renderSexItem(ret.sex);
+                //     }
+                //
+                //
+                //     //商品类业务订单，若状态为get，则准备支付CC的数据，并显示支付按钮
+                //     if (that.data.rdata.stat === 'bs_wait') {
+                //         //为支付CC准备参数
+                //         that.setData({
+                //             'cc_rdata_pay.reqId': option.reqId,
+                //             'cc_rdata_pay.cost': that.data.rdata.cost,
+                //             'cc_rdata_pay.product_id': ret.biz_type,
+                //             'cc_rdata_pay.body': cf.hint[ret.biz_type],
+                //             'cc_rdata_pay.hide': false,
+                //             'cc_rdata_pay.paystat': 'bs_paid',//TODO：无需配送的开关启用时，这里直接传送bs_received_f状态
+                //         });
+                //     } else {
+                //         that.setData({
+                //             'cc_rdata_pay.hide': true,
+                //         });
+                //     }
+                //
+                //     //设置闪烁提示
+                //     that.data.rdata.stat==='start'? ut.showBlink(that):'';
+                //
+                //
+                //     //更新供应商需要的按钮
+                //     //console.log(that.data.cf.charging_type[that.data.rdata.biz_type].ownerId,app.globalData.userInfo.openId);
+                //     if(that.data.cf.charging_type[that.data.rdata.biz_type].supplier_id.indexOf(app.globalData.userInfo.openId)>=0){
+                //         that.setData({_isSupplier:true});
+                //     }
+                //
+                //     //显示分享菜单项。例行功能放在最后。
+                //     wx.showShareMenu({
+                //         withShareTicket: true,
+                //     });
+                // }
+
+                //})
+            }
+        })
+    },
     /**
      * 设置查询条件
      * 触发新的查询请求
@@ -316,7 +417,6 @@ Page({
                     rsr:that.data._cond.sort.rsr
                 },
             };
-
         } else if (by === 'rsr') {
             data = {
                 '_cond.sort': {
