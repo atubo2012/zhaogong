@@ -1,0 +1,85 @@
+<!--
+详情页面的信息呈现顺序：
+
+业务大类、金额
+业务子类与内容，
+
+客户信息
+
+服务时间（或有）
+服务地点（或有）
+服务人员（或有）
+
+订单状态，reqId，订单时间
+
+-->
+
+<navigator data-item="{{item}}" class="weui-panel"
+           url="../{{cf.charging_type[item.biz_type].url? cf.charging_type[item.biz_type].url : item.ct.url}}/{{cf.charging_type[item.biz_type].url? cf.charging_type[item.biz_type].url : item.ct.url}}?reqId={{item.reqId}}&location={{item.location}}"
+>
+    <view class="weui-panel__bd" wx:if="{{item.biz_type==='hscleaning'}}">
+        <view class="weui-media-box weui-media-box_text">
+            <view class="weui-media-box__title weui-media-box__title_in-text"
+                  style="{{(item.stat=='wait' || item.stat=='get') ? '':'color: #999'}}">
+                <block wx:if="{{item.biz_type==='hscleaning'}}">
+                    {{cf.hint[item.biz_type]}} {{item.uprice*item.dura}}元
+                </block>
+            </view>
+            <view class="weui-media-box__desc">估计{{item.dura}}小时，{{item.size}}平米，{{item.hasTool}}</view>
+
+            <view class="weui-media-box__desc">客户：{{item.clfn}}{{item.sex}}  </view>
+
+            <view class="weui-media-box__desc">{{item.osdt}} {{item.ostm}}</view>
+            <view class="weui-media-box__desc">{{item.address}}</view>
+            <view class="weui-media-box__desc" wx:if="{{item.lborInfo.name}}" >{{item.lborInfo.name ? item.lborInfo.name : ''}}</view>
+
+            <view class="weui-media-box__info">
+                <view class="weui-media-box__info__meta">
+                    {{cf.hint[item.stat]}}
+                </view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">
+                    {{item.reqId}}
+                </view>
+
+            </view>
+        </view>
+    </view>
+
+    <view class="weui-panel__bd" wx:if="{{item.biz_type!=='hscleaning'}}">
+        <view class="weui-media-box weui-media-box_text">
+            <view class="weui-media-box__title weui-media-box__title_in-text"
+                  style="{{(item.stat=='wait' || item.stat=='get') ? '':'color: #999'}}">
+                <!--为了兼容静态商品和动态商品，就用||处理-->
+                  {{item.ct.biz_name || cf.hint[item.biz_type] }} {{item.cart.total_cost}}元
+
+            </view>
+            <view class="weui-media-box__info">
+                <block wx:if="{{item.biz_type!=='hscleaning'}}">
+                    <block wx:for="{{item.cart.goods}}" wx:for-item="aa" wx:key="aba">
+                        {{aa.type}}:({{aa.uprice}}×{{aa.quantity}}{{aa.unit}})
+                    </block>
+                </block>
+            </view>
+            <view class="weui-media-box__desc">客户：{{item.clfn}}{{item.sex}}  </view>
+
+            <!--<view class="weui-media-box__desc" >{{item.osdt}} {{item.ostm}}</view>-->
+            <view class="weui-media-box__desc" >{{item.address}}</view>
+            <view class="weui-media-box__info">
+                <view class="weui-media-box__info__meta">
+                    {{cf.hint[item.stat]}}
+                </view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">
+                    {{item.reqId}}
+                </view>
+            </view>
+            <view class="weui-media-box__info">
+                <view class="weui-media-box__info__meta">
+                    {{item.updt}}
+                </view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra" >
+                    {{item.uid?'推荐人'+item.uid:''}}
+                </view>
+            </view>
+        </view>
+    </view>
+</navigator>

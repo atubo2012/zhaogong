@@ -166,6 +166,7 @@ function ZgConfig(runtime) {
 
         bambooListUrl   :`${url}/bamboo-list`,
         rentrsrListUrl  :`${url}/bamboo-list`,
+        stockrsrListUrl  :`${url}/bamboo-list`,
         cityListUrl     :`${url}/city-list`,
 
     };

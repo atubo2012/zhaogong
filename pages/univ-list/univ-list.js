@@ -33,6 +33,9 @@ Page({
             'sort': {},
         },
 
+        _seeamt:-1,
+        _bsr:-1,
+
         cb: null,
 
         cities:['sh','qd','cd','wh','tj','cq','hz','zz'],
@@ -116,7 +119,7 @@ Page({
             wx.navigateTo({
                 url: '../'+biz_type.url+'/'+biz_type.url+'?reqId=' + e.detail.detaildata.reqId
             })
-        }else if (event_type.indexOf('1C')===0) //修改、查看（动态配置的商品）
+        }else if (event_type.indexOf('BT_')===0) //修改、查看（动态配置的商品）
         {
             wx.navigateTo({
                 url: '../order-edit/order-edit?reqId=' + e.detail.detaildata.reqId
@@ -231,32 +234,13 @@ Page({
             } else if (type === 'myAsSupplier') { //供应商订单
                 query['supplier_id'] = openId;
             }
-
             //该分支只能查询静态商品的信息
             query['biz_type'] = {$in:Object.keys(cf.charging_type)};
-
-        } else if (option.itemname === 'bamboo') {
-            //coll = 'ljshesf_result';
-            coll = 'lj'+that.data.currentCity+'esf_result';
-            sort = {bsr: 1,asktime: -1};
-            query = {asktime: {$regex: '刚刚发布|天|年', $options: 'i'}}
         }
-        else if (option.itemname === 'rentrsr') {
-            coll = 'lj'+that.data.currentCity+'_rentrsr';
-            sort = {rsr: -1,ruprice:1};
-            //todo：根据当前用户已购商品的权限，加载城市列表
-            this.getCity();
-        }
-        else if (option.itemname === 'bizcatalog') {
-            coll = 'bizcatalog';
-            sort = {updt: -1};
-            query = {}
-        }else if (option.itemname === 'order') { //查询动态配置商品的订单
-
+        else if (option.itemname === 'order') { //查询动态配置商品的订单
             coll = 'rqst';
-            sort = {updt: -1};
-
             let type = option.type;
+            sort = {updt: -1};
             //我的订单
             if (type === 'my') {
                 if (role === 'CLNT') {
@@ -270,7 +254,27 @@ Page({
                 query['supplier_id'] = openId;
             }
             query['biz_type'] = {$nin:Object.keys(cf.charging_type)};
+        }
 
+        else if (option.itemname === 'bamboo') {
+            coll = 'lj'+that.data.currentCity+'esf_result';
+            sort = {bsr: 1,asktime: -1};
+            query = {asktime: {$regex: '刚刚发布|天|年', $options: 'i'}}
+        }
+        else if (option.itemname === 'rentrsr') {
+            coll = 'lj'+that.data.currentCity+'_rentrsr';
+            sort = {rsr: -1,ruprice:1};
+            //todo：根据当前用户已购商品的权限，加载城市列表
+            this.getCity();
+        }
+        else if (option.itemname === 'stockrsr') {
+            coll = 'rsr_wind';
+            sort = {rsr_now: -1};
+        }
+        else if (option.itemname === 'bizcatalog') {
+            coll = 'bizcatalog';
+            sort = {updt: -1};
+            query = {}
         }
 
         //设置cc_list控件的属性
@@ -389,11 +393,14 @@ Page({
         cclist.data.paging.pageNum = 0;
         cclist.data.paging.hasMore =true;
 
-        this.data._cond.sort.bsr = 0-this.data._cond.sort.bsr;
+        //this.data._cond.sort.bsr = 0-this.data._cond.sort.bsr;
+
 
         that.setData({
             list:[],
-            '_cond.sort': that.data._cond.sort,
+            _bsr: 0-that.data._bsr,
+            '_cond.sort': {bsr: that.data._bsr,asktime: -1},
+
             '_cond.query': {asktime: {$regex: '刚刚发布|天', $options: 'i'}},
             cb: that.data.cb,
         });
@@ -445,10 +452,17 @@ Page({
 
     _showJustNow:function (option) {
         let that = this;
-        console.log('_showJustNow',option);
 
         that.setData({
             '_cond.query': {asktime:option.currentTarget.dataset.query},
+        });
+        this._reQuery();
+    },
+    _showSeenAmt:function (option) {
+        let that = this;
+        that.setData({
+            _seeamt: 0-that.data._seeamt,
+            '_cond.sort': {seeamt:that.data._seeamt},
         });
         this._reQuery();
     },

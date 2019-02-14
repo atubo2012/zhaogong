@@ -7,7 +7,7 @@
 >
     <view class="weui-media-box weui-media-box_text">
         <view class="weui-media-box__title weui-media-box__title_in-text" style="display: flex; align-items: center;">
-            <text class="listitemtitle">{{item.bsr}}笋-{{item.cfmd}}伤-{{item.uprice}}/平 </text>
+            <text class="listitemtitle">{{item.bsr}}笋-{{item.cfmd}}伤-{{item.uprice}}/平-带看{{item.seeamt}} </text>
         </view>
 
         <view class="weui-media-box__desc">{{item.title}}</view>

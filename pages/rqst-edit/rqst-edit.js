@@ -449,6 +449,8 @@ Page({
         ut.debug('globalData', app.globalData);
         app.globalData['bizParameters'] = '全局参数在这里传递';
 
+        //this.setData({app:app});
+
 
         //ut.checkSession(app, that, function (params2) {
         //I：如果id字段不为空，则进入编辑模式，从后台获取数据，然后用setData(rdata:res.data[0])，渲染页面数据。
@@ -457,7 +459,7 @@ Page({
 
             //便于地图行程切换时使用参数
             that.setData({
-                reqId: option.reqId
+                reqId: option.reqId,
             });
 
             //从后台获取数据

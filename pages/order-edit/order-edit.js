@@ -3,7 +3,6 @@ let ut = require('../../utils/utils.js');
 let amapFile = require('../../vendor/amap-wx.js');
 const app = getApp();
 const cf = app.globalData.cf;
-
 Page({
     data: {
         /**
@@ -143,7 +142,11 @@ Page({
      */
     onLoad: function (option) {
         let that = this;
-        console.log('order-edit.onLoad():',option,this.data,app.globalData.param);
+
+        this.setData({
+            app : app
+        });
+
 
         //根据业务参数类型，选择初始化购物车数据选择器
         let cc_bizcart = that.selectComponent("#cc_bizcart");
@@ -173,7 +176,7 @@ Page({
                         ut.debug('后台无数据。');
                     } else {
                         ut.debug('后台有数据，将应答结果设置到rdata中', res);
-                        cf.charging_type[ret.biz_type]=ret.ct; //将订单信息中保存的商品信息加载到商品类别中
+                        //cf.charging_type[ret.biz_type]=ret.ct; //将订单信息中保存的商品信息加载到商品类别中
 
                         that.setData({
                             'rdata': ret,//渲染表单中各个输入项的数据

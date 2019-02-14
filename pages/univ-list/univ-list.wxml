@@ -10,7 +10,8 @@
         <view wx:if="{{itemname==='bamboo'}}">
             <text bindtap="_reSetCondition">笋度</text> |
             <text data-query="刚刚发布" bindtap="_showJustNow">刚刚</text> |
-            <text data-query="1天" bindtap="_showJustNow">1天</text>
+            <text data-query="1天" bindtap="_showJustNow">1天</text> |
+            <text data-query="{{_seeamt}}" bindtap="_showSeenAmt">带看量</text>
             <picker  range="{{cities}}" mode="selector"
                     bindchange="bindCityChange">
                 <view class="weui-input">{{currentCity}}</view>

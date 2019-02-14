@@ -34,7 +34,10 @@
                                class="weui-footer__link">查笋
                     </navigator>
                     <navigator wx:if="{{userInfo.is_admin}}" url="../univ-list/univ-list?itemname=rentrsr"
-                               class="weui-footer__link">租售比
+                               class="weui-footer__link">H售比
+                    </navigator>
+                    <navigator wx:if="{{userInfo.is_admin}}" url="../univ-list/univ-list?itemname=stockrsr"
+                               class="weui-footer__link">S售比
                     </navigator>
                     <navigator url="../fdbk-edit/fdbk-edit" class="weui-footer__link">番茄钟</navigator>
 
